@@ -1,0 +1,70 @@
+{
+  "languageCode": "en-US",
+  "provider": "minimax",
+  "voiceName": "en-US-Chirp3-HD-Umbriel",
+  "speakingRate": 1.06,
+  "pitch": 0,
+  "volumeGainDb": 0,
+  "audioEncoding": "MP3",
+  "useSsml": true,
+  "breaksMs": {
+    "comma": 120,
+    "dash": 160,
+    "sentence": 260,
+    "semicolon": 180
+  },
+  "emphasisLevel": "moderate",
+  "emphasisMode": "tag",
+  "emphasisPitch": "+1st",
+  "emphasisRate": "medium",
+  "emphasisWords": [
+  ],
+  "pronunciations": {
+    "DeFi": "dee-fye",
+    "DeFi Llama": "dee-fye llama",
+    "DAI": "dye",
+    "CDP": "C D P",
+    "DSC": "D S C",
+    "ETH": "E T H",
+    "HackQuest.io": "hack-quest dot eye oh",
+    "HackQuest": "hack-quest",
+    "MakerDAO": "may-ker dow",
+    "MetaMask Learn": "meta-mask learn",
+    "MetaMask": "meta-mask",
+    "Aave": "ah-vay",
+    "Bankless": "bank-less",
+    "DecentralizedStableCoin.sol": "D S C stable coin dot sol",
+    "DecentralizedStableCoin": "D S C stable coin",
+    "Layer 2s": "layer twos",
+    "Layer 2": "layer two",
+    "Uniswap": "you-nee-swap",
+    "Curve": "curv",
+    "Lido": "lee-doh",
+    "USDC": "you-ess-dee-see",
+    "TVL": "tee-vee-ell",
+    "IPFS": "eye-pee-eff-ess",
+    "MEV": "em-ee-vee",
+    "Flashbots": "flash-bots",
+    "Chainlink": "chain-link",
+    "ERC20": "E R C twenty",
+    "DSCEngine": "D S C engine",
+    "Sepolia": "seh-poh-lyuh",
+    "Polygon": "pol-ee-gon",
+    "Optimism": "op-tuh-mizm",
+    "Arbitrum": "are-bi-trum",
+    "Ethereum": "ee-theer-ee-um"
+  },
+  "prosodyRules": [
+    {
+      "pattern": "^(Now|But|So|Alright|Here)\\b",
+      "pitch": "+1st",
+      "rate": "medium"
+    },
+    {
+      "pattern": "\\?$",
+      "pitch": "+1st",
+      "rate": "medium"
+    }
+  ],
+  "outputDir": "generated/audio/segments"
+}

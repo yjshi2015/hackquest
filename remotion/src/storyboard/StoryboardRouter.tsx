@@ -1,6 +1,6 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
-import type {ComponentType} from 'react';
-import type {ZodTypeAny} from 'zod';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { ComponentType } from "react";
+import type { ZodTypeAny } from "zod";
 import {
   AbsoluteFill,
   spring,
@@ -9,16 +9,16 @@ import {
   useDelayRender,
   useVideoConfig,
   Video,
-} from 'remotion';
-import {linearTiming, TransitionSeries} from '@remotion/transitions';
-import {fade} from '@remotion/transitions/fade';
-import {colors, fonts, motion, tokens} from '../theme';
-import type {LessonBlockContext} from '../lesson-config';
-import {ChartCard} from '../templates/ChartCard';
-import {resolveLessonPublicPath} from '../lib/lesson-paths';
-import type {StoryboardInjected} from './types';
-import {parseScriptMd as parseScriptMdShared} from './parse-script-md';
-import type {LessonScriptSegment} from './parse-script-md';
+} from "remotion";
+import { linearTiming, TransitionSeries } from "@remotion/transitions";
+import { fade } from "@remotion/transitions/fade";
+import { colors, fonts, motion, tokens } from "../theme";
+import type { LessonBlockContext } from "../lesson-config";
+import { ChartCard } from "../templates/ChartCard";
+import { resolveLessonPublicPath } from "../lib/lesson-paths";
+import type { StoryboardInjected } from "./types";
+import { parseScriptMd as parseScriptMdShared } from "./parse-script-md";
+import type { LessonScriptSegment } from "./parse-script-md";
 
 type SegmentTiming = {
   id: number;
@@ -28,10 +28,10 @@ type SegmentTiming = {
 
 type ChartConfig = {
   title: string;
-  series: {label: string; value: number}[];
+  series: { label: string; value: number }[];
   maxValue?: number;
-  position?: {left: number; top: number};
-  size?: {width: number; height: number};
+  position?: { left: number; top: number };
+  size?: { width: number; height: number };
   accentColor?: string;
 };
 
@@ -60,26 +60,29 @@ type SlideContentBase = {
 };
 
 type SlideContentDefault = SlideContentBase & {
-  layout: 'default';
+  layout: "default";
 };
 
 type SlideContentTable = SlideContentBase & {
-  layout: 'table';
+  layout: "table";
   table: SlideTable;
 };
 
 type SlideContentColumns = SlideContentBase & {
-  layout: 'columns';
-  columns: {left: SlideContent; right: SlideContent};
+  layout: "columns";
+  columns: { left: SlideContent; right: SlideContent };
 };
 
-type SlideContent = SlideContentDefault | SlideContentTable | SlideContentColumns;
+type SlideContent =
+  | SlideContentDefault
+  | SlideContentTable
+  | SlideContentColumns;
 
 const parseSlideMarkdown = (
   markdown?: string,
   fallbackTitle?: string,
 ): SlideContent => {
-  const lines = (markdown ?? '')
+  const lines = (markdown ?? "")
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter(Boolean);
@@ -89,15 +92,16 @@ const parseSlideMarkdown = (
     // | A | B |
     // |---|---|
     // | 1 | 2 |
-    const headerIndex = rawLines.findIndex((l) => l.includes('|'));
+    const headerIndex = rawLines.findIndex((l) => l.includes("|"));
     if (headerIndex === -1) return null;
     const header = rawLines[headerIndex];
     const divider = rawLines[headerIndex + 1];
-    if (!divider || !divider.includes('-') || !divider.includes('|')) return null;
+    if (!divider || !divider.includes("-") || !divider.includes("|"))
+      return null;
 
     const splitRow = (row: string) =>
       row
-        .split('|')
+        .split("|")
         .map((c) => c.trim())
         .filter((c) => c.length > 0);
 
@@ -108,16 +112,16 @@ const parseSlideMarkdown = (
 
     const rows: string[][] = [];
     for (const row of rawLines.slice(headerIndex + 2)) {
-      if (!row.includes('|')) break;
+      if (!row.includes("|")) break;
       const cells = splitRow(row);
       if (cells.length === columns.length) rows.push(cells);
     }
 
     if (rows.length === 0) return null;
-    return {columns, rows};
+    return { columns, rows };
   };
 
-  const hrIndex = lines.findIndex((l) => l === '---');
+  const hrIndex = lines.findIndex((l) => l === "---");
   const table = parseTable(lines);
 
   let title: string | undefined;
@@ -127,7 +131,7 @@ const parseSlideMarkdown = (
 
   for (const line of lines) {
     if (/^#{1,6}\s+/.test(line)) {
-      const text = line.replace(/^#{1,6}\s+/, '').trim();
+      const text = line.replace(/^#{1,6}\s+/, "").trim();
       if (!title) {
         title = text;
       } else if (!subtitle) {
@@ -139,7 +143,7 @@ const parseSlideMarkdown = (
     }
 
     if (/^[-*+]\s+/.test(line) || /^\d+\.\s+/.test(line)) {
-      bullets.push(line.replace(/^([-*+]|\d+\.)\s+/, '').trim());
+      bullets.push(line.replace(/^([-*+]|\d+\.)\s+/, "").trim());
       continue;
     }
 
@@ -151,36 +155,36 @@ const parseSlideMarkdown = (
   }
 
   if (table) {
-    return {layout: 'table', title, subtitle, bullets, paragraphs, table};
+    return { layout: "table", title, subtitle, bullets, paragraphs, table };
   }
 
   if (hrIndex !== -1) {
-    const leftLines = lines.slice(0, hrIndex).filter((l) => l !== '---');
-    const rightLines = lines.slice(hrIndex + 1).filter((l) => l !== '---');
-    const left: SlideContent = parseSlideMarkdown(leftLines.join('\n'));
-    const right: SlideContent = parseSlideMarkdown(rightLines.join('\n'));
+    const leftLines = lines.slice(0, hrIndex).filter((l) => l !== "---");
+    const rightLines = lines.slice(hrIndex + 1).filter((l) => l !== "---");
+    const left: SlideContent = parseSlideMarkdown(leftLines.join("\n"));
+    const right: SlideContent = parseSlideMarkdown(rightLines.join("\n"));
     return {
-      layout: 'columns',
+      layout: "columns",
       title: title ?? left.title ?? right.title,
       subtitle,
       bullets,
       paragraphs,
-      columns: {left, right},
+      columns: { left, right },
     };
   }
 
-  return {layout: 'default', title, subtitle, bullets, paragraphs};
+  return { layout: "default", title, subtitle, bullets, paragraphs };
 };
 
 const SlideScene: React.FC<{
   markdown?: string;
   sceneContent?: string;
   imageSrc?: string | null;
-}> = ({markdown, sceneContent, imageSrc}) => {
+}> = ({ markdown, sceneContent, imageSrc }) => {
   const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
+  const { fps } = useVideoConfig();
 
-  const reveal = spring({frame, fps, config: motion.spring.standard});
+  const reveal = spring({ frame, fps, config: motion.spring.standard });
   const slideContent = parseSlideMarkdown(markdown, sceneContent);
   const slide = tokens.storyboard.slide;
 
@@ -188,26 +192,32 @@ const SlideScene: React.FC<{
     <AbsoluteFill
       style={{
         padding: tokens.storyboard.canvasPadding,
-        justifyContent: 'center',
-        alignItems: 'flex-start',
+        justifyContent: "center",
+        alignItems: "flex-start",
       }}
     >
       <div
         style={{
-          width: '100%',
+          width: "100%",
           maxWidth: slide.panelMaxWidth,
           padding: `${slide.panelPadY}px ${slide.panelPadX}px`,
           borderRadius: slide.panelRadius,
           backgroundColor: colors.panelSoft,
           border: `1px solid ${colors.borderSoft}`,
-          boxShadow: 'none',
+          boxShadow: "none",
           transform: `translateY(${(1 - reveal) * 18}px)`,
           opacity: reveal,
-          display: slideContent.layout === 'columns' || imageSrc ? 'grid' : 'block',
+          display:
+            slideContent.layout === "columns" || imageSrc ? "grid" : "block",
           gridTemplateColumns:
-            slideContent.layout === 'columns' || imageSrc ? '1.1fr 0.9fr' : undefined,
-          gap: slideContent.layout === 'columns' || imageSrc ? slide.panelGridGap : undefined,
-          alignItems: 'start',
+            slideContent.layout === "columns" || imageSrc
+              ? "1.1fr 0.9fr"
+              : undefined,
+          gap:
+            slideContent.layout === "columns" || imageSrc
+              ? slide.panelGridGap
+              : undefined,
+          alignItems: "start",
         }}
       >
         <div>
@@ -219,7 +229,7 @@ const SlideScene: React.FC<{
                 fontWeight: 750,
                 color: colors.text,
                 marginBottom: 14,
-                letterSpacing: '-0.01em',
+                letterSpacing: "-0.01em",
               }}
             >
               {slideContent.title}
@@ -238,11 +248,11 @@ const SlideScene: React.FC<{
             </div>
           ) : null}
 
-          {slideContent.layout === 'table' && 'table' in slideContent ? (
+          {slideContent.layout === "table" && "table" in slideContent ? (
             <div
               style={{
                 marginTop: 10,
-                overflow: 'hidden',
+                overflow: "hidden",
                 borderRadius: 16,
                 border: `1px solid ${colors.borderSoft}`,
                 backgroundColor: colors.background,
@@ -250,7 +260,7 @@ const SlideScene: React.FC<{
             >
               <div
                 style={{
-                  display: 'grid',
+                  display: "grid",
                   gridTemplateColumns: `repeat(${slideContent.table.columns.length}, 1fr)`,
                   gap: 0,
                   padding: 14,
@@ -259,8 +269,8 @@ const SlideScene: React.FC<{
                   fontFamily: fonts.body,
                   fontSize: slide.tableHeaderSize,
                   fontWeight: 800,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
                   color: colors.muted,
                 }}
               >
@@ -268,17 +278,17 @@ const SlideScene: React.FC<{
                   <div key={c}>{c}</div>
                 ))}
               </div>
-              <div style={{display: 'grid', gap: 0}}>
+              <div style={{ display: "grid", gap: 0 }}>
                 {slideContent.table.rows.map((row: string[], idx: number) => (
                   <div
                     key={`${idx}`}
                     style={{
-                      display: 'grid',
+                      display: "grid",
                       gridTemplateColumns: `repeat(${row.length}, 1fr)`,
                       padding: 14,
                       borderBottom:
                         idx === slideContent.table.rows.length - 1
-                          ? 'none'
+                          ? "none"
                           : `1px solid ${colors.borderSoft}`,
                       fontFamily: fonts.body,
                       fontSize: slide.tableBodySize,
@@ -292,37 +302,45 @@ const SlideScene: React.FC<{
                 ))}
               </div>
             </div>
-          ) : slideContent.layout === 'columns' && 'columns' in slideContent ? (
-            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18}}>
+          ) : slideContent.layout === "columns" && "columns" in slideContent ? (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 18,
+              }}
+            >
               <div>
-                {slideContent.columns.left.paragraphs.map((paragraph: string) => (
-                  <div
-                    key={paragraph}
-                    style={{
-                      fontFamily: fonts.body,
-                      fontSize: slide.bodySize,
-                      color: colors.text,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {paragraph}
-                  </div>
-                ))}
+                {slideContent.columns.left.paragraphs.map(
+                  (paragraph: string) => (
+                    <div
+                      key={paragraph}
+                      style={{
+                        fontFamily: fonts.body,
+                        fontSize: slide.bodySize,
+                        color: colors.text,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {paragraph}
+                    </div>
+                  ),
+                )}
                 {slideContent.columns.left.bullets.length ? (
-                  <div style={{display: 'grid', gap: 12, marginTop: 6}}>
+                  <div style={{ display: "grid", gap: 12, marginTop: 6 }}>
                     {slideContent.columns.left.bullets.map((bullet: string) => (
                       <div
                         key={bullet}
                         style={{
-                          display: 'flex',
+                          display: "flex",
                           gap: 12,
-                          alignItems: 'flex-start',
+                          alignItems: "flex-start",
                           fontFamily: fonts.body,
                           fontSize: slide.bulletSize,
                           color: colors.text,
                         }}
                       >
-                        <span style={{color: colors.muted}}>-</span>
+                        <span style={{ color: colors.muted }}>-</span>
                         <span>{bullet}</span>
                       </div>
                     ))}
@@ -330,37 +348,41 @@ const SlideScene: React.FC<{
                 ) : null}
               </div>
               <div>
-                {slideContent.columns.right.paragraphs.map((paragraph: string) => (
-                  <div
-                    key={paragraph}
-                    style={{
-                      fontFamily: fonts.body,
-                      fontSize: slide.bodySize,
-                      color: colors.text,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {paragraph}
-                  </div>
-                ))}
+                {slideContent.columns.right.paragraphs.map(
+                  (paragraph: string) => (
+                    <div
+                      key={paragraph}
+                      style={{
+                        fontFamily: fonts.body,
+                        fontSize: slide.bodySize,
+                        color: colors.text,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {paragraph}
+                    </div>
+                  ),
+                )}
                 {slideContent.columns.right.bullets.length ? (
-                  <div style={{display: 'grid', gap: 12, marginTop: 6}}>
-                    {slideContent.columns.right.bullets.map((bullet: string) => (
-                      <div
-                        key={bullet}
-                        style={{
-                          display: 'flex',
-                          gap: 12,
-                          alignItems: 'flex-start',
-                          fontFamily: fonts.body,
-                          fontSize: slide.bulletSize,
-                          color: colors.text,
-                        }}
-                      >
-                        <span style={{color: colors.muted}}>-</span>
-                        <span>{bullet}</span>
-                      </div>
-                    ))}
+                  <div style={{ display: "grid", gap: 12, marginTop: 6 }}>
+                    {slideContent.columns.right.bullets.map(
+                      (bullet: string) => (
+                        <div
+                          key={bullet}
+                          style={{
+                            display: "flex",
+                            gap: 12,
+                            alignItems: "flex-start",
+                            fontFamily: fonts.body,
+                            fontSize: slide.bulletSize,
+                            color: colors.text,
+                          }}
+                        >
+                          <span style={{ color: colors.muted }}>-</span>
+                          <span>{bullet}</span>
+                        </div>
+                      ),
+                    )}
                   </div>
                 ) : null}
               </div>
@@ -381,20 +403,20 @@ const SlideScene: React.FC<{
                 </div>
               ))}
               {slideContent.bullets.length ? (
-                <div style={{display: 'grid', gap: 14, marginTop: 8}}>
+                <div style={{ display: "grid", gap: 14, marginTop: 8 }}>
                   {slideContent.bullets.map((bullet: string) => (
                     <div
                       key={bullet}
                       style={{
-                        display: 'flex',
+                        display: "flex",
                         gap: 12,
-                        alignItems: 'flex-start',
+                        alignItems: "flex-start",
                         fontFamily: fonts.body,
                         fontSize: slide.bulletSize,
                         color: colors.text,
                       }}
                     >
-                      <span style={{color: colors.muted}}>-</span>
+                      <span style={{ color: colors.muted }}>-</span>
                       <span>{bullet}</span>
                     </div>
                   ))}
@@ -407,19 +429,24 @@ const SlideScene: React.FC<{
         {imageSrc ? (
           <div
             style={{
-              width: '100%',
+              width: "100%",
               height: 520,
               borderRadius: 18,
-              overflow: 'hidden',
+              overflow: "hidden",
               border: `1px solid ${colors.borderSoft}`,
               backgroundColor: colors.background,
-              boxShadow: 'none',
+              boxShadow: "none",
             }}
           >
             <img
               alt=""
               src={imageSrc}
-              style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block'}}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
           </div>
         ) : null}
@@ -428,26 +455,31 @@ const SlideScene: React.FC<{
   );
 };
 
-const resolveChartConfig = (json?: Record<string, unknown>): ChartConfig | null => {
+const resolveChartConfig = (
+  json?: Record<string, unknown>,
+): ChartConfig | null => {
   if (!json) return null;
   const candidate = json as Partial<ChartConfig>;
-  if (!candidate || typeof candidate !== 'object') return null;
+  if (!candidate || typeof candidate !== "object") return null;
   if (!candidate.title || !candidate.series) return null;
   return candidate as ChartConfig;
 };
 
 const resolveComponentProps = (
   json: Record<string, unknown> | undefined,
-  opts: {segmentId: number; componentName: string},
+  opts: { segmentId: number; componentName: string },
 ) => {
-  if (!json || typeof json !== 'object') {
+  if (!json || typeof json !== "object") {
     throw new Error(
       `Segment ${opts.segmentId}: Component ${opts.componentName} requires a JSON block with {"props": {...}}`,
     );
   }
 
-  if ('props' in json && typeof (json as {props?: unknown}).props === 'object') {
-    return (json as {props: Record<string, unknown>}).props ?? {};
+  if (
+    "props" in json &&
+    typeof (json as { props?: unknown }).props === "object"
+  ) {
+    return (json as { props: Record<string, unknown> }).props ?? {};
   }
 
   throw new Error(
@@ -472,26 +504,51 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   useTransitions = false,
   transitionDurationInFrames: transitionDurationOverride,
 }) => {
-  const [scriptSegments, setScriptSegments] = useState<LessonScriptSegment[] | null>(null);
+  const [scriptSegments, setScriptSegments] = useState<
+    LessonScriptSegment[] | null
+  >(null);
   const [timings, setTimings] = useState<SegmentTiming[] | null>(null);
-  const {delayRender, continueRender, cancelRender} = useDelayRender();
+  const { delayRender, continueRender, cancelRender } = useDelayRender();
   const [handle] = useState(() => delayRender());
+
+  const PLACEHOLDER_SEGMENT_MS = 6000;
 
   const fetchAll = useCallback(async () => {
     try {
-      const [scriptRes, timingsRes] = await Promise.all([
-        fetch(staticFile(scriptFile)),
-        fetch(staticFile(timingsFile)),
-      ]);
-      if (!scriptFile.toLowerCase().endsWith('.md')) {
+      if (!scriptFile.toLowerCase().endsWith(".md")) {
         throw new Error(
           `StoryboardRouter only supports markdown script files. Got: ${scriptFile}`,
         );
       }
+      const scriptRes = await fetch(staticFile(scriptFile));
       const scriptText = await scriptRes.text();
       const parsedSegments = parseScriptMdShared(scriptText);
-      const timingsJson = (await timingsRes.json()) as SegmentTiming[];
       setScriptSegments(parsedSegments);
+
+      const timingsRes = await fetch(staticFile(timingsFile));
+      let timingsJson: SegmentTiming[] | null = null;
+      if (timingsRes.ok) {
+        const contentType = timingsRes.headers.get("content-type") ?? "";
+        if (contentType.includes("application/json")) {
+          try {
+            timingsJson = (await timingsRes.json()) as SegmentTiming[];
+          } catch {
+            // response was ok but not valid JSON (e.g. HTML error page)
+          }
+        }
+      }
+      if (
+        !timingsJson ||
+        !Array.isArray(timingsJson) ||
+        timingsJson.length === 0
+      ) {
+        // New lesson without generated timings: use placeholder so preview still works
+        timingsJson = parsedSegments.map((seg, i) => ({
+          id: seg.id,
+          startMs: i * PLACEHOLDER_SEGMENT_MS,
+          durationMs: PLACEHOLDER_SEGMENT_MS,
+        }));
+      }
       setTimings(timingsJson);
       continueRender(handle);
     } catch (err) {
@@ -517,12 +574,12 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         };
       })
       .filter(Boolean) as Array<
-      LessonScriptSegment & {startMs: number; durationMs: number}
+      LessonScriptSegment & { startMs: number; durationMs: number }
     >;
   }, [scriptSegments, timings]);
 
   const globalFrame = useCurrentFrame();
-  const {fps} = useVideoConfig();
+  const { fps } = useVideoConfig();
   // Align with the Remotion docs TransitionSeries model:
   // Sequence durations are extended by transition length to preserve overall timeline length.
   const transitionDurationInFrames =
@@ -551,21 +608,26 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     let prev = resolved[0];
     for (const seg of resolved) {
       if (timeMs < seg.startMs) return prev;
-      if (timeMs >= seg.startMs && timeMs < seg.startMs + seg.durationMs) return seg;
+      if (timeMs >= seg.startMs && timeMs < seg.startMs + seg.durationMs)
+        return seg;
       prev = seg;
     }
     return resolved[resolved.length - 1];
   }, [resolved, timeMs]);
 
-  const renderSegment = (seg: LessonScriptSegment & {startMs: number; durationMs: number}) => {
+  const renderSegment = (
+    seg: LessonScriptSegment & { startMs: number; durationMs: number },
+  ) => {
     const segVisual = seg.visual ?? {};
-    const segSceneType = segVisual.sceneType?.toLowerCase() ?? '';
+    const segSceneType = segVisual.sceneType?.toLowerCase() ?? "";
     const segAssetRef = segVisual.assetRef ?? null;
     const segResolvedAssetRef = segAssetRef
-      ? resolveLessonPublicPath(metaFile, segAssetRef) ?? segAssetRef
+      ? (resolveLessonPublicPath(metaFile, segAssetRef) ?? segAssetRef)
       : null;
     const segComponentName = segVisual.component;
-    const segCustomComponent = segComponentName ? components?.[segComponentName] : null;
+    const segCustomComponent = segComponentName
+      ? components?.[segComponentName]
+      : null;
     if (segComponentName && !segCustomComponent) {
       throw new Error(
         `Segment ${seg.id}: Unknown component "${segComponentName}". Add it to storyboard/registry.ts.`,
@@ -589,14 +651,20 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       !segShouldRenderChart &&
       Boolean(segResolvedAssetRef) &&
       (isVideoRef(segResolvedAssetRef) || /video/.test(segSceneType)) &&
-      !(/slide|outline|ppt|deck|card/.test(segSceneType) || Boolean(segVisual.markdown));
+      !(
+        /slide|outline|ppt|deck|card/.test(segSceneType) ||
+        Boolean(segVisual.markdown)
+      );
     const segShouldRenderImage =
       !segShouldRenderComponent &&
       !segShouldRenderChart &&
       !segShouldRenderVideo &&
       Boolean(segResolvedAssetRef) &&
       isImageRef(segResolvedAssetRef) &&
-      !(/slide|outline|ppt|deck|card/.test(segSceneType) || Boolean(segVisual.markdown));
+      !(
+        /slide|outline|ppt|deck|card/.test(segSceneType) ||
+        Boolean(segVisual.markdown)
+      );
     const segShouldRenderSlide =
       !segShouldRenderComponent &&
       !segShouldRenderChart &&
@@ -623,7 +691,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         metaFile,
       };
 
-      const schema = segComponentName ? componentSchemas?.[segComponentName] : null;
+      const schema = segComponentName
+        ? componentSchemas?.[segComponentName]
+        : null;
       if (schema) {
         try {
           const parsed = schema.parse(segComponentProps);
@@ -637,7 +707,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         }
       }
 
-      return <Component {...segComponentProps} context={segContext} hq={injected} />;
+      return (
+        <Component {...segComponentProps} context={segContext} hq={injected} />
+      );
     }
 
     if (segShouldRenderChart && segChartConfig) {
@@ -646,7 +718,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
           title={segChartConfig.title}
           series={segChartConfig.series}
           maxValue={segChartConfig.maxValue}
-          accentColor={segChartConfig.accentColor ?? context.accentColor ?? colors.accent}
+          accentColor={
+            segChartConfig.accentColor ?? context.accentColor ?? colors.accent
+          }
           position={segChartConfig.position}
           size={segChartConfig.size}
         />
@@ -658,8 +732,11 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         ? segResolvedAssetRef
         : staticFile(segResolvedAssetRef);
       return (
-        <AbsoluteFill style={{backgroundColor: colors.background}}>
-          <Video src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+        <AbsoluteFill style={{ backgroundColor: colors.background }}>
+          <Video
+            src={src}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
         </AbsoluteFill>
       );
     }
@@ -669,8 +746,12 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         ? segResolvedAssetRef
         : staticFile(segResolvedAssetRef);
       return (
-        <AbsoluteFill style={{backgroundColor: colors.background}}>
-          <img alt="" src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+        <AbsoluteFill style={{ backgroundColor: colors.background }}>
+          <img
+            alt=""
+            src={src}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
         </AbsoluteFill>
       );
     }
@@ -678,9 +759,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     if (segShouldRenderSlide) {
       const slideImageSrc =
         segResolvedAssetRef && isImageRef(segResolvedAssetRef)
-          ? (/^https?:\/\//i.test(segResolvedAssetRef)
-              ? segResolvedAssetRef
-              : staticFile(segResolvedAssetRef))
+          ? /^https?:\/\//i.test(segResolvedAssetRef)
+            ? segResolvedAssetRef
+            : staticFile(segResolvedAssetRef)
           : null;
 
       return (
@@ -693,12 +774,47 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     }
 
     return (
-      <AbsoluteFill style={{backgroundColor: colors.background, padding: tokens.storyboard.canvasPadding, justifyContent: 'center', alignItems: 'center', fontFamily: fonts.body, color: colors.text}}>
-        <div style={{maxWidth: 1200, padding: '32px 40px', borderRadius: 20, backgroundColor: colors.panelSoft, border: `1px solid ${colors.borderSoft}`, boxShadow: 'none', textAlign: 'center'}}>
-          <div style={{fontSize: tokens.storyboard.slide.fallbackKickerSize, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: colors.muted, marginBottom: 14}}>
+      <AbsoluteFill
+        style={{
+          backgroundColor: colors.background,
+          padding: tokens.storyboard.canvasPadding,
+          justifyContent: "center",
+          alignItems: "center",
+          fontFamily: fonts.body,
+          color: colors.text,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1200,
+            padding: "32px 40px",
+            borderRadius: 20,
+            backgroundColor: colors.panelSoft,
+            border: `1px solid ${colors.borderSoft}`,
+            boxShadow: "none",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              fontSize: tokens.storyboard.slide.fallbackKickerSize,
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.12em",
+              color: colors.muted,
+              marginBottom: 14,
+            }}
+          >
             Missing Visual
           </div>
-          <div style={{fontSize: tokens.storyboard.slide.fallbackBodySize, fontWeight: 600}}>{segVisual.sceneContent ?? segAssetRef ?? 'Scene not configured.'}</div>
+          <div
+            style={{
+              fontSize: tokens.storyboard.slide.fallbackBodySize,
+              fontWeight: 600,
+            }}
+          >
+            {segVisual.sceneContent ?? segAssetRef ?? "Scene not configured."}
+          </div>
         </div>
       </AbsoluteFill>
     );
@@ -711,29 +827,39 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     return renderSegment(active);
   }
 
-  const firstStartFrames = Math.max(0, Math.round((resolved[0].startMs / 1000) * fps));
-  const baseDurations = resolved.map((seg) => baseDurationFramesById.get(seg.id) ?? 1);
+  const firstStartFrames = Math.max(
+    0,
+    Math.round((resolved[0].startMs / 1000) * fps),
+  );
+  const baseDurations = resolved.map(
+    (seg) => baseDurationFramesById.get(seg.id) ?? 1,
+  );
 
   // Preserve the original total length: TransitionSeries overlaps by transitionDurationInFrames.
   // Add the overlap back to each sequence (except the last one) so next sequences start at the
   // same frame as before (based on the segment startMs timings).
   const sequenceDurations = baseDurations.map((d, i) => {
     const safe = Math.max(d, transitionDurationInFrames);
-    return i < baseDurations.length - 1 ? safe + transitionDurationInFrames : safe;
+    return i < baseDurations.length - 1
+      ? safe + transitionDurationInFrames
+      : safe;
   });
 
   const children: JSX.Element[] = [];
   if (firstStartFrames > 0) {
     children.push(
-      <TransitionSeries.Sequence key="lead-in" durationInFrames={firstStartFrames}>
-        <AbsoluteFill style={{backgroundColor: colors.background}} />
+      <TransitionSeries.Sequence
+        key="lead-in"
+        durationInFrames={firstStartFrames}
+      >
+        <AbsoluteFill style={{ backgroundColor: colors.background }} />
       </TransitionSeries.Sequence>,
     );
     children.push(
       <TransitionSeries.Transition
         key="lead-in-tr"
         presentation={fade()}
-        timing={linearTiming({durationInFrames: transitionDurationInFrames})}
+        timing={linearTiming({ durationInFrames: transitionDurationInFrames })}
       />,
     );
   }
@@ -755,7 +881,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         <TransitionSeries.Transition
           key={`tr-${seg.id}`}
           presentation={fade()}
-          timing={linearTiming({durationInFrames: transitionDurationInFrames})}
+          timing={linearTiming({
+            durationInFrames: transitionDurationInFrames,
+          })}
         />,
       );
     }

@@ -17,7 +17,15 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 13244
+    "durationInFrames": 181
+  },
+  {
+    "id": "prediction-market-curriculum-overview",
+    "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/curriculum-overview/source/lesson.meta.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 5634
   },
   {
     "id": "demo-lesson-all-formats",
@@ -25,7 +33,7 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 4096
+    "durationInFrames": 181
   },
   {
     "id": "demo-lesson-all-formats-zh",
@@ -33,6 +41,6 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 3876
+    "durationInFrames": 181
   }
 ];
