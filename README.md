@@ -86,8 +86,9 @@ bun run lesson:build -- --lesson-root ../courses/<course>/<unit>/<lesson> --skip
 
 如果用了 `Component:`，必须紧跟一个 fenced `json` block，且必须是**信封格式**：
 
-```md
+````md
 ## Segment 01
+
 Voiceover:
 One segment, one idea.
 
@@ -102,7 +103,9 @@ Component: DemoOverlay
   }
 }
 ```
-```
+````
+
+````
 
 组件会用 Zod 校验 props；写错会在校验阶段直接报错，避免渲染时静默黑屏。
 
@@ -115,7 +118,7 @@ Component: DemoOverlay
 ```bash
 cd remotion
 bun run lesson:components
-```
+````
 
 也可以用 JSON 方便贴到文档里：
 
@@ -156,115 +159,128 @@ bun scripts/list-storyboard-components.mjs --format=md
 
 ### Index
 
-| Component | Asset Kind |
-|---|---|
-| [`BulletCard`](#bulletcard) |  |
-| [`StepsCard`](#stepscard) |  |
-| [`DefinitionCard`](#definitioncard) |  |
-| [`WarningCard`](#warningcard) |  |
-| [`CompareCard`](#comparecard) |  |
-| [`GlossaryCard`](#glossarycard) |  |
-| [`TableCard`](#tablecard) |  |
-| [`SplitImageCard`](#splitimagecard) | `image` |
-| [`CodeExplainCard`](#codeexplaincard) |  |
-| [`CalloutVideoFrame`](#calloutvideoframe) | `video` |
-| [`DemoOverlay`](#demooverlay) | `video` |
-| [`CalloutScene`](#calloutscene) |  |
+| Component                                 | Asset Kind |
+| ----------------------------------------- | ---------- |
+| [`BulletCard`](#bulletcard)               |            |
+| [`StepsCard`](#stepscard)                 |            |
+| [`DefinitionCard`](#definitioncard)       |            |
+| [`WarningCard`](#warningcard)             |            |
+| [`CompareCard`](#comparecard)             |            |
+| [`GlossaryCard`](#glossarycard)           |            |
+| [`TableCard`](#tablecard)                 |            |
+| [`SplitImageCard`](#splitimagecard)       | `image`    |
+| [`CodeExplainCard`](#codeexplaincard)     |            |
+| [`CalloutVideoFrame`](#calloutvideoframe) | `video`    |
+| [`DemoOverlay`](#demooverlay)             | `video`    |
+| [`CalloutScene`](#calloutscene)           |            |
 
 ### BulletCard
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | no |
-| `subtitle` | `string` | yes |
-| `bullets` | `object[]` | yes |
-| `note` | `string` | yes |
+
+| Prop       | Type       | Optional |
+| ---------- | ---------- | -------- |
+| `title`    | `string`   | no       |
+| `subtitle` | `string`   | yes      |
+| `bullets`  | `object[]` | yes      |
+| `note`     | `string`   | yes      |
 
 ### StepsCard
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | no |
-| `subtitle` | `string` | yes |
-| `steps` | `object[]` | no |
-| `activeStep` | `number` | yes |
+
+| Prop         | Type       | Optional |
+| ------------ | ---------- | -------- |
+| `title`      | `string`   | no       |
+| `subtitle`   | `string`   | yes      |
+| `steps`      | `object[]` | no       |
+| `activeStep` | `number`   | yes      |
 
 ### DefinitionCard
-| Prop | Type | Optional |
-|---|---|---|
-| `term` | `string` | no |
-| `definition` | `string` | no |
-| `notes` | `string[]` | yes |
+
+| Prop         | Type       | Optional |
+| ------------ | ---------- | -------- |
+| `term`       | `string`   | no       |
+| `definition` | `string`   | no       |
+| `notes`      | `string[]` | yes      |
 
 ### WarningCard
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | no |
-| `message` | `string` | no |
-| `bullets` | `string[]` | yes |
+
+| Prop      | Type       | Optional |
+| --------- | ---------- | -------- |
+| `title`   | `string`   | no       |
+| `message` | `string`   | no       |
+| `bullets` | `string[]` | yes      |
 
 ### CompareCard
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | no |
-| `left` | `object` | no |
-| `right` | `object` | no |
-| `verdict` | `string` | yes |
+
+| Prop      | Type     | Optional |
+| --------- | -------- | -------- |
+| `title`   | `string` | no       |
+| `left`    | `object` | no       |
+| `right`   | `object` | no       |
+| `verdict` | `string` | yes      |
 
 ### GlossaryCard
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | no |
-| `items` | `object[]` | no |
+
+| Prop    | Type       | Optional |
+| ------- | ---------- | -------- |
+| `title` | `string`   | no       |
+| `items` | `object[]` | no       |
 
 ### TableCard
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | no |
-| `columns` | `string[]` | no |
-| `rows` | `string[][]` | no |
+
+| Prop      | Type         | Optional |
+| --------- | ------------ | -------- |
+| `title`   | `string`     | no       |
+| `columns` | `string[]`   | no       |
+| `rows`    | `string[][]` | no       |
 
 ### SplitImageCard
+
 Asset Kind: `image`
 
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | no |
-| `subtitle` | `string` | yes |
-| `bullets` | `object[]` | yes |
-| `note` | `string` | yes |
+| Prop       | Type       | Optional |
+| ---------- | ---------- | -------- |
+| `title`    | `string`   | no       |
+| `subtitle` | `string`   | yes      |
+| `bullets`  | `object[]` | yes      |
+| `note`     | `string`   | yes      |
 
 ### CodeExplainCard
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | no |
-| `language` | `string` | yes |
-| `code` | `string` | no |
-| `highlights` | `object[]` | yes |
-| `explain` | `string[]` | yes |
+
+| Prop         | Type       | Optional |
+| ------------ | ---------- | -------- |
+| `title`      | `string`   | no       |
+| `language`   | `string`   | yes      |
+| `code`       | `string`   | no       |
+| `highlights` | `object[]` | yes      |
+| `explain`    | `string[]` | yes      |
 
 ### CalloutVideoFrame
+
 Asset Kind: `video`
 
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | yes |
-| `subtitle` | `string` | yes |
+| Prop       | Type     | Optional |
+| ---------- | -------- | -------- |
+| `title`    | `string` | yes      |
+| `subtitle` | `string` | yes      |
 
 ### DemoOverlay
+
 Asset Kind: `video`
 
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | yes |
+| Prop    | Type     | Optional |
+| ------- | -------- | -------- |
+| `title` | `string` | yes      |
 
 ### CalloutScene
-| Prop | Type | Optional |
-|---|---|---|
-| `title` | `string` | no |
-| `body` | `string` | no |
+
+| Prop    | Type     | Optional |
+| ------- | -------- | -------- |
+| `title` | `string` | no       |
+| `body`  | `string` | no       |
 
 ## 8) 讲师速查：组件参数模板（可直接复制）
 
 说明：
+
 - 在 `source/script.md` 里，`Component: Xxx` 后必须紧跟 `json` block，且使用 `{"props": {...}}` 信封格式。
 - `eyebrow` 在多数卡片组件里可选；不需要时可以省略。
 - `Asset Ref` 与组件分工：带 `assetKind: video/image` 的组件通常要配 `Asset Ref`。
@@ -279,9 +295,9 @@ Asset Kind: `video`
     "subtitle": "Optional subtitle",
     "badge": "Optional badge",
     "bullets": [
-      {"text": "Point A", "tone": "accent", "icon": "A"},
-      {"text": "Point B"},
-      {"text": "Point C", "tone": "muted"}
+      { "text": "Point A", "tone": "accent", "icon": "A" },
+      { "text": "Point B" },
+      { "text": "Point C", "tone": "muted" }
     ],
     "note": "Optional bottom note"
   }
@@ -315,9 +331,9 @@ Asset Kind: `video`
     "title": "Process Title",
     "subtitle": "Optional subtitle",
     "steps": [
-      {"title": "Step 1", "detail": "Optional detail"},
-      {"title": "Step 2", "detail": "Optional detail"},
-      {"title": "Step 3"}
+      { "title": "Step 1", "detail": "Optional detail" },
+      { "title": "Step 2", "detail": "Optional detail" },
+      { "title": "Step 3" }
     ],
     "activeStep": 2
   }
@@ -377,8 +393,15 @@ Asset Kind: `video`
     "title": "Optional frame title",
     "badge": "Optional badge",
     "callouts": [
-      {"type": "rect", "x": 120, "y": 80, "w": 260, "h": 120, "label": "Optional"},
-      {"type": "blur", "x": 480, "y": 220, "w": 180, "h": 90}
+      {
+        "type": "rect",
+        "x": 120,
+        "y": 80,
+        "w": 260,
+        "h": 120,
+        "label": "Optional"
+      },
+      { "type": "blur", "x": 480, "y": 220, "w": 180, "h": 90 }
     ]
   }
 }
@@ -392,10 +415,7 @@ Asset Kind: `video`
     "eyebrow": "Optional",
     "title": "Title",
     "subtitle": "Optional subtitle",
-    "bullets": [
-      {"text": "Point A", "tone": "accent"},
-      {"text": "Point B"}
-    ],
+    "bullets": [{ "text": "Point A", "tone": "accent" }, { "text": "Point B" }],
     "note": "Optional note"
   }
 }

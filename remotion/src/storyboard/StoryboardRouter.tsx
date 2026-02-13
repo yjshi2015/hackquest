@@ -1,6 +1,6 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import type {ComponentType} from 'react';
-import type {ZodTypeAny} from 'zod';
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { ComponentType } from "react";
+import type { ZodTypeAny } from "zod";
 import {
   AbsoluteFill,
   Sequence,
@@ -9,17 +9,17 @@ import {
   useRemotionEnvironment,
   useVideoConfig,
   Video,
-} from 'remotion';
-import {linearTiming, TransitionSeries} from '@remotion/transitions';
-import {fade} from '@remotion/transitions/fade';
-import {colors, fonts, tokens} from '../theme';
-import type {LessonBlockContext} from '../lesson-config';
-import {ChartCard} from '../templates/ChartCard';
-import {resolveLessonPublicPath} from '../lib/lesson-paths';
-import type {StoryboardInjected} from './types';
-import {legacyCardNameMap} from './legacy-names';
-import {parseScriptMd as parseScriptMdShared} from './parse-script-md';
-import type {LessonScriptSegment} from './parse-script-md';
+} from "remotion";
+import { linearTiming, TransitionSeries } from "@remotion/transitions";
+import { fade } from "@remotion/transitions/fade";
+import { colors, fonts, tokens } from "../theme";
+import type { LessonBlockContext } from "../lesson-config";
+import { ChartCard } from "../templates/ChartCard";
+import { resolveLessonPublicPath } from "../lib/lesson-paths";
+import type { StoryboardInjected } from "./types";
+import { legacyCardNameMap } from "./legacy-names";
+import { parseScriptMd as parseScriptMdShared } from "./parse-script-md";
+import type { LessonScriptSegment } from "./parse-script-md";
 
 type SegmentTiming = {
   id: number;
@@ -29,10 +29,10 @@ type SegmentTiming = {
 
 type ChartConfig = {
   title: string;
-  series: {label: string; value: number}[];
+  series: { label: string; value: number }[];
   maxValue?: number;
-  position?: {left: number; top: number};
-  size?: {width: number; height: number};
+  position?: { left: number; top: number };
+  size?: { width: number; height: number };
   accentColor?: string;
 };
 
@@ -46,29 +46,34 @@ type StoryboardRouterProps = {
   startAtFrame?: number;
   useTransitions?: boolean;
   transitionDurationInFrames?: number;
-  transitionStyle?: 'cut' | 'snap' | 'fade';
+  transitionStyle?: "cut" | "snap" | "fade";
 };
 
-const resolveChartConfig = (json?: Record<string, unknown>): ChartConfig | null => {
+const resolveChartConfig = (
+  json?: Record<string, unknown>,
+): ChartConfig | null => {
   if (!json) return null;
   const candidate = json as Partial<ChartConfig>;
-  if (!candidate || typeof candidate !== 'object') return null;
+  if (!candidate || typeof candidate !== "object") return null;
   if (!candidate.title || !candidate.series) return null;
   return candidate as ChartConfig;
 };
 
 const resolveComponentProps = (
   json: Record<string, unknown> | undefined,
-  opts: {segmentId: number; componentName: string},
+  opts: { segmentId: number; componentName: string },
 ) => {
-  if (!json || typeof json !== 'object') {
+  if (!json || typeof json !== "object") {
     throw new Error(
       `Segment ${opts.segmentId}: Component ${opts.componentName} requires a JSON block with {"props": {...}}`,
     );
   }
 
-  if ('props' in json && typeof (json as {props?: unknown}).props === 'object') {
-    return (json as {props: Record<string, unknown>}).props ?? {};
+  if (
+    "props" in json &&
+    typeof (json as { props?: unknown }).props === "object"
+  ) {
+    return (json as { props: Record<string, unknown> }).props ?? {};
   }
 
   throw new Error(
@@ -94,43 +99,74 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   transitionDurationInFrames: transitionDurationOverride,
   transitionStyle = 'snap',
 }) => {
-  const [scriptSegments, setScriptSegments] = useState<LessonScriptSegment[] | null>(null);
+  const [scriptSegments, setScriptSegments] = useState<
+    LessonScriptSegment[] | null
+  >(null);
   const [timings, setTimings] = useState<SegmentTiming[] | null>(null);
-  const lastPayloadRef = useRef<{scriptText: string; timingsText: string} | null>(null);
-  const {delayRender, continueRender, cancelRender} = useDelayRender();
-  const {isStudio} = useRemotionEnvironment();
+  const lastPayloadRef = useRef<{
+    scriptText: string;
+    timingsText: string;
+  } | null>(null);
+  const { delayRender, continueRender, cancelRender } = useDelayRender();
+  const { isStudio } = useRemotionEnvironment();
   const [handle] = useState(() => delayRender());
 
+  const PLACEHOLDER_SEGMENT_MS = 6000;
+
   const fetchAll = useCallback(
-    async (opts?: {cacheBust?: boolean}) => {
+    async (opts?: { cacheBust?: boolean }) => {
       const cacheBust = opts?.cacheBust ?? false;
       const scriptSrc = staticFile(scriptFile);
       const timingsSrc = staticFile(timingsFile);
       const scriptUrl = cacheBust
-        ? `${scriptSrc}${scriptSrc.includes('?') ? '&' : '?'}_ts=${Date.now()}`
+        ? `${scriptSrc}${scriptSrc.includes("?") ? "&" : "?"}_ts=${Date.now()}`
         : scriptSrc;
       const timingsUrl = cacheBust
-        ? `${timingsSrc}${timingsSrc.includes('?') ? '&' : '?'}_ts=${Date.now()}`
+        ? `${timingsSrc}${timingsSrc.includes("?") ? "&" : "?"}_ts=${Date.now()}`
         : timingsSrc;
-      const [scriptRes, timingsRes] = await Promise.all([
-        fetch(scriptUrl),
-        fetch(timingsUrl),
-      ]);
-      if (!scriptFile.toLowerCase().endsWith('.md')) {
+      if (!scriptFile.toLowerCase().endsWith(".md")) {
         throw new Error(
           `StoryboardRouter only supports markdown script files. Got: ${scriptFile}`,
         );
       }
+      const [scriptRes, timingsRes] = await Promise.all([
+        fetch(scriptUrl),
+        fetch(timingsUrl),
+      ]);
       const scriptText = await scriptRes.text();
       const timingsText = await timingsRes.text();
       const prev = lastPayloadRef.current;
-      if (prev && prev.scriptText === scriptText && prev.timingsText === timingsText) {
+      if (
+        prev &&
+        prev.scriptText === scriptText &&
+        prev.timingsText === timingsText
+      ) {
         return;
       }
       const parsedSegments = parseScriptMdShared(scriptText);
-      const timingsJson = JSON.parse(timingsText) as SegmentTiming[];
-      lastPayloadRef.current = {scriptText, timingsText};
       setScriptSegments(parsedSegments);
+
+      let timingsJson: SegmentTiming[] | null = null;
+      try {
+        const parsed = JSON.parse(timingsText) as SegmentTiming[];
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          timingsJson = parsed;
+        }
+      } catch {
+        // invalid or missing JSON
+      }
+      if (
+        !timingsJson ||
+        !Array.isArray(timingsJson) ||
+        timingsJson.length === 0
+      ) {
+        timingsJson = parsedSegments.map((seg, i) => ({
+          id: seg.id,
+          startMs: i * PLACEHOLDER_SEGMENT_MS,
+          durationMs: PLACEHOLDER_SEGMENT_MS,
+        }));
+      }
+      lastPayloadRef.current = { scriptText, timingsText };
       setTimings(timingsJson);
     },
     [scriptFile, timingsFile],
@@ -153,8 +189,11 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   useEffect(() => {
     if (!isStudio) return;
     const timer = window.setInterval(() => {
-      void fetchAll({cacheBust: true}).catch((err) => {
-        console.warn('[StoryboardRouter] Failed to refresh script/timings', err);
+      void fetchAll({ cacheBust: true }).catch((err) => {
+        console.warn(
+          "[StoryboardRouter] Failed to refresh script/timings",
+          err,
+        );
       });
     }, 1000);
     return () => window.clearInterval(timer);
@@ -163,7 +202,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   const resolved = useMemo(() => {
     if (!scriptSegments || !timings) return [];
     const timingsById = new Map(timings.map((t) => [Number(t.id), t]));
-    const matched: Array<LessonScriptSegment & {startMs: number; durationMs: number}> = [];
+    const matched: Array<
+      LessonScriptSegment & { startMs: number; durationMs: number }
+    > = [];
     const dropped: number[] = [];
     for (const seg of scriptSegments) {
       const timing = timingsById.get(Number(seg.id));
@@ -179,14 +220,14 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     }
     if (dropped.length > 0) {
       console.warn(
-        `[StoryboardRouter] ${dropped.length} segment(s) dropped — no matching timing entry: ${dropped.join(', ')}. ` +
-          'Did you forget to regenerate segment timings after adding new segments?',
+        `[StoryboardRouter] ${dropped.length} segment(s) dropped — no matching timing entry: ${dropped.join(", ")}. ` +
+          "Did you forget to regenerate segment timings after adding new segments?",
       );
     }
     return matched;
   }, [scriptSegments, timings]);
 
-  const {fps} = useVideoConfig();
+  const { fps } = useVideoConfig();
   // Align with the Remotion docs TransitionSeries model:
   // Sequence durations are extended by transition length to preserve overall timeline length.
   const rawTransitionDurationInFrames =
@@ -211,20 +252,26 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     return map;
   }, [fps, resolved]);
 
-  const renderSegment = (seg: LessonScriptSegment & {startMs: number; durationMs: number}) => {
+  const renderSegment = (
+    seg: LessonScriptSegment & { startMs: number; durationMs: number },
+  ) => {
     const segVisual = seg.visual ?? {};
-    const segSceneType = segVisual.sceneType?.toLowerCase() ?? '';
+    const segSceneType = segVisual.sceneType?.toLowerCase() ?? "";
     const segAssetRef = segVisual.assetRef ?? null;
     const segResolvedAssetRef = segAssetRef
-      ? resolveLessonPublicPath(metaFile, segAssetRef) ?? segAssetRef
+      ? (resolveLessonPublicPath(metaFile, segAssetRef) ?? segAssetRef)
       : null;
     const segAssetRef2 = segVisual.assetRef2 ?? null;
     const segResolvedAssetRef2 = segAssetRef2
       ? resolveLessonPublicPath(metaFile, segAssetRef2) ?? segAssetRef2
       : null;
     const segComponentName = segVisual.component;
-    const segCustomComponent = segComponentName ? components?.[segComponentName] : null;
-    const segMigratedName = segComponentName ? legacyCardNameMap[segComponentName] : null;
+    const segCustomComponent = segComponentName
+      ? components?.[segComponentName]
+      : null;
+    const segMigratedName = segComponentName
+      ? legacyCardNameMap[segComponentName]
+      : null;
     if (segMigratedName) {
       throw new Error(
         `Segment ${seg.id}: Component "${segComponentName}" is deprecated. Use "${segMigratedName}" instead.`,
@@ -253,14 +300,20 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       !segShouldRenderChart &&
       Boolean(segResolvedAssetRef) &&
       (isVideoRef(segResolvedAssetRef) || /video/.test(segSceneType)) &&
-      !(/slide|outline|ppt|deck|card/.test(segSceneType) || Boolean(segVisual.markdown));
+      !(
+        /slide|outline|ppt|deck|card/.test(segSceneType) ||
+        Boolean(segVisual.markdown)
+      );
     const segShouldRenderImage =
       !segShouldRenderComponent &&
       !segShouldRenderChart &&
       !segShouldRenderVideo &&
       Boolean(segResolvedAssetRef) &&
       isImageRef(segResolvedAssetRef) &&
-      !(/slide|outline|ppt|deck|card/.test(segSceneType) || Boolean(segVisual.markdown));
+      !(
+        /slide|outline|ppt|deck|card/.test(segSceneType) ||
+        Boolean(segVisual.markdown)
+      );
     const segShouldRenderSlide =
       !segShouldRenderComponent &&
       !segShouldRenderChart &&
@@ -295,7 +348,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         metaFile,
       };
 
-      const schema = segComponentName ? componentSchemas?.[segComponentName] : null;
+      const schema = segComponentName
+        ? componentSchemas?.[segComponentName]
+        : null;
       if (schema) {
         try {
           const parsed = schema.parse(segComponentProps);
@@ -309,7 +364,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         }
       }
 
-      return <Component {...segComponentProps} context={segContext} hq={injected} />;
+      return (
+        <Component {...segComponentProps} context={segContext} hq={injected} />
+      );
     }
 
     if (segShouldRenderChart && segChartConfig) {
@@ -318,7 +375,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
           title={segChartConfig.title}
           series={segChartConfig.series}
           maxValue={segChartConfig.maxValue}
-          accentColor={segChartConfig.accentColor ?? context.accentColor ?? colors.accent}
+          accentColor={
+            segChartConfig.accentColor ?? context.accentColor ?? colors.accent
+          }
           position={segChartConfig.position}
           size={segChartConfig.size}
         />
@@ -331,8 +390,12 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         : staticFile(segResolvedAssetRef);
       const rate = segVisual.playbackRate ?? 1;
       return (
-        <AbsoluteFill style={{backgroundColor: colors.background}}>
-          <Video src={src} playbackRate={rate} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+        <AbsoluteFill style={{ backgroundColor: colors.background }}>
+          <Video
+            src={src}
+            playbackRate={rate}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
         </AbsoluteFill>
       );
     }
@@ -342,19 +405,58 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         ? segResolvedAssetRef
         : staticFile(segResolvedAssetRef);
       return (
-        <AbsoluteFill style={{backgroundColor: colors.background}}>
-          <img alt="" src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+        <AbsoluteFill style={{ backgroundColor: colors.background }}>
+          <img
+            alt=""
+            src={src}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
         </AbsoluteFill>
       );
     }
 
     return (
-      <AbsoluteFill style={{backgroundColor: colors.background, padding: tokens.storyboard.canvasPadding, justifyContent: 'center', alignItems: 'center', fontFamily: fonts.body, color: colors.text}}>
-        <div style={{maxWidth: 1200, padding: '32px 40px', borderRadius: 20, backgroundColor: colors.panelSoft, border: `1px solid ${colors.borderSoft}`, boxShadow: 'none', textAlign: 'center'}}>
-          <div style={{fontSize: tokens.storyboard.slide.fallbackKickerSize, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: colors.muted, marginBottom: 14}}>
+      <AbsoluteFill
+        style={{
+          backgroundColor: colors.background,
+          padding: tokens.storyboard.canvasPadding,
+          justifyContent: "center",
+          alignItems: "center",
+          fontFamily: fonts.body,
+          color: colors.text,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1200,
+            padding: "32px 40px",
+            borderRadius: 20,
+            backgroundColor: colors.panelSoft,
+            border: `1px solid ${colors.borderSoft}`,
+            boxShadow: "none",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              fontSize: tokens.storyboard.slide.fallbackKickerSize,
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.12em",
+              color: colors.muted,
+              marginBottom: 14,
+            }}
+          >
             Missing Visual
           </div>
-          <div style={{fontSize: tokens.storyboard.slide.fallbackBodySize, fontWeight: 600}}>{segVisual.sceneContent ?? segAssetRef ?? 'Scene not configured.'}</div>
+          <div
+            style={{
+              fontSize: tokens.storyboard.slide.fallbackBodySize,
+              fontWeight: 600,
+            }}
+          >
+            {segVisual.sceneContent ?? segAssetRef ?? "Scene not configured."}
+          </div>
         </div>
       </AbsoluteFill>
     );
@@ -387,29 +489,39 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     return <>{segmentSequences}</>;
   }
 
-  const firstStartFrames = Math.max(0, Math.round((resolved[0].startMs / 1000) * fps));
-  const baseDurations = resolved.map((seg) => baseDurationFramesById.get(seg.id) ?? 1);
+  const firstStartFrames = Math.max(
+    0,
+    Math.round((resolved[0].startMs / 1000) * fps),
+  );
+  const baseDurations = resolved.map(
+    (seg) => baseDurationFramesById.get(seg.id) ?? 1,
+  );
 
   // Preserve the original total length: TransitionSeries overlaps by transitionDurationInFrames.
   // Add the overlap back to each sequence (except the last one) so next sequences start at the
   // same frame as before (based on the segment startMs timings).
   const sequenceDurations = baseDurations.map((d, i) => {
     const safe = Math.max(d, transitionDurationInFrames);
-    return i < baseDurations.length - 1 ? safe + transitionDurationInFrames : safe;
+    return i < baseDurations.length - 1
+      ? safe + transitionDurationInFrames
+      : safe;
   });
 
   const children: JSX.Element[] = [];
   if (firstStartFrames > 0) {
     children.push(
-      <TransitionSeries.Sequence key="lead-in" durationInFrames={firstStartFrames}>
-        <AbsoluteFill style={{backgroundColor: colors.background}} />
+      <TransitionSeries.Sequence
+        key="lead-in"
+        durationInFrames={firstStartFrames}
+      >
+        <AbsoluteFill style={{ backgroundColor: colors.background }} />
       </TransitionSeries.Sequence>,
     );
     children.push(
       <TransitionSeries.Transition
         key="lead-in-tr"
         presentation={fade()}
-        timing={linearTiming({durationInFrames: transitionDurationInFrames})}
+        timing={linearTiming({ durationInFrames: transitionDurationInFrames })}
       />,
     );
   }
@@ -431,7 +543,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         <TransitionSeries.Transition
           key={`tr-${seg.id}`}
           presentation={fade()}
-          timing={linearTiming({durationInFrames: transitionDurationInFrames})}
+          timing={linearTiming({
+            durationInFrames: transitionDurationInFrames,
+          })}
         />,
       );
     }
