@@ -33,7 +33,7 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 5634
+    "durationInFrames": 6613
   },
   {
     "id": "demo-lesson-all-formats",

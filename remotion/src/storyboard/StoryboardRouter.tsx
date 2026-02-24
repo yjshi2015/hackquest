@@ -348,25 +348,47 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         metaFile,
       };
 
-      const schema = segComponentName
-        ? componentSchemas?.[segComponentName]
-        : null;
-      if (schema) {
-        try {
-          const parsed = schema.parse(segComponentProps);
-          return <Component {...parsed} context={segContext} hq={injected} />;
-        } catch (err) {
-          throw new Error(
-            `Invalid props for component "${segComponentName}" (segment ${seg.id}). ${String(
-              (err as Error)?.message ?? err,
-            )}`,
-          );
-        }
-      }
+      const isVideoSegment =
+        Boolean(segResolvedAssetRef && isVideoRef(segResolvedAssetRef)) &&
+        (segComponentName === "DemoOverlay" ||
+          segComponentName === "CalloutVideoFrame");
+      const segmentStartFrame =
+        startAtFrame + Math.round((seg.startMs / 1000) * fps);
 
-      return (
-        <Component {...segComponentProps} context={segContext} hq={injected} />
-      );
+      const rendered =
+        (() => {
+          const schema = segComponentName
+            ? componentSchemas?.[segComponentName]
+            : null;
+          if (schema) {
+            try {
+              const parsed = schema.parse(segComponentProps);
+              return <Component {...parsed} context={segContext} hq={injected} />;
+            } catch (err) {
+              throw new Error(
+                `Invalid props for component "${segComponentName}" (segment ${seg.id}). ${String(
+                  (err as Error)?.message ?? err,
+                )}`,
+              );
+            }
+          }
+          return (
+            <Component {...segComponentProps} context={segContext} hq={injected} />
+          );
+        })();
+
+      if (isVideoSegment) {
+        return (
+          <Sequence
+            from={segmentStartFrame}
+            durationInFrames={segFrames}
+            name={`Video seg ${seg.id}`}
+          >
+            {rendered}
+          </Sequence>
+        );
+      }
+      return rendered;
     }
 
     if (segShouldRenderChart && segChartConfig) {
