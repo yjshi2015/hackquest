@@ -6,8 +6,12 @@ export const CardShell: React.FC<{
   subtitle?: string;
   rightSlot?: React.ReactNode;
   children?: React.ReactNode;
-}> = ({eyebrow, title, subtitle, rightSlot, children}) => {
+  leftFraction?: number;
+  rightFraction?: number;
+}> = ({eyebrow, title, subtitle, rightSlot, children, leftFraction, rightFraction}) => {
   const shell = tokens.storyboard.cardShell;
+  const leftFr = leftFraction ?? shell.leftFraction;
+  const rightFr = rightFraction ?? shell.rightFraction;
 
   return (
     <div
@@ -21,7 +25,7 @@ export const CardShell: React.FC<{
         boxShadow: tokens.shadow.card,
         display: rightSlot ? 'grid' : 'block',
         gridTemplateColumns: rightSlot
-          ? `minmax(0, ${shell.leftFraction}fr) minmax(${shell.rightMinWidth}px, ${shell.rightFraction}fr)`
+          ? `minmax(0, ${leftFr}fr) minmax(${shell.rightMinWidth}px, ${rightFr}fr)`
           : undefined,
         gap: rightSlot ? shell.gridGap : undefined,
         alignItems: 'start',

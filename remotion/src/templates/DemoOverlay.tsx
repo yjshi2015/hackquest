@@ -39,7 +39,7 @@ export type DemoOverlayProps = z.infer<typeof DemoOverlayPropsSchema>;
 
 export const DemoOverlay: React.FC<
   DemoOverlayProps & {context: LessonBlockContext; hq?: StoryboardInjected}
-> = ({title, badge, callouts, hq}) => {
+> = ({title, badge, callouts, context, hq}) => {
   const assetRef = hq?.assetRef ?? null;
   const src =
     assetRef && /^https?:\/\//i.test(assetRef)

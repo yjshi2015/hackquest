@@ -42,6 +42,14 @@ export const SplitImageCard: React.FC<
   const y = interpolate(reveal, [0, 1], [18, 0]);
   const opacity = interpolate(reveal, [0, 1], [0, 1]);
 
+  const imageReveal = spring({
+    frame: frame - 8,
+    fps,
+    config: {damping: 24, stiffness: 180},
+  });
+  const imageOpacity = interpolate(imageReveal, [0, 1], [0, 1]);
+  const imageScale = interpolate(imageReveal, [0, 1], [0.92, 1]);
+
   const assetRef = hq?.assetRef ?? null;
   const imgSrc =
     assetRef && /^https?:\/\//i.test(assetRef) ? assetRef : assetRef ? staticFile(assetRef) : null;
@@ -59,6 +67,8 @@ export const SplitImageCard: React.FC<
           eyebrow={eyebrow}
           title={title}
           subtitle={subtitle}
+          leftFraction={0.72}
+          rightFraction={1.28}
           rightSlot={
             imgSrc ? (
               <div
@@ -66,11 +76,14 @@ export const SplitImageCard: React.FC<
                   borderRadius: 22,
                   overflow: 'hidden',
                   backgroundColor: colors.background,
+                  opacity: imageOpacity,
+                  transform: `scale(${imageScale})`,
+                  transformOrigin: 'center center',
                 }}
               >
                 <Img
                   src={imgSrc}
-                  style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                  style={{width: '100%', height: '100%', objectFit: 'contain', minHeight: 420}}
                 />
               </div>
             ) : null
