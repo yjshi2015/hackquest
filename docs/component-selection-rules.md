@@ -36,7 +36,10 @@
 7. 是"课程/项目路线图"，需要阶段进度感吗？
 - 是：`Roadmap`
 
-8. 是"提醒 / 过渡 /结论"吗？
+8. 是"需要动感出场的大文字（Fireship 风格的关键词冲击）"吗？
+- 是：`FireText`
+
+9. 是"提醒 / 过渡 /结论"吗？
 - 是：`CalloutScene`
 
 ## 场景到组件映射
@@ -52,6 +55,7 @@
 | 课程 overview "你将得到什么" | `HeroStatement` | `Bullet` / `CalloutScene` | 大承诺 + 交付物证据链，比纯列表更有冲击力。 |
 | 课程/项目路线图、阶段旅程 | `Roadmap` | `Table` / `Steps` | 带进度线的阶段卡，比纯表格有旅程感。 |
 | 系统架构、协议流程、模块关系图 | `ArchitectureDiagram` | `SplitImage` / 纯视频 | 声明式节点+连线，自带动画，无需外部图片/视频。 |
+| 关键词冲击、概念强调、Fireship 式动感文字 | `FireText` | `CalloutScene` / `HeroStatement` | 多种切入/切出动画 + 逐词高亮，比静态文字更有节奏感。 |
 | 实操界面讲解、网站演示 | `DemoOverlay` + `Scene Type: Video` | 纯文字卡片 | 以视频为主，卡片只作补充。 |
 
 ## `Steps` 使用红线

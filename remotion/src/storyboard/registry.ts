@@ -16,6 +16,7 @@ import {HeroStatementCard, HeroStatementCardPropsSchema} from './components/Hero
 import {RoadmapCard, RoadmapCardPropsSchema} from './components/RoadmapCard';
 import {ArchitectureDiagramCard, ArchitectureDiagramCardPropsSchema} from './components/ArchitectureDiagramCard';
 import {QuadrantMapCard, QuadrantMapCardPropsSchema} from './components/QuadrantMapCard';
+import {FireTextCard, FireTextCardPropsSchema} from './components/FireTextCard';
 import {DemoOverlay, DemoOverlayPropsSchema} from '../templates/DemoOverlay';
 
 export type StoryboardComponentDef = {
@@ -68,6 +69,10 @@ export const registry: Record<string, StoryboardComponentDef> = {
   QuadrantMap: {
     component: QuadrantMapCard,
     propsSchema: QuadrantMapCardPropsSchema,
+  },
+  FireText: {
+    component: FireTextCard,
+    propsSchema: FireTextCardPropsSchema,
   },
 };
 

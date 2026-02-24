@@ -74,6 +74,13 @@ export const tokens = {
       bodySize: 40,
       bodyLineHeight: 1.3,
     },
+    fireText: {
+      heroSize: 80,
+      titleSize: 56,
+      bodySize: 40,
+      lineGap: 24,
+      defaultWordInterval: 0.08,
+    },
     chart: {
       panelMaxWidth: 1440,
       panelPadY: 36,

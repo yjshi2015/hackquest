@@ -256,26 +256,257 @@ Asset Ref: assets/fake-explorer-callout.mp4
 
 ## Segment 13
 Voiceover:
-Recap. Choose component by narrative structure first, then tune visual style through props and tokens.
+Use HeroStatement when a big promise needs proof. The statement anchors, and deliverables build credibility.
+
+Component: HeroStatement
+```json
+{
+  "props": {
+    "statement": "Build a Production-Grade Stablecoin from Scratch",
+    "deliverables": [
+      {"text": "Solidity contracts with full test suite", "icon": "📦", "appearAt": 0.4},
+      {"text": "Liquidation engine with Chainlink oracles", "icon": "⚡", "appearAt": 1.0},
+      {"text": "Mainnet deployment runbook", "icon": "🚀", "appearAt": 1.6}
+    ],
+    "note": "Everything auditable, everything on-chain."
+  }
+}
+```
+
+## Segment 14
+Voiceover:
+Use Roadmap for phased journeys. Each phase card appears in order, and the active phase stands out visually.
+
+Component: Roadmap
+```json
+{
+  "props": {
+    "title": "Roadmap",
+    "subtitle": "Course learning path across six units.",
+    "phases": [
+      {"label": "Unit 1", "title": "Foundations", "detail": "DeFi landscape, stablecoin taxonomy", "appearAt": 0.2},
+      {"label": "Unit 2", "title": "Token Architecture", "detail": "ERC-20 design, collateral vault", "appearAt": 0.8},
+      {"label": "Unit 3", "title": "CDP Engine", "detail": "Mint, burn, health factor", "appearAt": 1.4},
+      {"label": "Unit 4", "title": "Liquidation", "detail": "Auction, incentives, MEV", "appearAt": 2.0}
+    ],
+    "activePhase": 2
+  }
+}
+```
+
+## Segment 15
+Voiceover:
+Use ArchitectureDiagram for system overviews. Nodes represent modules, edges show data flow — all declarative, no images needed.
+
+Component: ArchitectureDiagram
+```json
+{
+  "props": {
+    "title": "ArchitectureDiagram",
+    "subtitle": "Declarative nodes and edges with built-in animation.",
+    "nodes": [
+      {"id": "user", "label": "User", "x": 0, "y": 0, "tone": "default", "width": 160, "height": 56},
+      {"id": "vault", "label": "Vault", "x": 260, "y": 0, "tone": "accent", "width": 160, "height": 56, "accentAt": 0.6},
+      {"id": "oracle", "label": "Oracle", "x": 260, "y": 140, "tone": "muted", "width": 160, "height": 56, "accentAt": 1.2},
+      {"id": "engine", "label": "CDP Engine", "x": 520, "y": 0, "tone": "accent", "width": 180, "height": 56, "accentAt": 1.8},
+      {"id": "token", "label": "Stablecoin", "x": 520, "y": 140, "tone": "default", "width": 180, "height": 56}
+    ],
+    "edges": [
+      {"from": "user", "to": "vault", "label": "deposit"},
+      {"from": "vault", "to": "engine", "label": "open CDP"},
+      {"from": "oracle", "to": "engine", "label": "price feed", "dashed": true},
+      {"from": "engine", "to": "token", "label": "mint"}
+    ],
+    "note": "Edges support dashed style for async or optional flows."
+  }
+}
+```
+
+## Segment 16
+Voiceover:
+Use QuadrantMap to plot items across two dimensions. Great for taxonomy, risk mapping, and design-space exploration.
+
+Component: QuadrantMap
+```json
+{
+  "props": {
+    "title": "Stablecoin Design Space",
+    "xAxisLeft": "Algorithmic",
+    "xAxisRight": "Collateralised",
+    "yAxisTop": "Decentralised",
+    "yAxisBottom": "Centralised",
+    "quadrantLabels": {
+      "topLeft": "Pure Algo",
+      "topRight": "Crypto-backed",
+      "bottomLeft": "Hybrid",
+      "bottomRight": "Fiat-backed"
+    },
+    "highlightQuadrant": "topRight",
+    "dangerQuadrant": "topLeft",
+    "markers": [
+      {"symbol": "DAI", "x": 0.82, "y": 0.18, "tone": "accent", "appearAt": 0.4},
+      {"symbol": "USDC", "x": 0.90, "y": 0.88, "tone": "default", "appearAt": 0.8},
+      {"symbol": "LUNA", "x": 0.15, "y": 0.22, "tone": "danger", "appearAt": 1.2, "subtitle": "collapsed"},
+      {"symbol": "FRAX", "x": 0.45, "y": 0.35, "tone": "default", "appearAt": 1.6}
+    ],
+    "note": "Top-right quadrant is the target design space for this course."
+  }
+}
+```
+
+## Segment 17
+Voiceover:
+Use FireText for Fireship-style kinetic typography. Words can slam in, type out, or appear one by one — with highlights and exit animations for maximum energy.
+
+Component: FireText
+```json
+{
+  "props": {
+    "variant": "dark",
+    "stagger": 0.5,
+    "lines": [
+      {
+        "text": "This is FireText.",
+        "entrance": "slam",
+        "size": "hero",
+        "weight": "black",
+        "highlights": [{"word": "FireText", "tone": "accent"}]
+      },
+      {
+        "text": "Words appear one by one.",
+        "entrance": "wordByWord",
+        "size": "title",
+        "appearAt": 1.0,
+        "wordInterval": 0.1
+      },
+      {
+        "text": "Or type out character by character...",
+        "entrance": "typewriter",
+        "size": "body",
+        "weight": "regular",
+        "appearAt": 2.2
+      },
+      {
+        "text": "And lines can exit too.",
+        "entrance": "slideDown",
+        "exit": "fadeOut",
+        "size": "body",
+        "appearAt": 4.0,
+        "exitAt": 6.0
+      }
+    ]
+  }
+}
+```
+
+## Segment 18
+Voiceover:
+FireText also supports karaoke mode. All words appear dimmed, then light up one by one as the narrator speaks — perfect for syncing text to voiceover rhythm.
+
+Component: FireText
+```json
+{
+  "props": {
+    "variant": "dark",
+    "lines": [
+      {
+        "text": "Collateral in, stablecoin out.",
+        "entrance": "karaoke",
+        "size": "hero",
+        "weight": "black",
+        "appearAt": 0,
+        "wordInterval": 0.25,
+        "highlights": [
+          {"word": "Collateral", "tone": "accent"},
+          {"word": "stablecoin", "tone": "accent"}
+        ]
+      },
+      {
+        "text": "That is the core loop of every CDP engine.",
+        "entrance": "karaoke",
+        "size": "title",
+        "weight": "bold",
+        "appearAt": 2.0,
+        "wordInterval": 0.2,
+        "highlights": [
+          {"word": "CDP", "tone": "accent"},
+          {"word": "engine", "tone": "accent"}
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Segment 19
+Voiceover:
+Highlights can also be timed. Each keyword activates at a specific second to match your narration beat exactly.
+
+Component: FireText
+```json
+{
+  "props": {
+    "variant": "light",
+    "lines": [
+      {
+        "text": "Deposit ETH, mint DSC, watch your health factor.",
+        "entrance": "fadeIn",
+        "size": "title",
+        "weight": "bold",
+        "highlights": [
+          {"word": "Deposit ETH", "tone": "accent", "appearAt": 0.5},
+          {"word": "mint DSC", "tone": "accent", "appearAt": 1.5},
+          {"word": "health factor", "tone": "danger", "appearAt": 2.5}
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Segment 20
+Voiceover:
+Recap part one. Choose component by narrative structure first.
+
+PostGapMs: 500
+Component: Bullet
+```json
+{
+  "props": {
+    "title": "Recap (1/2)",
+    "subtitle": "Core information shapes.",
+    "bullets": [
+      {"text": "Unordered points → Bullet", "tone": "accent", "icon": "1"},
+      {"text": "Ordered flow → Steps", "icon": "2"},
+      {"text": "Risk mitigations → Warning", "icon": "3"},
+      {"text": "Evidence + text → SplitImage", "tone": "muted", "icon": "4"}
+    ]
+  }
+}
+```
+
+## Segment 21
+Voiceover:
+Recap part two. Advanced layouts and dynamic typography.
 
 PostGapMs: 1000
 Component: Bullet
 ```json
 {
   "props": {
-    "title": "Recap",
-    "subtitle": "Choose by information shape.",
+    "title": "Recap (2/2)",
+    "subtitle": "Advanced components.",
     "bullets": [
-      {"text": "Unordered points: Bullet", "tone": "accent", "icon": "1"},
-      {"text": "Ordered flow: Steps", "icon": "2"},
-      {"text": "Risk and mitigations: Warning", "icon": "3"},
-      {"text": "Evidence plus text: SplitImage", "tone": "muted", "icon": "4"}
+      {"text": "Big promises → HeroStatement", "icon": "1"},
+      {"text": "Phased journeys → Roadmap", "icon": "2"},
+      {"text": "System overviews → ArchitectureDiagram", "icon": "3"},
+      {"text": "Kinetic text → FireText", "tone": "accent", "icon": "4"}
     ]
   }
 }
 ```
 
-## Segment 14
+## Segment 22
 Voiceover:
 Next, we can turn this into a reusable authoring handbook with per-component presets and prop templates for faster lesson production.
 
