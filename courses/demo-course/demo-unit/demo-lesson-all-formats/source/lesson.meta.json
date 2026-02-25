@@ -50,7 +50,8 @@
   },
   "transitions": {
     "enabled": true,
-    "durationFrames": 30
+    "style": "snap",
+    "durationFrames": 6
   },
   "scriptFile": "source/script.md"
 }

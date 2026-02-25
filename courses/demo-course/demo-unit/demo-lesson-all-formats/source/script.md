@@ -2,22 +2,22 @@
 
 ## Segment 01
 Voiceover:
-This demo is a component usage guide. Each segment maps one component to its ideal use case, with props that are ready for production.
+Welcome to the component showcase. Each segment pairs one component with narration. Every visual element appears in sync with what the narrator describes.
 
 Component: CalloutScene
 ```json
 {
   "props": {
-    "eyebrow": "Style Guide",
-    "title": "CalloutScene",
-    "body": "Use this for one critical statement when you need direct, low-noise emphasis."
+    "eyebrow": "Demo Course",
+    "title": "Component Showcase",
+    "body": "Every visual element appears in sync with what the narrator describes."
   }
 }
 ```
 
 ## Segment 02
 Voiceover:
-Use Bullet for unordered points. It is best for checklists, constraints, and recap when reading order is simple.
+Bullet displays three distinct tone levels. Accent tone highlights the key point. Default tone carries the standard reading weight. And muted tone steps back for secondary context.
 
 Component: Bullet
 ```json
@@ -25,20 +25,19 @@ Component: Bullet
   "props": {
     "eyebrow": "Component",
     "title": "Bullet",
-    "subtitle": "Best for concise, scannable lists.",
+    "subtitle": "Three tone levels for visual hierarchy.",
     "bullets": [
-      {"text": "One idea per bullet", "tone": "accent", "icon": "1"},
-      {"text": "Parallel phrasing across lines", "tone": "default", "icon": "2"},
-      {"text": "Muted tone only for context", "tone": "muted", "icon": "3"}
-    ],
-    "note": "Choose this when sequence is not the main story."
+      {"text": "Accent tone highlights the key point", "tone": "accent", "icon": "1", "appearAt": 2.9},
+      {"text": "Default tone carries the standard reading weight", "tone": "default", "icon": "2", "appearAt": 5.9},
+      {"text": "Muted tone steps back for secondary context", "tone": "muted", "icon": "3", "appearAt": 9.3}
+    ]
   }
 }
 ```
 
 ## Segment 03
 Voiceover:
-Use Steps when sequence matters. Active step makes the viewer understand exactly where they are in a process.
+Steps mark a strict sequence with an active focus indicator. Step one: define the scope. Step two is the active focus: assemble the parts. Step three: render and review. Step four: ship to production.
 
 Component: Steps
 ```json
@@ -46,12 +45,12 @@ Component: Steps
   "props": {
     "eyebrow": "Component",
     "title": "Steps",
-    "subtitle": "Designed for procedural walkthroughs.",
+    "subtitle": "Strict sequential process with active focus.",
     "steps": [
-      {"title": "Declare", "detail": "state the target and constraints"},
-      {"title": "Assemble", "detail": "set props with valid schema"},
-      {"title": "Render", "detail": "verify layout and timing"},
-      {"title": "Review", "detail": "approve readability and QA"}
+      {"title": "Define", "detail": "set the problem scope", "appearAt": 4.8},
+      {"title": "Assemble", "detail": "put the parts together", "appearAt": 7.1},
+      {"title": "Render", "detail": "verify layout and timing", "appearAt": 11.4},
+      {"title": "Ship", "detail": "deploy to production", "appearAt": 13.8}
     ],
     "activeStep": 2
   }
@@ -60,7 +59,7 @@ Component: Steps
 
 ## Segment 04
 Voiceover:
-Use Definition for terms that drive decisions. Put exact meaning first, then short implementation notes.
+Definition frames a single term with precision. The meaning loads first, then notes appear one by one. First: keep the definition auditable. Second: list only implementation-relevant sources. Third: place it before code or compare scenes.
 
 Component: Definition
 ```json
@@ -70,9 +69,9 @@ Component: Definition
     "term": "Definition",
     "definition": "A term-first component for precise concept framing.",
     "notes": [
-      "Keep the definition auditable",
-      "List only implementation-relevant notes",
-      "Use before code or comparison scenes"
+      {"text": "Keep the definition auditable", "appearAt": 9.8},
+      {"text": "List only implementation-relevant sources", "appearAt": 12.6},
+      {"text": "Place before code or compare scenes", "appearAt": 15.5}
     ]
   }
 }
@@ -80,7 +79,7 @@ Component: Definition
 
 ## Segment 05
 Voiceover:
-Use Warning for operational risk. The wording should stay calm and each bullet should be directly actionable.
+Warning flags operational risk. Bullets reveal one by one: name the failure mode clearly, attach one mitigation per line, and avoid vague warnings without an owner. Then the aside captures the overall risk lens.
 
 Component: Warning
 ```json
@@ -90,17 +89,18 @@ Component: Warning
     "title": "Warning",
     "message": "Use for risks that require explicit mitigation.",
     "bullets": [
-      "Name the failure mode clearly",
-      "Attach one mitigation per line",
-      "Avoid vague warnings without owners"
-    ]
+      {"text": "Name the failure mode clearly", "appearAt": 3.5},
+      {"text": "Attach one mitigation per line", "appearAt": 5.8},
+      {"text": "Avoid vague warnings without an owner", "appearAt": 7.9}
+    ],
+    "asideAppearAt": 10.8
   }
 }
 ```
 
 ## Segment 06
 Voiceover:
-Use Compare for structured tradeoffs. Both sides should use the same dimensions, then end with one clear verdict.
+Compare lays out two options side by side. Left: clear tradeoffs exist, criteria can be matched, and a decision is required. Right: options are not comparable, requirements are unclear, and no decision is needed. The verdict seals the recommendation.
 
 Component: Compare
 ```json
@@ -111,10 +111,11 @@ Component: Compare
     "left": {
       "label": "When To Use",
       "bullets": [
-        "Two valid options exist",
+        "Clear tradeoffs exist",
         "Criteria can be matched one-to-one",
         "Decision must be explicit"
-      ]
+      ],
+      "appearAt": 3.4
     },
     "right": {
       "label": "When To Avoid",
@@ -122,16 +123,18 @@ Component: Compare
         "Options are not comparable",
         "Requirements are still unclear",
         "No final decision is needed"
-      ]
+      ],
+      "appearAt": 8.9
     },
-    "verdict": "Use Compare only when a concrete recommendation is part of the outcome."
+    "verdict": "Use Compare only when a concrete recommendation is part of the outcome.",
+    "verdictAppearAt": 14.4
   }
 }
 ```
 
 ## Segment 07
 Voiceover:
-Use Glossary for bilingual or multi-term alignment. It prevents naming drift between script, UI, and narration.
+Glossary aligns bilingual terms one by one. First: Storyboard maps to 分镜. Then Voiceover maps to 旁白. Caption Line maps to 字幕行. And Component maps to 组件.
 
 Component: Glossary
 ```json
@@ -140,10 +143,10 @@ Component: Glossary
     "eyebrow": "Component",
     "title": "Glossary",
     "items": [
-      {"cn": "分镜", "en": "Storyboard"},
-      {"cn": "旁白", "en": "Voiceover"},
-      {"cn": "字幕行", "en": "Caption Line"},
-      {"cn": "组件", "en": "Component"}
+      {"cn": "分镜", "en": "Storyboard", "appearAt": 3.3},
+      {"cn": "旁白", "en": "Voiceover", "appearAt": 5.6},
+      {"cn": "字幕行", "en": "Caption Line", "appearAt": 7.9},
+      {"cn": "组件", "en": "Component", "appearAt": 10.3}
     ]
   }
 }
@@ -151,7 +154,7 @@ Component: Glossary
 
 ## Segment 08
 Voiceover:
-Use Table when fields, units, and examples must stay aligned. Tables are ideal for parameter references and prop contracts.
+Table aligns structured data across columns. Each row maps a prop name to its purpose, type, and example value.
 
 Component: Table
 ```json
@@ -172,7 +175,7 @@ Component: Table
 
 ## Segment 09
 Voiceover:
-Use SplitImage when text and evidence must appear together. The image should support interpretation, not decoration.
+SplitImage combines text with a visual. The left side explains what to read. The right side shows the visual proof. And the note captures review constraints.
 
 Component: SplitImage
 Asset Ref: assets/diagram-system-boundary.png
@@ -181,20 +184,20 @@ Asset Ref: assets/diagram-system-boundary.png
   "props": {
     "eyebrow": "Component",
     "title": "SplitImage",
-    "subtitle": "Combines explanatory bullets with a supporting visual.",
+    "subtitle": "Pairs explanatory bullets with a supporting visual.",
     "bullets": [
       {"text": "Left side explains what to read", "tone": "default"},
       {"text": "Right side shows the visual proof", "tone": "accent"},
       {"text": "Note area captures review constraints", "tone": "muted"}
     ],
-    "note": "Use this for architecture diagrams and annotated references."
+    "note": "Use for architecture diagrams and annotated references."
   }
 }
 ```
 
 ## Segment 10
 Voiceover:
-Use CodeExplain for implementation details. Keep code compact, highlight decision lines, and explain intent beside the snippet.
+CodeExplain presents code with margin annotations. The highlights mark the logic-bearing lines. The explanations state: branch by information shape, keep the fallback deterministic, and highlight only decision lines.
 
 Component: CodeExplain
 ```json
@@ -216,7 +219,7 @@ Component: CodeExplain
 
 ## Segment 11
 Voiceover:
-Use CalloutVideoFrame for immersive screen recordings, even when annotation is light. One title, one badge, and one focus callout is usually enough.
+CalloutVideoFrame overlays annotations on a screen recording. The first rectangle highlights the main panel. A blur mask hides irrelevant noise. And a second rectangle labels the focus area.
 
 Scene Type: Video
 Component: CalloutVideoFrame
@@ -226,8 +229,11 @@ Asset Ref: assets/fake-ide-walkthrough.mp4
   "props": {
     "title": "CalloutVideoFrame",
     "badge": "Component",
+    "subtitle": "From single focus box to multi-callout walkthrough.",
     "callouts": [
-      {"type": "rect", "x": 1080, "y": 220, "w": 620, "h": 340, "label": "Focus"}
+      {"type": "rect", "x": 180, "y": 120, "w": 560, "h": 300, "label": "Panel"},
+      {"type": "blur", "x": 860, "y": 150, "w": 900, "h": 220},
+      {"type": "rect", "x": 1080, "y": 460, "w": 500, "h": 220, "label": "Focus"}
     ]
   }
 }
@@ -235,28 +241,7 @@ Asset Ref: assets/fake-ide-walkthrough.mp4
 
 ## Segment 12
 Voiceover:
-Use the same component with subtitle, blur masks, and multiple callouts when you need stronger framing around video content.
-
-Scene Type: Video
-Component: CalloutVideoFrame
-Asset Ref: assets/fake-explorer-callout.mp4
-```json
-{
-  "props": {
-    "badge": "Component",
-    "title": "CalloutVideoFrame",
-    "subtitle": "Framed video with optional blur and rectangle callouts.",
-    "callouts": [
-      {"type": "rect", "x": 180, "y": 120, "w": 560, "h": 300, "label": "Panel"},
-      {"type": "blur", "x": 860, "y": 150, "w": 900, "h": 220}
-    ]
-  }
-}
-```
-
-## Segment 13
-Voiceover:
-Use HeroStatement when a big promise needs proof. The statement anchors, and deliverables build credibility.
+HeroStatement opens with a bold promise. Then deliverables land one by one: Solidity contracts with a full test suite, a liquidation engine powered by Chainlink oracles, and a mainnet deployment runbook. Everything auditable, everything on-chain.
 
 Component: HeroStatement
 ```json
@@ -264,51 +249,52 @@ Component: HeroStatement
   "props": {
     "statement": "Build a Production-Grade Stablecoin from Scratch",
     "deliverables": [
-      {"text": "Solidity contracts with full test suite", "icon": "📦", "appearAt": 0.4},
-      {"text": "Liquidation engine with Chainlink oracles", "icon": "⚡", "appearAt": 1.0},
-      {"text": "Mainnet deployment runbook", "icon": "🚀", "appearAt": 1.6}
+      {"text": "Solidity contracts with full test suite", "icon": "📦", "appearAt": 4.9},
+      {"text": "Liquidation engine with Chainlink oracles", "icon": "⚡", "appearAt": 7.8},
+      {"text": "Mainnet deployment runbook", "icon": "🚀", "appearAt": 10.7}
     ],
-    "note": "Everything auditable, everything on-chain."
+    "note": "Everything auditable, everything on-chain.",
+    "noteAppearAt": 12.8
   }
 }
 ```
 
-## Segment 14
+## Segment 13
 Voiceover:
-Use Roadmap for phased journeys. Each phase card appears in order, and the active phase stands out visually.
+Roadmap unfolds four learning phases. Foundations: DeFi landscape and stablecoin taxonomy. Token Architecture: ERC-20 design and collateral vaults. CDP Engine: mint, burn, and health factor. Liquidation: auctions, incentives, and MEV.
 
 Component: Roadmap
 ```json
 {
   "props": {
     "title": "Roadmap",
-    "subtitle": "Course learning path across six units.",
+    "subtitle": "Four phases from theory to deployment.",
     "phases": [
-      {"label": "Unit 1", "title": "Foundations", "detail": "DeFi landscape, stablecoin taxonomy", "appearAt": 0.2},
-      {"label": "Unit 2", "title": "Token Architecture", "detail": "ERC-20 design, collateral vault", "appearAt": 0.8},
-      {"label": "Unit 3", "title": "CDP Engine", "detail": "Mint, burn, health factor", "appearAt": 1.4},
-      {"label": "Unit 4", "title": "Liquidation", "detail": "Auction, incentives, MEV", "appearAt": 2.0}
+      {"label": "Unit 1", "title": "Foundations", "detail": "DeFi landscape, stablecoin taxonomy", "appearAt": 3.5},
+      {"label": "Unit 2", "title": "Token Architecture", "detail": "ERC-20 design, collateral vault", "appearAt": 7.6},
+      {"label": "Unit 3", "title": "CDP Engine", "detail": "Mint, burn, health factor", "appearAt": 12.5},
+      {"label": "Unit 4", "title": "Liquidation", "detail": "Auctions, incentives, MEV", "appearAt": 17.3}
     ],
     "activePhase": 2
   }
 }
 ```
 
-## Segment 15
+## Segment 14
 Voiceover:
-Use ArchitectureDiagram for system overviews. Nodes represent modules, edges show data flow — all declarative, no images needed.
+The architecture connects five modules. User sends collateral to the Vault. The Oracle provides a live price feed. The CDP Engine combines both inputs to mint the Stablecoin token.
 
 Component: ArchitectureDiagram
 ```json
 {
   "props": {
     "title": "ArchitectureDiagram",
-    "subtitle": "Declarative nodes and edges with built-in animation.",
+    "subtitle": "Declarative nodes and edges with progressive accents.",
     "nodes": [
       {"id": "user", "label": "User", "x": 0, "y": 0, "tone": "default", "width": 160, "height": 56},
-      {"id": "vault", "label": "Vault", "x": 260, "y": 0, "tone": "accent", "width": 160, "height": 56, "accentAt": 0.6},
-      {"id": "oracle", "label": "Oracle", "x": 260, "y": 140, "tone": "muted", "width": 160, "height": 56, "accentAt": 1.2},
-      {"id": "engine", "label": "CDP Engine", "x": 520, "y": 0, "tone": "accent", "width": 180, "height": 56, "accentAt": 1.8},
+      {"id": "vault", "label": "Vault", "x": 260, "y": 0, "tone": "accent", "width": 160, "height": 56, "accentAt": 2.0},
+      {"id": "oracle", "label": "Oracle", "x": 260, "y": 140, "tone": "muted", "width": 160, "height": 56, "accentAt": 4.5},
+      {"id": "engine", "label": "CDP Engine", "x": 520, "y": 0, "tone": "accent", "width": 180, "height": 56, "accentAt": 7.4},
       {"id": "token", "label": "Stablecoin", "x": 520, "y": 140, "tone": "default", "width": 180, "height": 56}
     ],
     "edges": [
@@ -317,14 +303,14 @@ Component: ArchitectureDiagram
       {"from": "oracle", "to": "engine", "label": "price feed", "dashed": true},
       {"from": "engine", "to": "token", "label": "mint"}
     ],
-    "note": "Edges support dashed style for async or optional flows."
+    "note": "Dashed edges indicate async or off-chain data flows."
   }
 }
 ```
 
-## Segment 16
+## Segment 15
 Voiceover:
-Use QuadrantMap to plot items across two dimensions. Great for taxonomy, risk mapping, and design-space exploration.
+QuadrantMap plots the stablecoin design space across two axes. DAI sits in the crypto-backed decentralised quadrant. USDC lands in fiat-backed centralised territory. LUNA fell into the algorithmic danger zone. And FRAX occupies the hybrid middle ground.
 
 Component: QuadrantMap
 ```json
@@ -344,19 +330,19 @@ Component: QuadrantMap
     "highlightQuadrant": "topRight",
     "dangerQuadrant": "topLeft",
     "markers": [
-      {"symbol": "DAI", "x": 0.82, "y": 0.18, "tone": "accent", "appearAt": 0.4},
-      {"symbol": "USDC", "x": 0.90, "y": 0.88, "tone": "default", "appearAt": 0.8},
-      {"symbol": "LUNA", "x": 0.15, "y": 0.22, "tone": "danger", "appearAt": 1.2, "subtitle": "collapsed"},
-      {"symbol": "FRAX", "x": 0.45, "y": 0.35, "tone": "default", "appearAt": 1.6}
+      {"symbol": "DAI", "x": 0.82, "y": 0.18, "tone": "accent", "appearAt": 5.1},
+      {"symbol": "USDC", "x": 0.90, "y": 0.88, "tone": "default", "appearAt": 9.1},
+      {"symbol": "LUNA", "x": 0.15, "y": 0.22, "tone": "danger", "appearAt": 12.5, "subtitle": "collapsed"},
+      {"symbol": "FRAX", "x": 0.45, "y": 0.35, "tone": "default", "appearAt": 16.4}
     ],
     "note": "Top-right quadrant is the target design space for this course."
   }
 }
 ```
 
-## Segment 17
+## Segment 16
 Voiceover:
-Use FireText for Fireship-style kinetic typography. Words can slam in, type out, or appear one by one — with highlights and exit animations for maximum energy.
+FireText supports multiple entrance styles. First the headline slams in. Then words appear one by one. A typewriter line writes out character by character. And the final line slides in, then fades away.
 
 Component: FireText
 ```json
@@ -376,32 +362,32 @@ Component: FireText
         "text": "Words appear one by one.",
         "entrance": "wordByWord",
         "size": "title",
-        "appearAt": 1.0,
+        "appearAt": 4.8,
         "wordInterval": 0.1
       },
       {
-        "text": "Or type out character by character...",
+        "text": "Or type out character by character.",
         "entrance": "typewriter",
         "size": "body",
         "weight": "regular",
-        "appearAt": 2.2
+        "appearAt": 7.7
       },
       {
         "text": "And lines can exit too.",
         "entrance": "slideDown",
         "exit": "fadeOut",
         "size": "body",
-        "appearAt": 4.0,
-        "exitAt": 6.0
+        "appearAt": 11.5,
+        "exitAt": 14.5
       }
     ]
   }
 }
 ```
 
-## Segment 18
+## Segment 17
 Voiceover:
-FireText also supports karaoke mode. All words appear dimmed, then light up one by one as the narrator speaks — perfect for syncing text to voiceover rhythm.
+FireText also supports karaoke mode. The first line lights up word by word: collateral in, stablecoin out. Then the second line explains that this is the core loop of every CDP engine.
 
 Component: FireText
 ```json
@@ -414,7 +400,7 @@ Component: FireText
         "entrance": "karaoke",
         "size": "hero",
         "weight": "black",
-        "appearAt": 0,
+        "appearAt": 2.0,
         "wordInterval": 0.25,
         "highlights": [
           {"word": "Collateral", "tone": "accent"},
@@ -426,7 +412,7 @@ Component: FireText
         "entrance": "karaoke",
         "size": "title",
         "weight": "bold",
-        "appearAt": 2.0,
+        "appearAt": 6.7,
         "wordInterval": 0.2,
         "highlights": [
           {"word": "CDP", "tone": "accent"},
@@ -438,9 +424,9 @@ Component: FireText
 }
 ```
 
-## Segment 19
+## Segment 18
 Voiceover:
-Highlights can also be timed. Each keyword activates at a specific second to match your narration beat exactly.
+Highlights can sync to the exact narration beat. First: Deposit ETH. Then: mint DSC. Finally: watch your health factor.
 
 Component: FireText
 ```json
@@ -454,9 +440,9 @@ Component: FireText
         "size": "title",
         "weight": "bold",
         "highlights": [
-          {"word": "Deposit ETH", "tone": "accent", "appearAt": 0.5},
-          {"word": "mint DSC", "tone": "accent", "appearAt": 1.5},
-          {"word": "health factor", "tone": "danger", "appearAt": 2.5}
+          {"word": "Deposit ETH", "tone": "accent", "appearAt": 3.5},
+          {"word": "mint DSC", "tone": "accent", "appearAt": 5.2},
+          {"word": "health factor", "tone": "danger", "appearAt": 6.9}
         ]
       }
     ]
@@ -464,70 +450,9 @@ Component: FireText
 }
 ```
 
-## Segment 20
+## Segment 19
 Voiceover:
-Recap part one. Choose component by narrative structure first.
-
-PostGapMs: 500
-Component: Bullet
-```json
-{
-  "props": {
-    "title": "Recap (1/2)",
-    "subtitle": "Core information shapes.",
-    "bullets": [
-      {"text": "Unordered points → Bullet", "tone": "accent", "icon": "1"},
-      {"text": "Ordered flow → Steps", "icon": "2"},
-      {"text": "Risk mitigations → Warning", "icon": "3"},
-      {"text": "Evidence + text → SplitImage", "tone": "muted", "icon": "4"}
-    ]
-  }
-}
-```
-
-## Segment 21
-Voiceover:
-Recap part two. Advanced layouts and dynamic typography.
-
-PostGapMs: 1000
-Component: Bullet
-```json
-{
-  "props": {
-    "title": "Recap (2/2)",
-    "subtitle": "Advanced components.",
-    "bullets": [
-      {"text": "Big promises → HeroStatement", "icon": "1"},
-      {"text": "Phased journeys → Roadmap", "icon": "2"},
-      {"text": "System overviews → ArchitectureDiagram", "icon": "3"},
-      {"text": "Kinetic text → FireText", "tone": "accent", "icon": "4"}
-    ]
-  }
-}
-```
-
-## Segment 22
-Voiceover:
-Next, we can turn this into a reusable authoring handbook with per-component presets and prop templates for faster lesson production.
-
-Component: Bullet
-```json
-{
-  "props": {
-    "title": "What's Next",
-    "subtitle": "Create reusable presets per component.",
-    "bullets": [
-      {"text": "Standard prop templates", "tone": "accent", "icon": "1"},
-      {"text": "Copy guidelines by component type", "icon": "2"},
-      {"text": "Visual QA checklist per scene", "icon": "3"}
-    ]
-  }
-}
-```
-
-## Segment 23
-Voiceover:
-Use CodeHike when code evolves across steps. Start with the diff preset, which defaults to the timeline layout and mark annotations.
+CodeHike evolves code across steps. Start with the diff preset, using timeline layout and mark annotations.
 
 Component: CodeHike
 Asset Ref: assets/codehike/segment-23.md
@@ -545,9 +470,9 @@ Asset Ref: assets/codehike/segment-23.md
 }
 ```
 
-## Segment 24
+## Segment 20
 Voiceover:
-The walkthrough preset uses the minimal layout by default. Here we keep that layout, but override annotations and twoslash to show capabilities are independent from the visual shell.
+The walkthrough preset uses a minimal layout by default. Here we override annotations and enable twoslash to show that capabilities are independent from the visual shell.
 
 Component: CodeHike
 Asset Ref: assets/codehike/segment-26-matt.md
@@ -565,9 +490,9 @@ Asset Ref: assets/codehike/segment-26-matt.md
 }
 ```
 
-## Segment 25
+## Segment 21
 Voiceover:
-The TypeScript preset bundles the framed layout with twoslash enabled, which is the easiest mode for teaching type reasoning and compiler diagnostics.
+The TypeScript preset bundles a framed layout with twoslash enabled. This is the easiest mode for teaching type reasoning and compiler diagnostics.
 
 Component: CodeHike
 Asset Ref: assets/codehike/segment-26-matt.md
@@ -583,3 +508,4 @@ Asset Ref: assets/codehike/segment-26-matt.md
   }
 }
 ```
+

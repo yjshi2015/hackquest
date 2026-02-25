@@ -70,9 +70,9 @@ Component: Definition
     "term": "Definition",
     "definition": "先定义术语，再展开实现细节的概念卡片。",
     "notes": [
-      "定义必须可审计、可复述",
-      "只保留和实现有关的说明",
-      "建议在代码段或对比段之前使用"
+      {"text": "定义必须可审计、可复述", "appearAt": 0.15},
+      {"text": "只保留和实现有关的说明", "appearAt": 0.32},
+      {"text": "建议在代码段或对比段之前使用", "appearAt": 0.48}
     ]
   }
 }
@@ -89,10 +89,11 @@ Component: Warning
     "eyebrow": "组件",
     "title": "Warning",
     "message": "用于必须明确缓解动作的风险点。",
+    "asideAppearAt": 0.52,
     "bullets": [
-      "先把失败模式说清楚",
-      "一条措施对应一条风险",
-      "避免没有责任人的泛泛警告"
+      {"text": "先把失败模式说清楚", "appearAt": 0.14},
+      {"text": "一条措施对应一条风险", "appearAt": 0.28},
+      {"text": "避免没有责任人的泛泛警告", "appearAt": 0.42}
     ]
   }
 }
@@ -140,10 +141,10 @@ Component: Glossary
     "eyebrow": "组件",
     "title": "Glossary",
     "items": [
-      {"cn": "分镜", "en": "Storyboard"},
-      {"cn": "旁白", "en": "Voiceover"},
-      {"cn": "字幕行", "en": "Caption Line"},
-      {"cn": "组件", "en": "Component"}
+      {"cn": "分镜", "en": "Storyboard", "appearAt": 0.12},
+      {"cn": "旁白", "en": "Voiceover", "appearAt": 0.20},
+      {"cn": "字幕行", "en": "Caption Line", "appearAt": 0.28},
+      {"cn": "组件", "en": "Component", "appearAt": 0.36}
     ]
   }
 }
@@ -216,7 +217,7 @@ Component: CodeExplain
 
 ## Segment 11
 Voiceover:
-沉浸式录屏即使只做轻量标注，也优先用 CalloutVideoFrame。通常一个标题、一个角标、一个重点框就足够。
+CalloutVideoFrame 适合从轻量标注到重度讲解的录屏场景。可以先用一个重点框起步，再逐步加副标题、模糊遮罩和多个标注框。
 
 Scene Type: Video
 Component: CalloutVideoFrame
@@ -226,69 +227,11 @@ Asset Ref: assets/fake-ide-walkthrough.mp4
   "props": {
     "title": "CalloutVideoFrame",
     "badge": "组件",
-    "callouts": [
-      {"type": "rect", "x": 1080, "y": 220, "w": 620, "h": 340, "label": "重点区域"}
-    ]
-  }
-}
-```
-
-## Segment 12
-Voiceover:
-当你需要更强的视频包裹感时，继续用同一个组件，再加副标题、模糊遮罩和多个标注。面对密集 UI 演示，它比裸 Overlay 更稳。
-
-Scene Type: Video
-Component: CalloutVideoFrame
-Asset Ref: assets/fake-explorer-callout.mp4
-```json
-{
-  "props": {
-    "badge": "组件",
-    "title": "CalloutVideoFrame",
-    "subtitle": "带边框的视频容器，支持矩形标注与模糊遮罩。",
+    "subtitle": "从单重点框扩展到多标注录屏讲解。",
     "callouts": [
       {"type": "rect", "x": 180, "y": 120, "w": 560, "h": 300, "label": "面板"},
-      {"type": "blur", "x": 860, "y": 150, "w": 900, "h": 220}
-    ]
-  }
-}
-```
-
-## Segment 13
-Voiceover:
-回顾一下。先按叙事结构选组件，再通过 props 和设计 token 微调视觉风格。
-
-PostGapMs: 1000
-Component: Bullet
-```json
-{
-  "props": {
-    "title": "回顾",
-    "subtitle": "先看信息形态，再选组件。",
-    "bullets": [
-      {"text": "无序要点：Bullet", "tone": "accent", "icon": "1"},
-      {"text": "流程步骤：Steps", "icon": "2"},
-      {"text": "风险缓解：Warning", "icon": "3"},
-      {"text": "图文证据：SplitImage", "tone": "muted", "icon": "4"}
-    ]
-  }
-}
-```
-
-## Segment 14
-Voiceover:
-下一步，我们可以把这套内容沉淀成可复用的编写手册，包含组件预设和 props 模板，进一步加速课程生产。
-
-Component: Bullet
-```json
-{
-  "props": {
-    "title": "下一步",
-    "subtitle": "为每个组件建立可复用预设。",
-    "bullets": [
-      {"text": "标准 props 模板", "tone": "accent", "icon": "1"},
-      {"text": "按组件分类的文案规范", "icon": "2"},
-      {"text": "分场景视觉质检清单", "icon": "3"}
+      {"type": "blur", "x": 860, "y": 150, "w": 900, "h": 220},
+      {"type": "rect", "x": 1080, "y": 460, "w": 500, "h": 220, "label": "重点区域"}
     ]
   }
 }

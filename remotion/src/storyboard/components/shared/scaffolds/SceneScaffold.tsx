@@ -28,8 +28,12 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: motion.spring.standard});
-  const y = interpolate(reveal, [0, 1], [16, 0]);
+  const reveal = spring({
+    frame,
+    fps,
+    config: motion.spring.fast,
+  });
+  const y = interpolate(reveal, [0, 1], [10, 0]);
   const opacity = interpolate(reveal, [0, 1], [0, 1]);
   const hasHeader = Boolean(eyebrow || title || subtitle);
 

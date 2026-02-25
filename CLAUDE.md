@@ -20,6 +20,15 @@
 4. 每个 props 字段都必须能在 Voiceover 中找到对应表达，不新增旁白未出现的新结论。
 5. 用“反向朗读校验”：只看画面能否复述该段主张。
 
+## 渐进出现（Progressive Reveal）
+
+所有支持 `appearAt` 的组件必须使用渐进出现，每个元素的 `appearAt` 值对齐旁白中提到该元素的确切时间点。
+
+- 第一遍写脚本时按语速预估，第二遍 TTS 生成后用字幕时间戳精确回校：`appearAt = (captionStartMs − segmentStartMs) / 1000`。
+- 旁白必须按 props 元素出现顺序逐一描述，不可一笔带过。
+- 支持渐进出现的组件：Bullet、Steps、Definition、Warning、Compare、Glossary、HeroStatement、Roadmap、ArchitectureDiagram（`accentAt`）、QuadrantMap、FireText。
+- 完整策略与自检清单见 `courses/AGENTS.md` 的"渐进出现与 `appearAt` 时间对齐策略"章节。
+
 最小验证命令：
 
 ```bash
