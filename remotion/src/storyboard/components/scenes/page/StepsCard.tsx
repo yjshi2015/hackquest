@@ -40,7 +40,7 @@ export const StepsCard: React.FC<
   return (
     <SceneScaffold
       background={
-        'radial-gradient(circle at 90% 8%, rgba(255, 232, 102, 0.28), transparent 34%), #ffffff'
+        `radial-gradient(circle at 90% 8%, ${colors.accentFaint}, transparent 34%), #ffffff`
       }
       eyebrow={eyebrow}
       title={title}
@@ -106,7 +106,7 @@ export const StepsCard: React.FC<
                 style={{
                   padding: '16px 18px',
                   borderRadius: 20,
-                  backgroundColor: isActive ? 'rgba(255, 232, 102, 0.44)' : 'rgba(255, 255, 255, 0.78)',
+                  backgroundColor: isActive ? `rgba(${colors.accentRgb}, 0.44)` : 'rgba(255, 255, 255, 0.78)',
                   opacity: isAfterActive ? 0.72 : 1,
                 }}
               >

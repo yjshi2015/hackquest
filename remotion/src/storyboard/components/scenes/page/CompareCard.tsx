@@ -19,10 +19,11 @@ export const CompareCardPropsSchema = z
 
 export type CompareCardProps = z.infer<typeof CompareCardPropsSchema>;
 
-const Side: React.FC<{label: string; bullets: string[]; align: 'left' | 'right'}> = ({
+const Side: React.FC<{label: string; bullets: string[]; align: 'left' | 'right'; accentRgb: string}> = ({
   label,
   bullets,
   align,
+  accentRgb,
 }) => {
   const isLeft = align === 'left';
 
@@ -41,7 +42,7 @@ const Side: React.FC<{label: string; bullets: string[]; align: 'left' | 'right'}
           alignItems: 'center',
           padding: '8px 14px',
           borderRadius: 8,
-          backgroundColor: isLeft ? 'rgba(255, 232, 102, 0.42)' : 'rgba(0, 0, 0, 0.08)',
+          backgroundColor: isLeft ? `rgba(${accentRgb}, 0.42)` : 'rgba(0, 0, 0, 0.08)',
           fontFamily: fonts.brand,
           fontSize: 24,
           fontWeight: 800,
@@ -98,7 +99,7 @@ const Side: React.FC<{label: string; bullets: string[]; align: 'left' | 'right'}
                 fontFamily: fonts.brand,
                 fontSize: 30,
                 color: colors.muted,
-                backgroundColor: isLeft ? 'rgba(255, 232, 102, 0.34)' : 'rgba(0, 0, 0, 0.08)',
+                backgroundColor: isLeft ? `rgba(${accentRgb}, 0.34)` : 'rgba(0, 0, 0, 0.08)',
               }}
             >
               {String(idx + 1)}
@@ -154,7 +155,7 @@ export const CompareCard: React.FC<
   return (
     <SceneScaffold
       background={
-        'linear-gradient(116deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 54%, rgba(255, 232, 102, 0.22) 54%, rgba(255, 232, 102, 0.22) 100%)'
+        `linear-gradient(116deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 54%, ${colors.accentFaint} 54%, ${colors.accentFaint} 100%)`
       }
       eyebrow={eyebrow}
       title={title}
@@ -178,7 +179,7 @@ export const CompareCard: React.FC<
           }}
         >
           <div style={{transform: `translateX(${leftX}px)`, opacity: leftOpacity}}>
-            <Side label={left.label} bullets={left.bullets} align="left" />
+            <Side label={left.label} bullets={left.bullets} align="left" accentRgb={colors.accentRgb} />
           </div>
 
           <div
@@ -229,7 +230,7 @@ export const CompareCard: React.FC<
           </div>
 
           <div style={{transform: `translateX(${rightX}px)`, opacity: rightOpacity}}>
-            <Side label={right.label} bullets={right.bullets} align="right" />
+            <Side label={right.label} bullets={right.bullets} align="right" accentRgb={colors.accentRgb} />
           </div>
         </div>
 

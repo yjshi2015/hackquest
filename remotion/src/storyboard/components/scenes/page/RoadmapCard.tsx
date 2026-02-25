@@ -58,7 +58,7 @@ export const RoadmapCard: React.FC<
   return (
     <SceneScaffold
       background={
-        'linear-gradient(160deg, rgba(255,255,255,1) 0%, rgba(255, 232, 102, 0.16) 100%)'
+        `linear-gradient(160deg, rgba(255,255,255,1) 0%, ${colors.accentGhost} 100%)`
       }
       eyebrow={eyebrow}
       title={title}
@@ -167,7 +167,7 @@ export const RoadmapCard: React.FC<
                     zIndex: 1,
                     border: isActive ? `4px solid rgba(255, 255, 255, 0.9)` : 'none',
                     boxShadow: isActive
-                      ? '0 0 0 3px rgba(255, 232, 102, 0.6)'
+                      ? `0 0 0 3px rgba(${colors.accentRgb}, 0.6)`
                       : 'none',
                   }}
                 >
@@ -190,10 +190,10 @@ export const RoadmapCard: React.FC<
                     borderRadius: 18,
                     padding: '16px 14px',
                     backgroundColor: isActive
-                      ? 'rgba(255, 232, 102, 0.36)'
+                      ? colors.accentSoft
                       : 'rgba(255, 255, 255, 0.82)',
                     border: isActive
-                      ? '2px solid rgba(255, 232, 102, 0.7)'
+                      ? `2px solid rgba(${colors.accentRgb}, 0.7)`
                       : '1px solid rgba(0, 0, 0, 0.06)',
                     opacity: isFuture ? 0.6 : 1,
                     display: 'flex',

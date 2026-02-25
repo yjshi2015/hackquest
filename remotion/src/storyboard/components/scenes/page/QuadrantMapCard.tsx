@@ -168,7 +168,7 @@ export const QuadrantMapCard: React.FC<
 
   return (
     <SceneScaffold
-      background="radial-gradient(circle at 12% 22%, rgba(255, 232, 102, 0.28), transparent 38%), radial-gradient(circle at 88% 80%, rgba(0, 0, 0, 0.05), transparent 42%), #ffffff"
+      background={`radial-gradient(circle at 12% 22%, ${colors.accentFaint}, transparent 38%), radial-gradient(circle at 88% 80%, rgba(0, 0, 0, 0.05), transparent 42%), #ffffff`}
       eyebrow={eyebrow}
       title={title}
       titleSize={tokens.storyboard.header.titleSizeStandard}
@@ -204,7 +204,7 @@ export const QuadrantMapCard: React.FC<
             const alpha = isHighlighted ? 0.16 + pulsePhase * 0.08 : isDanger ? 0.06 + pulsePhase * 0.04 : 0.03;
 
             const bg = isHighlighted
-              ? `rgba(255, 232, 102, ${alpha})`
+              ? `rgba(${colors.accentRgb}, ${alpha})`
               : isDanger
                 ? `rgba(255, 60, 60, ${alpha})`
                 : `rgba(0, 0, 0, ${alpha})`;
@@ -476,7 +476,7 @@ export const QuadrantMapCard: React.FC<
                     boxShadow: m.tone === 'danger'
                       ? '0 0 12px rgba(255, 80, 80, 0.25)'
                       : m.tone === 'accent'
-                        ? '0 0 12px rgba(255, 232, 102, 0.30)'
+                        ? `0 0 12px rgba(${colors.accentRgb}, 0.30)`
                         : 'none',
                   }}
                 >
@@ -548,7 +548,7 @@ export const QuadrantMapCard: React.FC<
               padding: '14px 24px',
               marginTop: 10,
               background:
-                'linear-gradient(90deg, rgba(255, 232, 102, 0.28), rgba(255, 255, 255, 0.60) 60%)',
+                `linear-gradient(90deg, ${colors.accentFaint}, rgba(255, 255, 255, 0.60) 60%)`,
               transform: `translateY(${noteY}px)`,
               opacity: noteOpacity,
               display: 'flex',

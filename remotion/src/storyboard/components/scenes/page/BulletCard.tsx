@@ -31,8 +31,9 @@ export const BulletCardPropsSchema = z
 
 export type BulletCardProps = z.infer<typeof BulletCardPropsSchema>;
 
-const toneToBubble = (_tone?: BulletCardProps['bullets'][number]['tone']) => {
-  return 'rgba(255, 232, 102, 0.72)';
+const toneToBubble = (tone: BulletCardProps['bullets'][number]['tone']) => {
+  if (tone === 'muted') return 'rgba(0, 0, 0, 0.08)';
+  return colors.accentStrong;
 };
 
 const toneToText = (tone?: BulletCardProps['bullets'][number]['tone']) => {
@@ -40,12 +41,12 @@ const toneToText = (tone?: BulletCardProps['bullets'][number]['tone']) => {
   return colors.bodyText;
 };
 
-const toneToRow = (tone?: BulletCardProps['bullets'][number]['tone']) => {
+const toneToRow = (tone: BulletCardProps['bullets'][number]['tone']) => {
   if (tone === 'accent')
     return {
       background:
-        'linear-gradient(135deg, rgba(255, 232, 102, 0.38), rgba(255, 232, 102, 0.12) 80%)',
-      border: '2px solid rgba(255, 210, 0, 0.48)',
+        `linear-gradient(135deg, ${colors.accentSoft}, ${colors.accentGhost} 80%)`,
+      border: `2px solid rgba(${colors.accentRgb}, 0.48)`,
       fontWeight: 700 as const,
       color: colors.text,
     };
@@ -69,7 +70,7 @@ export const BulletCard: React.FC<
   return (
     <SceneScaffold
       background={
-        'radial-gradient(circle at 9% 20%, rgba(255, 232, 102, 0.34), transparent 34%), radial-gradient(circle at 86% 84%, rgba(0, 0, 0, 0.06), transparent 40%), #ffffff'
+        `radial-gradient(circle at 9% 20%, ${colors.accentSoft}, transparent 34%), radial-gradient(circle at 86% 84%, rgba(0, 0, 0, 0.06), transparent 40%), #ffffff`
       }
       eyebrow={eyebrow ?? badge}
       title={title}
@@ -160,7 +161,7 @@ export const BulletCard: React.FC<
                 borderRadius: 24,
                 padding: '18px 18px',
                 background:
-                  'linear-gradient(180deg, rgba(255, 232, 102, 0.45), rgba(255, 255, 255, 0.74) 38%)',
+                  `linear-gradient(180deg, ${colors.accentMedium}, rgba(255, 255, 255, 0.74) 38%)`,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 10,

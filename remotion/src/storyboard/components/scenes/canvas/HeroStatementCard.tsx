@@ -44,7 +44,7 @@ export const HeroStatementCard: React.FC<
   return (
     <SceneScaffold
       background={
-        'radial-gradient(circle at 50% 10%, rgba(255, 232, 102, 0.52), transparent 48%), radial-gradient(circle at 80% 90%, rgba(255, 232, 102, 0.18), transparent 40%), #ffffff'
+        `radial-gradient(circle at 50% 10%, rgba(${colors.accentRgb}, 0.52), transparent 48%), radial-gradient(circle at 80% 90%, rgba(${colors.accentRgb}, 0.18), transparent 40%), #ffffff`
       }
       eyebrow={eyebrow}
       contentTop={0}
@@ -120,7 +120,7 @@ export const HeroStatementCard: React.FC<
                   padding: '16px 20px',
                   borderRadius: 18,
                   backgroundColor: 'rgba(255, 255, 255, 0.82)',
-                  border: '1px solid rgba(255, 232, 102, 0.5)',
+                  border: `1px solid rgba(${colors.accentRgb}, 0.5)`,
                   transform: `translateY(${itemY}px)`,
                   opacity: itemOpacity,
                 }}
@@ -134,7 +134,7 @@ export const HeroStatementCard: React.FC<
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: 'rgba(255, 232, 102, 0.56)',
+                  backgroundColor: `rgba(${colors.accentRgb}, 0.56)`,
                   fontFamily: fonts.brand,
                   fontWeight: 900,
                   fontSize: 24,

@@ -29,7 +29,7 @@ export type TableCardProps = z.infer<typeof TableCardPropsSchema>;
 
 export const TableCard: React.FC<
   TableCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
-> = ({eyebrow, title, columns, rows}) => {
+> = ({eyebrow, title, columns, rows, context}) => {
   const isNumericLike = (value: string) => {
     const text = String(value ?? '').trim();
     if (!text) return false;
@@ -39,7 +39,7 @@ export const TableCard: React.FC<
   return (
     <SceneScaffold
       background={
-        'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255, 232, 102, 0.2) 100%)'
+        `linear-gradient(180deg, rgba(255,255,255,1) 0%, ${colors.accentFaint} 100%)`
       }
       eyebrow={eyebrow}
       title={title}
@@ -62,7 +62,7 @@ export const TableCard: React.FC<
             gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
             gap: 0,
             padding: '20px 24px',
-            backgroundColor: 'rgba(255, 232, 102, 0.48)',
+            backgroundColor: `rgba(${colors.accentRgb}, 0.48)`,
             fontFamily: fonts.brand,
             fontSize: 34,
             fontWeight: 900,

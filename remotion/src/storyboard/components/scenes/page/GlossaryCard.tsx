@@ -27,14 +27,14 @@ export type GlossaryCardProps = z.infer<typeof GlossaryCardPropsSchema>;
 
 export const GlossaryCard: React.FC<
   GlossaryCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
-> = ({eyebrow, title, items}) => {
+> = ({eyebrow, title, items, context}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
 
   return (
     <SceneScaffold
       background={
-        'radial-gradient(circle at 88% 14%, rgba(255, 232, 102, 0.25), transparent 34%), #ffffff'
+        `radial-gradient(circle at 88% 14%, ${colors.accentFaint}, transparent 34%), #ffffff`
       }
       eyebrow={eyebrow}
       title={title}
@@ -68,7 +68,7 @@ export const GlossaryCard: React.FC<
                 padding: '18px 18px',
                 borderRadius: 18,
                 backgroundColor:
-                  idx % 3 === 0 ? 'rgba(255, 232, 102, 0.35)' : 'rgba(255, 255, 255, 0.78)',
+                  idx % 3 === 0 ? colors.accentSoft : 'rgba(255, 255, 255, 0.78)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',

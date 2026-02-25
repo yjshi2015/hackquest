@@ -20,10 +20,11 @@ export const CalloutScene: React.FC<{
   body: string;
   context: LessonBlockContext;
 }> = ({eyebrow, title, body, context}) => {
+
   return (
     <SceneScaffold
       background={
-        'linear-gradient(140deg, rgba(255, 232, 102, 0.26), rgba(255, 255, 255, 0.96) 32%, rgba(0, 0, 0, 0.04) 100%)'
+        `linear-gradient(140deg, ${colors.accentFaint}, rgba(255, 255, 255, 0.96) 32%, rgba(0, 0, 0, 0.04) 100%)`
       }
       eyebrow={eyebrow}
       title={title}
