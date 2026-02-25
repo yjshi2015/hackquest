@@ -2,6 +2,7 @@ import type {CSSProperties, ReactNode} from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 
 import {colors, fonts, motion, tokens} from '../../../../theme';
+import {useLessonSettings} from '../../../../lib/LessonSettingsContext';
 
 type SceneScaffoldProps = {
   background?: string;
@@ -28,6 +29,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
+  const {hideScaffoldHeader} = useLessonSettings();
   const reveal = spring({
     frame,
     fps,
@@ -35,7 +37,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
   });
   const y = interpolate(reveal, [0, 1], [10, 0]);
   const opacity = interpolate(reveal, [0, 1], [0, 1]);
-  const hasHeader = Boolean(eyebrow || title || subtitle);
+  const hasHeader = !hideScaffoldHeader && Boolean(eyebrow || title || subtitle);
 
   return (
     <AbsoluteFill

@@ -12,6 +12,7 @@ import {
 import {Audio} from '@remotion/media';
 
 import type {LessonBlockContext, SectionPanelSection} from '../lesson-config';
+import {LessonSettingsContext} from '../lib/LessonSettingsContext';
 import {colors, fonts} from '../theme';
 import {resolveLessonPublicPath} from '../lib/lesson-paths';
 import {componentsMap, schemasMap} from '../storyboard/registry';
@@ -81,6 +82,7 @@ type LessonMeta = {
       enabled?: boolean;
     };
   };
+  hideScaffoldHeader?: boolean;
 };
 
 export type LessonCompositionProps = {
@@ -221,7 +223,13 @@ const LessonTimeline: React.FC<{
     [accentColor, contentDurationFrames, fps],
   );
 
+  const lessonSettings = useMemo(
+    () => ({hideScaffoldHeader: meta.hideScaffoldHeader ?? false}),
+    [meta.hideScaffoldHeader],
+  );
+
   return (
+    <LessonSettingsContext.Provider value={lessonSettings}>
     <AbsoluteFill style={{fontFamily: fonts.body, color: colors.text}}>
       {coverFrames ? (
         <Sequence durationInFrames={coverFrames}>
@@ -274,6 +282,7 @@ const LessonTimeline: React.FC<{
         </Sequence>
       ) : null}
     </AbsoluteFill>
+    </LessonSettingsContext.Provider>
   );
 };
 
