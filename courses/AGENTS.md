@@ -30,14 +30,42 @@
 - `Scene Type: Slide` / `Scene Content` 仅作遗留语义参考，新增内容统一走 `Component`。
 - `Component:` 后必须跟 fenced `json`，并使用信封格式：`{"props": {...}}`。
 
+## 组件分层（作者默认选择顺序）
+- 常用组件（白名单）：
+  - `Bullet`
+  - `Compare`
+  - `Table`
+  - `Steps`
+  - `DemoOverlay`
+  - `CodeHike`
+  - `ArchitectureDiagram`
+  - `SplitImage`
+  - `FireText`
+  - `Roadmap`
+- 不常用组件（灰名单）：
+  - `QuadrantMap`（只有“坐标/设计空间关系”本身是核心信息时使用）
+- 单条视频实际使用组件种类控制在 `4-6` 种，不要把白名单组件一次用满。
+
 ## Voiceover 与 Component 对齐
-- 术语定义、概念边界：`Definition`
+- 术语定义、概念边界：`Bullet`（title + subtitle + bullets + note）
 - 两对象差异、权衡：`Compare`
 - 严格先后依赖步骤：`Steps`
 - 并列要点与能力清单：`Bullet`
 - 字段化与结构化信息：`Table`
-- 过渡、警示、结论：`CalloutScene` 或 `Warning`
+- 网页截图、图像证据、双图对照解释：`SplitImage`
+- 系统模块关系、协议结构：`ArchitectureDiagram`
+- 代码演进、逐步讲解：`CodeHike`
+- 章节定位、阶段进度：`Roadmap`
+- 开场钉子句、关键词冲击、转场强调：`FireText`（低频）
+- 过渡、警示、结论：`CalloutScene` 或 `Bullet`
 - 实操录屏讲解：`Scene Type: Video` + `DemoOverlay` / `CalloutVideoFrame`
+
+## 无真人出镜时的文字呈现约束
+- 平台课程不能依赖真人出镜兜底时，屏幕文字必须承担“认知界面”角色，而不是字幕备份。
+- 避免“空白画面 + 只有旁白”；没有素材时优先用 `Bullet` / `Table` / `CalloutScene` 承接。
+- 每段旁白对应画面至少满足一种功能：结构（`Bullet`/`Compare`/`Table`/`Steps`）、证据（`SplitImage`/`DemoOverlay`/`CodeHike`/`ArchitectureDiagram`）、结论（`FireText`/`Roadmap`/`CalloutScene`）。
+- 连续 `6-8` 秒内必须发生一次信息级变化（新条目出现、高亮迁移、步骤推进、视角切换）。
+- 高密度段（`Table`、`CodeHike`）后优先接低密度段（`FireText`、`Bullet`、`Roadmap`）降低疲劳。
 
 ## Props 约束
 1. 不把旁白整段粘进单个字段，优先拆为标题 + 2-4 个信息点。
@@ -60,8 +88,6 @@
 |---|---|---|
 | Bullet | `bullets[].appearAt`, `noteAppearAt` | 逐条出现 |
 | Steps | `steps[].appearAt` | 逐步展开 |
-| Definition | `notes[].appearAt`（notes 为对象时） | 注释逐条揭示 |
-| Warning | `bullets[].appearAt`（bullets 为对象时）, `asideAppearAt` | 风险点逐条 + aside 面板 |
 | Compare | `left.appearAt`, `right.appearAt`, `verdictAppearAt` | 左列 → 右列 → 裁决 |
 | Glossary | `items[].appearAt` | 术语对逐一出现 |
 | HeroStatement | `deliverables[].appearAt`, `noteAppearAt` | 交付物逐条 + 底注 |
@@ -103,6 +129,9 @@
    - Steps："Step one: …, step two: …"
    - Compare："Left side: …, right side: …, the verdict: …"
    - Glossary："First term: X maps to Y. Then: …"
+   - ArchitectureDiagram："First node: …, then this edge means …, now focus on …"
+   - Roadmap："Phase one: …, phase two: …"
+   - FireText："Key idea: …"（只用于短句，不展开复杂解释）
 3. 避免用"等等"、"还有很多"一笔带过多个 props 元素 — 每个元素都值得一句话。
 4. 台词中的实体文字应与 props 中的 `text` / `label` / `title` 高度一致（允许自然语言微调，但核心词必须相同）。
 
@@ -124,4 +153,3 @@
 ## 常用命令
 - 查看组件与 schema：`cd remotion && bun run lesson:components`
 - 校验脚本：`cd remotion && bun run lesson:validate -- --lesson-root <lessonRoot>`
-
