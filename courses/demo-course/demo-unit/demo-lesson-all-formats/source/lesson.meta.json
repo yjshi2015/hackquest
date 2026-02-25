@@ -9,6 +9,7 @@
   "courseLabel": "Demo Course · HackQuest Video System",
   "fps": 30,
   "accentColor": "#7CFF7A",
+  "hideScaffoldHeader": false,
   "resolution": {
     "width": 1920,
     "height": 1080

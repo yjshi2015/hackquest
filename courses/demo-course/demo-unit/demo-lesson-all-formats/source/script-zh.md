@@ -60,41 +60,44 @@ Component: Steps
 
 ## Segment 04
 Voiceover:
-关键术语建议用 Definition。先给出精确定义，再补上简短的实现说明。
+当你要低噪声地做“术语定义”时，直接用 Bullet。标题放术语本体，副标题放一句定义，bullets 拆关键维度，note 负责写清边界。
 
-Component: Definition
+Component: Bullet
 ```json
 {
   "props": {
-    "eyebrow": "组件",
-    "term": "Definition",
-    "definition": "先定义术语，再展开实现细节的概念卡片。",
-    "notes": [
-      {"text": "定义必须可审计、可复述", "appearAt": 0.15},
-      {"text": "只保留和实现有关的说明", "appearAt": 0.32},
-      {"text": "建议在代码段或对比段之前使用", "appearAt": 0.48}
-    ]
+    "eyebrow": "使用场景",
+    "title": "Stablecoin",
+    "subtitle": "稳定币：目标是跟踪参考价值（常见为 1 美元），并依靠稳定机制维持锚定。",
+    "bullets": [
+      {"text": "锚定目标：USD / EUR / 参考指数", "tone": "accent", "icon": "1", "appearAt": 0.8},
+      {"text": "资产支持：法币储备、加密抵押或混合支持", "icon": "2", "appearAt": 2.2},
+      {"text": "稳定机制：铸造赎回规则 + 清算或再平衡", "icon": "3", "appearAt": 3.6}
+    ],
+    "note": "边界：定义机制类别与范围，不讨论是否值得投资。",
+    "noteAppearAt": 5.0
   }
 }
 ```
 
 ## Segment 05
 Voiceover:
-涉及运行风险时用 Warning。措辞保持冷静，每条 bullet 都要可执行。
+涉及警示信息时也优先用 Bullet。标题写风险事件，副标题写影响，bullets 写“问题 -> 响应”，note 写操作规则。
 
-Component: Warning
+Component: Bullet
 ```json
 {
   "props": {
-    "eyebrow": "组件",
-    "title": "Warning",
-    "message": "用于必须明确缓解动作的风险点。",
-    "asideAppearAt": 0.52,
+    "eyebrow": "使用场景",
+    "title": "脱锚风险",
+    "subtitle": "一旦锚定失真，赎回预期和流动性都会快速恶化，必须提前定义响应路径。",
     "bullets": [
-      {"text": "先把失败模式说清楚", "appearAt": 0.14},
-      {"text": "一条措施对应一条风险", "appearAt": 0.28},
-      {"text": "避免没有责任人的泛泛警告", "appearAt": 0.42}
-    ]
+      {"text": "预言机滞后 -> 中位数聚合 + 铸造断路器", "tone": "accent", "icon": "1", "appearAt": 0.8},
+      {"text": "流动性挤兑 -> 赎回限额 + 排队处理", "icon": "2", "appearAt": 2.2},
+      {"text": "抵押物下跌 -> 更高 CR + 快速清算", "icon": "3", "appearAt": 3.6}
+    ],
+    "note": "操作规则：响应路径不可用时，先降吞吐或暂停铸造/赎回通道。",
+    "noteAppearAt": 4.8
   }
 }
 ```
@@ -233,6 +236,109 @@ Asset Ref: assets/fake-ide-walkthrough.mp4
       {"type": "blur", "x": 860, "y": 150, "w": 900, "h": 220},
       {"type": "rect", "x": 1080, "y": 460, "w": 500, "h": 220, "label": "重点区域"}
     ]
+  }
+}
+```
+
+## Segment 12
+Voiceover:
+现在 SplitImage 支持显式布局变体。这个例子把常用的“左字右图”模式写死，避免后续素材数量变化时布局意外漂移。
+
+Component: SplitImage
+Asset Ref: assets/diagram-system-boundary.png
+```json
+{
+  "props": {
+    "eyebrow": "组件",
+    "title": "SplitImage · text-left-image-right",
+    "subtitle": "显式锁定常用的说明 + 证据布局。",
+    "variant": "text-left-image-right",
+    "bullets": [
+      {"text": "当版式一致性很重要时，建议显式写 variant", "tone": "accent"},
+      {"text": "左侧文字只说明“该看哪里、看什么”", "tone": "default"},
+      {"text": "备注区专门放限制条件和评审注意点", "tone": "muted"}
+    ],
+    "note": "适合模板化课程内容和素材仍在替换中的草稿阶段。"
+  }
+}
+```
+
+## Segment 13
+Voiceover:
+单图模式适合“一个截图就是核心证据”的场景。图像拿到主视觉面积，解释文字下沉到底部，降低左右来回扫读的压力。
+
+Component: SplitImage
+Asset Ref: cover/hero.svg
+```json
+{
+  "props": {
+    "eyebrow": "组件",
+    "title": "SplitImage · single-image",
+    "subtitle": "一个主图 + 下方解释文字。",
+    "variant": "single-image",
+    "imageFit": "contain",
+    "bullets": [
+      {"text": "适合高价值单张截图或架构定格图", "tone": "accent"},
+      {"text": "图像细节密度高时，比左右分栏更稳"},
+      {"text": "文字负责解读，不与图像抢主视觉", "tone": "muted"}
+    ],
+    "note": "常用于首页截图、关键界面、总览图和注释参考图。"
+  }
+}
+```
+
+## Segment 14
+Voiceover:
+双图模式适合讲“前后对比、输入输出、旧版新版”这类内容。旁白可以沿着同一组维度比较两张图，而不用切换组件。
+
+Component: SplitImage
+Asset Ref: assets/diagram-system-boundary.png
+Asset Ref 2: cover/hero.svg
+```json
+{
+  "props": {
+    "eyebrow": "组件",
+    "title": "SplitImage · dual-image",
+    "subtitle": "在同一组件里完成两图对照讲解。",
+    "variant": "dual-image",
+    "compare": {
+      "leftLabel": "基线",
+      "rightLabel": "优化后",
+      "rows": [
+        {"label": "讲解焦点", "left": "先交代上下文", "right": "先突出动作区", "emphasis": "right"},
+        {"label": "扫读路径", "left": "视线跨度更长", "right": "路径更短", "emphasis": "right"},
+        {"label": "适用场景", "left": "参考说明", "right": "操作演示"}
+      ],
+      "note": "双图模式强调图像证据对照；如果要输出文本裁决，仍优先使用 Compare。"
+    }
+  }
+}
+```
+
+## Segment 15
+Voiceover:
+多图模式会把 SplitImage 变成紧凑证据板。给每张图加短标签和短说明，观众就能在旁白引导下快速扫过多屏内容而不迷路。
+
+Component: SplitImage
+```json
+{
+  "props": {
+    "eyebrow": "组件",
+    "title": "SplitImage · multi-image",
+    "subtitle": "适合 UI walkthrough 的多图证据集合。",
+    "variant": "multi-image",
+    "images": [
+      {"src": "assets/diagram-system-boundary.png", "label": "A", "caption": "系统边界参考图"},
+      {"src": "cover/hero.svg", "label": "B", "caption": "课程封面主视觉", "fit": "contain"},
+      {"src": "assets/diagram-system-boundary.png", "label": "C", "caption": "Demo 中可复用素材"},
+      {"src": "cover/hero.svg", "label": "D", "caption": "说明尽量保持短句"}
+    ],
+    "bullets": [
+      {"text": "多张截图共同构成一组证据时使用", "tone": "accent"},
+      {"text": "网格负责快速扫读，旁白负责引导顺序"},
+      {"text": "优先标签 + 短说明，不要铺长段文字", "tone": "muted"}
+    ],
+    "note": "适用于产品流程演示、监控面板对照和多步骤界面状态。"
   }
 }
 ```
