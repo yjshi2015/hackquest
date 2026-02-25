@@ -57,11 +57,11 @@ const errorMessageHandler: AnnotationHandler = {
             opacity,
             borderLeft: '2px solid red',
             marginLeft: '-0.5rem',
-            backgroundColor: 'rgb(32 42 57)',
+            backgroundColor: 'var(--ch-annotation-bg, rgb(32 42 57))',
             padding: '0.5rem 1rem',
             marginTop: '0.25rem',
             whiteSpace: 'pre-wrap',
-            color: '#c9d1d9',
+            color: 'var(--ch-annotation-text, #c9d1d9)',
           }}
         >
           {annData.children || annotation.query}

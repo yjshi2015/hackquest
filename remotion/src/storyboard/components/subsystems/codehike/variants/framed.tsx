@@ -16,11 +16,17 @@ export const CodeHikeFramedLayout: React.FC<VariantViewProps> = ({
   renderCodeSequences,
   codePanelBg,
   codePanelBorder,
+  isLightTheme,
 }) => {
+  const textColor = isLightTheme ? tokens.colors.text : '#fff'
+  const subtitleColor = isLightTheme ? tokens.colors.muted : 'rgba(255,255,255,0.7)'
+  const eyebrowColor = isLightTheme ? tokens.colors.label : 'rgba(255,255,255,0.6)'
+  const outerBg = background ?? (isLightTheme ? tokens.colors.bg : '#0D1117')
+
   return (
     <AbsoluteFill
       style={{
-        background: background ?? '#0D1117',
+        background: outerBg,
         padding: spec.outerPadding,
         justifyContent: 'center',
         alignItems: 'center',
@@ -45,8 +51,8 @@ export const CodeHikeFramedLayout: React.FC<VariantViewProps> = ({
               currentStepProgress={timeline.currentStepProgress}
               height={3}
               gap={6}
-              activeColor="#fff"
-              railColor="#333"
+              activeColor={isLightTheme ? tokens.colors.text : '#fff'}
+              railColor={isLightTheme ? tokens.colors.borderSoft : '#333'}
             />
           </div>
         ) : null}
@@ -60,7 +66,7 @@ export const CodeHikeFramedLayout: React.FC<VariantViewProps> = ({
                   fontSize: tokens.storyboard.codeHike.framed.eyebrowSize,
                   letterSpacing: '0.16em',
                   textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.6)',
+                  color: eyebrowColor,
                   marginBottom: 6,
                 }}
               >
@@ -72,7 +78,7 @@ export const CodeHikeFramedLayout: React.FC<VariantViewProps> = ({
                 style={{
                   fontFamily: fonts.display,
                   fontSize: tokens.storyboard.codeHike.framed.titleSize,
-                  color: '#fff',
+                  color: textColor,
                   fontWeight: 700,
                   lineHeight: 1.05,
                   letterSpacing: '-0.02em',
@@ -86,7 +92,7 @@ export const CodeHikeFramedLayout: React.FC<VariantViewProps> = ({
                 style={{
                   fontFamily: fonts.body,
                   fontSize: tokens.storyboard.codeHike.framed.subtitleSize,
-                  color: 'rgba(255,255,255,0.7)',
+                  color: subtitleColor,
                   marginTop: 6,
                 }}
               >
@@ -108,7 +114,7 @@ export const CodeHikeFramedLayout: React.FC<VariantViewProps> = ({
           }}
         >
           <div style={{position: 'absolute', inset: 0, padding: '30px 24px'}}>
-            {renderCodeSequences({padding: 0, loadingDark: true})}
+            {renderCodeSequences({padding: 0, loadingDark: !isLightTheme})}
           </div>
         </div>
       </div>

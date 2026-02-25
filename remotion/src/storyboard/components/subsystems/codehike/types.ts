@@ -91,8 +91,8 @@ export const presetDefaults: Record<CodeHikePreset, CodeHikePresetConfig> = {
 
 export const layoutDefaults: Record<CodeHikeLayout, VariantSpec> = {
   minimal: {
-    theme: 'github-dark',
-    dark: true,
+    theme: 'github-light',
+    dark: false,
     showProgress: false,
     enableTwoslash: false,
     codeFontSize: 28,
@@ -101,8 +101,8 @@ export const layoutDefaults: Record<CodeHikeLayout, VariantSpec> = {
     outerPadding: '40px 64px',
   },
   framed: {
-    theme: 'github-dark',
-    dark: true,
+    theme: 'github-light',
+    dark: false,
     showProgress: true,
     enableTwoslash: true,
     codeFontSize: 26,
@@ -111,8 +111,8 @@ export const layoutDefaults: Record<CodeHikeLayout, VariantSpec> = {
     outerPadding: '36px 48px',
   },
   timeline: {
-    theme: 'github-dark',
-    dark: true,
+    theme: 'github-light',
+    dark: false,
     showProgress: true,
     enableTwoslash: false,
     codeFontSize: 24,

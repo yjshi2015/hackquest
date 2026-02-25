@@ -1,4 +1,4 @@
-import {colors, fonts} from '../../../../theme'
+import {colors, fonts, tokens} from '../../../../theme'
 
 export const StepSegmentsBar: React.FC<{
   stepCount: number
@@ -58,7 +58,13 @@ export const TimelineWeightedProgress: React.FC<{
   stepDurations: number[]
   activeStepIndex: number
   currentStepProgress: number
-}> = ({labels, stepDurations, activeStepIndex, currentStepProgress}) => {
+  isLightTheme?: boolean
+}> = ({labels, stepDurations, activeStepIndex, currentStepProgress, isLightTheme = false}) => {
+  const labelColor = isLightTheme ? tokens.colors.text : '#fff'
+  const labelDimColor = isLightTheme ? tokens.colors.muted : 'rgba(255,255,255,0.75)'
+  const railBg = isLightTheme ? tokens.colors.borderSoft : 'rgba(255,255,255,0.16)'
+  const fillBg = isLightTheme ? tokens.colors.text : 'rgba(255,255,255,0.9)'
+
   return (
     <div
       style={{
@@ -86,7 +92,7 @@ export const TimelineWeightedProgress: React.FC<{
               style={{
                 fontFamily: fonts.body,
                 fontSize: 22,
-                color: isCurrent ? '#fff' : 'rgba(255,255,255,0.75)',
+                color: isCurrent ? labelColor : labelDimColor,
                 lineHeight: 1.1,
                 textAlign: 'center',
               }}
@@ -99,14 +105,14 @@ export const TimelineWeightedProgress: React.FC<{
                 height: 10,
                 borderRadius: 999,
                 overflow: 'hidden',
-                backgroundColor: 'rgba(255,255,255,0.16)',
+                backgroundColor: railBg,
               }}
             >
               <div
                 style={{
                   height: '100%',
                   borderRadius: 999,
-                  backgroundColor: 'rgba(255,255,255,0.9)',
+                  backgroundColor: fillBg,
                   width:
                     index > activeStepIndex
                       ? '0%'

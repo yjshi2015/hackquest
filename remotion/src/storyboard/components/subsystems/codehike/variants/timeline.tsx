@@ -16,11 +16,16 @@ export const CodeHikeTimelineLayout: React.FC<VariantViewProps> = ({
   renderCodeSequences,
   codePanelBg,
   codePanelBorder,
+  isLightTheme,
 }) => {
+  const textColor = isLightTheme ? tokens.colors.text : '#fff'
+  const subtitleColor = isLightTheme ? tokens.colors.muted : 'rgba(255,255,255,0.7)'
+  const outerBg = background ?? (isLightTheme ? tokens.colors.bg : '#0D1117')
+
   return (
     <AbsoluteFill
       style={{
-        background: background ?? '#0D1117',
+        background: outerBg,
         padding: spec.outerPadding,
         justifyContent: 'center',
         alignItems: 'center',
@@ -45,7 +50,7 @@ export const CodeHikeTimelineLayout: React.FC<VariantViewProps> = ({
                 style={{
                   fontFamily: fonts.display,
                   fontSize: tokens.storyboard.codeHike.timeline.titleSize,
-                  color: '#fff',
+                  color: textColor,
                   fontWeight: 700,
                   letterSpacing: '-0.02em',
                 }}
@@ -58,7 +63,7 @@ export const CodeHikeTimelineLayout: React.FC<VariantViewProps> = ({
                 style={{
                   fontFamily: fonts.body,
                   fontSize: tokens.storyboard.codeHike.timeline.subtitleSize,
-                  color: 'rgba(255,255,255,0.7)',
+                  color: subtitleColor,
                   marginTop: 6,
                 }}
               >
@@ -86,9 +91,9 @@ export const CodeHikeTimelineLayout: React.FC<VariantViewProps> = ({
               metaStyle: {
                 fontFamily: fonts.body,
                 fontSize: 18,
-                color: 'rgba(255,255,255,0.75)',
+                color: isLightTheme ? tokens.colors.label : 'rgba(255,255,255,0.75)',
               },
-              loadingDark: true,
+              loadingDark: !isLightTheme,
             })}
           </div>
         </div>
@@ -99,6 +104,7 @@ export const CodeHikeTimelineLayout: React.FC<VariantViewProps> = ({
             stepDurations={timeline.stepDurations}
             activeStepIndex={timeline.activeStepIndex}
             currentStepProgress={timeline.currentStepProgress}
+            isLightTheme={isLightTheme}
           />
         ) : null}
       </div>

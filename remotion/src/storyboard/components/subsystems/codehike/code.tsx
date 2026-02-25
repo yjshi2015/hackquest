@@ -101,6 +101,8 @@ export const CodeStepFrame: React.FC<{
   handlers: AnnotationHandler[]
   showMetaLine?: boolean
   metaStyle?: CSSProperties
+  annotationBg?: string
+  annotationText?: string
 }> = ({
   oldCode,
   newCode,
@@ -110,11 +112,20 @@ export const CodeStepFrame: React.FC<{
   handlers,
   showMetaLine,
   metaStyle,
+  annotationBg,
+  annotationText,
 }) => {
   const {code, ref} = useTokenTransitions(oldCode, newCode, transitionFrames)
 
   return (
-    <div style={{width: '100%', height: '100%'}}>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        '--ch-annotation-bg': annotationBg ?? 'rgb(32 42 57)',
+        '--ch-annotation-text': annotationText ?? '#c9d1d9',
+      } as CSSProperties}
+    >
       {showMetaLine && newCode.meta ? (
         <div
           style={{

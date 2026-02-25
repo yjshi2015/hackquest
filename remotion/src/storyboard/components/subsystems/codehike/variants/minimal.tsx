@@ -14,11 +14,16 @@ export const CodeHikeMinimalLayout: React.FC<VariantViewProps> = ({
   resolvedShowProgress,
   renderCodeSequences,
   codePanelBg,
+  isLightTheme,
 }) => {
+  const textColor = isLightTheme ? tokens.colors.text : '#fff'
+  const subtitleColor = isLightTheme ? tokens.colors.muted : 'rgba(255,255,255,0.7)'
+  const outerBg = background ?? (isLightTheme ? tokens.colors.bg : codePanelBg)
+
   return (
     <AbsoluteFill
       style={{
-        background: background ?? codePanelBg,
+        background: outerBg,
         padding: spec.outerPadding,
         alignItems: 'center',
         justifyContent: 'center',
@@ -41,7 +46,7 @@ export const CodeHikeMinimalLayout: React.FC<VariantViewProps> = ({
               style={{
                 fontFamily: fonts.display,
                 fontSize: tokens.storyboard.codeHike.minimal.titleSize,
-                color: '#fff',
+                color: textColor,
                 fontWeight: 700,
                 letterSpacing: '-0.02em',
               }}
@@ -54,7 +59,7 @@ export const CodeHikeMinimalLayout: React.FC<VariantViewProps> = ({
               style={{
                 fontFamily: fonts.body,
                 fontSize: tokens.storyboard.codeHike.minimal.subtitleSize,
-                color: 'rgba(255,255,255,0.7)',
+                color: subtitleColor,
                 marginTop: 6,
               }}
             >
@@ -77,7 +82,7 @@ export const CodeHikeMinimalLayout: React.FC<VariantViewProps> = ({
         }}
       >
         <div style={{position: 'relative', minHeight: 560, width: '100%'}}>
-          {renderCodeSequences({padding: 0, loadingDark: true})}
+          {renderCodeSequences({padding: 0, loadingDark: !isLightTheme})}
         </div>
 
         {resolvedShowProgress ? (
@@ -88,8 +93,8 @@ export const CodeHikeMinimalLayout: React.FC<VariantViewProps> = ({
               currentStepProgress={timeline.currentStepProgress}
               height={4}
               gap={6}
-              activeColor="#ffffff"
-              railColor="rgba(255,255,255,0.18)"
+              activeColor={isLightTheme ? tokens.colors.text : '#ffffff'}
+              railColor={isLightTheme ? tokens.colors.borderSoft : 'rgba(255,255,255,0.18)'}
             />
           </div>
         ) : null}

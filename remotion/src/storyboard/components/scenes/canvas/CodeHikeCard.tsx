@@ -132,6 +132,8 @@ export const CodeHikeCard: React.FC<
     (codeSteps[0]?.style.backgroundColor as string | undefined) ??
     (spec.dark ? '#0D1117' : '#f6f7f8')
   const codePanelBorder = spec.dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.10)'
+  const annotationBg = isLightTheme ? 'rgba(0, 0, 0, 0.05)' : 'rgb(32 42 57)'
+  const annotationText = isLightTheme ? '#24292f' : '#c9d1d9'
   const labels = Array.from({length: timeline.stepCount}).map(
     (_, idx) => codeSteps[idx]?.label ?? `Step ${idx + 1}`,
   )
@@ -167,6 +169,8 @@ export const CodeHikeCard: React.FC<
                   handlers={handlers}
                   showMetaLine={opts?.showMetaLine}
                   metaStyle={opts?.metaStyle}
+                  annotationBg={annotationBg}
+                  annotationText={annotationText}
                 />
               </AbsoluteFill>
             </Sequence>

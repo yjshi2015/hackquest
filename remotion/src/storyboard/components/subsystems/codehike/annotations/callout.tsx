@@ -37,12 +37,12 @@ export const calloutHandler: AnnotationHandler = {
             minWidth: `${Math.max(0, column) + 4}ch`,
             marginLeft: `${props.indentation}ch`,
             width: 'fit-content',
-            backgroundColor: 'rgb(32 42 57)',
+            backgroundColor: 'var(--ch-annotation-bg, rgb(32 42 57))',
             padding: '0.5rem',
             position: 'relative',
             marginTop: '0.25rem',
             whiteSpace: 'pre-wrap',
-            color: '#c9d1d9',
+            color: 'var(--ch-annotation-text, #c9d1d9)',
             borderRadius: 8,
           }}
         >
@@ -54,7 +54,7 @@ export const calloutHandler: AnnotationHandler = {
               height: '0.5rem',
               transform: 'rotate(45deg) translateY(-50%)',
               top: '-2px',
-              backgroundColor: 'rgb(32 42 57)',
+              backgroundColor: 'var(--ch-annotation-bg, rgb(32 42 57))',
             }}
           />
           {annData.codeblock ? (
