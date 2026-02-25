@@ -10,7 +10,7 @@
 | 并列要点 / 能力清单 | `Bullet` | Segment `01` / `14` |
 | 字段化信息 / 协议结构 | `Table` | Segment `06` / `17` |
 | 双侧权衡 / 对比关系 | `Compare` | Segment `11` / `22` |
-| 术语定义 | `Definition` | Segment `21` |
+| 术语定义 | `Bullet`（term-first 写法） | Segment `21` |
 | 章节过渡 / 提醒 | `CalloutScene` | Segment `03` / `20` |
 | 演示视频标注 | `DemoOverlay` + `Scene Type: Video` | Segment `09` / `18` |
 | 纯视频镜头（无卡片） | `Scene Type: Video` | Segment `04` |
@@ -59,16 +59,17 @@
 
 ---
 
-### 4) `Definition`（术语边界）
+### 4) `Bullet`（术语边界：term-first 写法）
 
 代表段落：Segment `21`
 
 ![Segment 21](./images/segment-21.jpg)
 
 关键字段：
-- `term`: 术语本体
-- `definition`: 一句话定义
-- `notes`: 2-3 条补充，解释边界和常见误解
+- `title`: 术语本体
+- `subtitle`: 一句话定义
+- `bullets`: 2-3 条补充，解释维度和边界
+- `note`: 可选边界提醒（如“这不是投资建议”）
 
 ---
 

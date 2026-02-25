@@ -31,7 +31,6 @@ These timing props are expressed in seconds, not frames.
 Prefer a minimal scene-level API. Instructors usually do not need a top-level `appearAt`.
 
 - `noteAppearAt`: delay a follow-up note block
-- `asideAppearAt`: delay a side panel / side explanation block
 
 ## Item-Level Timing Props (seconds)
 

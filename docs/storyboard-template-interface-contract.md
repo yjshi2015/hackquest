@@ -24,7 +24,7 @@ When there is a conflict, resolve in this order:
    - `remotion/src/storyboard/parse-script-md.ts`
    - `remotion/scripts/validate-script.mjs`
 2. Schema documentation
-   - `remotion/src/storyboard/PROPS_SCHEMA.md`
+   - `docs/PROPS_SCHEMA.md` (auto-generated via `bun run lesson:components`)
 3. Component selection rules (Content authoring guidance)
    - `docs/component-selection-rules.md`
 4. This doc (shared interface + demo pack)
@@ -96,8 +96,6 @@ Use names like:
 
 - `Bullet`
 - `Steps`
-- `Definition`
-- `Warning`
 - `Compare`
 - `Glossary`
 - `Table`
@@ -105,6 +103,8 @@ Use names like:
 - `CodeExplain`
 
 Do not use deprecated names such as `BulletCard`, `CompareCard`, etc.
+
+`Definition` / `Warning` have been removed and should be authored using `Bullet` patterns.
 
 ### 3. Slide / markdown fallback is not the standard path
 
@@ -318,82 +318,25 @@ Ordered process where sequence matters.
 
 ---
 
-## 3. `Definition`
+## 3. `Definition` (Deprecated / Removed)
 
-### Intent
+Use `Bullet` with a term-first pattern instead:
 
-Term-first explanation and concept framing.
-
-### Typical Fields
-
-- `eyebrow` (optional)
-- `term`
-- `definition`
-- `notes[]` (optional)
-
-### Demo Copy (EN)
-
-```json
-{
-  "props": {
-    "eyebrow": "Component Demo",
-    "term": "Definition",
-    "definition": "A term-first component used to establish exact meaning before discussion.",
-    "notes": [
-      "Lead with the precise definition",
-      "Add 2-4 practical notes",
-      "Keep wording auditable and specific"
-    ]
-  }
-}
-```
-
-### Boundary Cases To Include In Demo/QA
-
-- `Minimal`: no `notes` (component should still render cleanly)
-- `Boundary-Passing`: `4` notes (validator max)
-- `Layout Shift`: test `3` notes vs `4` notes (component switches to 2-column layout after `>3`)
-- `Failure Probe`: `5` notes (should fail density validation)
+- `title` = term
+- `subtitle` = one-line definition
+- `bullets[]` = facets / boundary notes
+- `note` = optional scope reminder
 
 ---
 
-## 4. `Warning`
+## 4. `Warning` (Deprecated / Removed)
 
-### Intent
+Use `Bullet` (or `CalloutScene` for a single sentence warning) instead:
 
-Risks, failure modes, and mitigation reminders.
-
-### Typical Fields
-
-- `eyebrow` (optional)
-- `title`
-- `message`
-- `bullets[]`
-
-### Demo Copy (EN)
-
-```json
-{
-  "props": {
-    "eyebrow": "Risk",
-    "title": "Warning",
-    "message": "Use for operational risks that require explicit mitigation.",
-    "bullets": [
-      "Name the failure mode clearly",
-      "State the trigger condition",
-      "Add one actionable mitigation",
-      "Avoid vague alarmist wording"
-    ]
-  }
-}
-```
-
-### Boundary Cases To Include In Demo/QA
-
-- `Minimal`: `title` + `message` only (no bullets)
-- `Boundary-Passing`: `4` bullets (validator max) with concise action-oriented lines
-- `Copy Quality`: message is calm and specific (not alarmist)
-- `Failure Probe`: long `message` paragraph exceeding `body/message` density limit
+- `title` = risk event
+- `subtitle` = impact statement
+- `bullets[]` = issue / response items
+- `note` = operator rule (optional)
 
 ---
 
@@ -543,7 +486,12 @@ Explanatory text + supporting image evidence in one scene.
 - `eyebrow` (optional)
 - `title`
 - `subtitle` (optional)
+- `layout` (`text-image` | `image-text` | `hero` | `compare` | `gallery`; auto-detected when omitted)
+- `variant` (deprecated alias for `layout`; will be removed)
+- `images[]` (inline image objects; alternative to `Asset Ref`)
 - `bullets[]`
+- `note` (optional)
+- `compare` (optional; triggers compare layout)
 
 ### Demo Copy (EN)
 
@@ -570,7 +518,9 @@ Asset Ref: assets/diagram-system-boundary.png
 - `No Image`: omit `Asset Ref` and verify text-only fallback still looks intentional
 - `Single Image`: standard `Asset Ref` flow (cover mode)
 - `Dual Image`: add `Asset Ref 2` to exercise split stacked-image layout
+- `Layout Override`: set `layout: "hero"` explicitly to force hero mode regardless of image count
 - `Optional Title`: omit `title` but keep `subtitle`/`bullets` to test heading area balance
+- `Compare Layout`: supply `compare` object with `rows` to exercise compare-table mode
 - `Failure Probe`: non-image `Asset Ref` extension (validator should reject)
 
 ---
@@ -792,28 +742,43 @@ Asset Ref 2: assets/diagram-after.png
 }
 ```
 
-## Advanced Public Candidates (Use If Approved by Team)
+## Registered Public Components (Beyond Core Catalog Above)
 
-These are strong candidates for shared usage if they prove reusable across courses.
+The following components are fully registered in the component registry and can be used in `script.md`. For full props details, see `docs/PROPS_SCHEMA.md`.
 
 ### `HeroStatement`
 
 - Use for lesson opening thesis + deliverables.
 - Good for high-impact “what you will build” scenes.
+- Props: `statement`, `deliverables[]`, `note`, `noteAppearAt`
 
 ### `Roadmap`
 
 - Use for course/unit sequence overview.
 - Better than `Steps` when the goal is journey framing, not strict operation order.
+- Props: `title`, `subtitle`, `phases[]`, `activePhase`
 
 ### `ArchitectureDiagram`
 
 - Use for system modules and dependencies with nodes/edges.
 - Prefer when relationships matter more than screenshots.
+- Props: `title`, `subtitle`, `nodes[]`, `edges[]`, `note`
+- Validator checks that edge `from`/`to` reference valid node IDs.
 
 ### `QuadrantMap`
 
-- Use for taxonomy / 2x2 positioning / market landscape comparisons.
+- Use for taxonomy / 2×2 positioning / market landscape comparisons.
+- Props: `title`, axis labels, `quadrantLabels`, `highlightQuadrant`, `dangerQuadrant`, `markers[]`, `note`
+
+### `FireText`
+
+- Use for Fireship-style keyword impact, opening/transition emphasis.
+- Props: `lines[]`, `align`, `stagger`, `variant`
+
+### `CodeHike`
+
+- Use for advanced code walkthroughs with annotations, diffs, and step-through.
+- Props: `title`, `subtitle`, `preset`, `layout`, `annotations[]`, `theme`, `twoslash`, etc.
 
 ## Change Management (Required for Cross-Team Sync)
 
