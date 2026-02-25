@@ -128,7 +128,7 @@ bun scripts/list-storyboard-components.mjs --format=json
 
 - 组件注册表：`remotion/src/storyboard/registry.ts`
 - 每个组件的 props schema：`remotion/src/storyboard/components/*` 与 `remotion/src/templates/*`
-- 约定说明：`remotion/src/storyboard/PROPS_SCHEMA.md`
+- 约定说明：运行 `cd remotion && bun run lesson:components` 查看完整 props schema
 
 ## 6) 常用命令
 

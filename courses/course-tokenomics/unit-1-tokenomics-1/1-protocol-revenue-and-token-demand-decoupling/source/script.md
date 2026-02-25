@@ -123,16 +123,16 @@ Component: CalloutScene
 Voiceover:
 The answer is obviously no. If Uniswap were to directly distribute this money to token holders, in legal logic, it would be infinitely close to a security.
 
-Component: Warning
+Component: Bullet
 ```json
 {
   "props": {
     "title": "Direct Dividends Create Security Risk",
-    "message": "Direct distribution to token holders can move the token closer to securities classification.",
+    "subtitle": "Direct distribution to token holders can move the token closer to securities classification.",
     "bullets": [
-      "Cash-flow promises increase regulatory sensitivity",
-      "Token design must consider securities tests",
-      "Distribution logic can change legal treatment"
+      {"text": "Cash-flow promises increase regulatory sensitivity", "tone": "accent", "icon": "1"},
+      {"text": "Token design must consider securities tests", "icon": "2"},
+      {"text": "Distribution logic can change legal treatment", "icon": "3"}
     ]
   }
 }
@@ -142,16 +142,16 @@ Component: Warning
 Voiceover:
 In the United States, trading securities on any unregistered securities trading platform is illegal.
 
-Component: Warning
+Component: Bullet
 ```json
 {
   "props": {
     "title": "US Compliance Constraint",
-    "message": "Securities trading on unregistered platforms is illegal in the United States.",
+    "subtitle": "Securities trading on unregistered platforms is illegal in the United States.",
     "bullets": [
-      "Listing venue status matters",
-      "Token function design affects venue obligations",
-      "Compliance risk is systemic, not cosmetic"
+      {"text": "Listing venue status matters", "tone": "accent", "icon": "1"},
+      {"text": "Token function design affects venue obligations", "icon": "2"},
+      {"text": "Compliance risk is systemic, not cosmetic", "icon": "3"}
     ]
   }
 }
@@ -194,16 +194,16 @@ Component: Bullet
 Voiceover:
 Simple regulatory arbitrage or switching the registration location cannot truly remove the threat from institutions like the SEC, which possesses long-arm jurisdiction.
 
-Component: Warning
+Component: Bullet
 ```json
 {
   "props": {
     "title": "Long-Arm Jurisdiction",
-    "message": "Changing registration location alone does not neutralize enforcement exposure.",
+    "subtitle": "Changing registration location alone does not neutralize enforcement exposure.",
     "bullets": [
-      "Economic nexus can still trigger jurisdiction",
-      "Cross-border activity leaves legal footprints",
-      "Regulatory perimeter follows substance over form"
+      {"text": "Economic nexus can still trigger jurisdiction", "tone": "accent", "icon": "1"},
+      {"text": "Cross-border activity leaves legal footprints", "icon": "2"},
+      {"text": "Regulatory perimeter follows substance over form", "icon": "3"}
     ]
   }
 }
@@ -213,16 +213,16 @@ Component: Warning
 Voiceover:
 Therefore, this disconnection in value transmission is often not a technical barrier, but a compromise to legal regulation.
 
-Component: Definition
+Component: Bullet
 ```json
 {
   "props": {
-    "term": "Value Transmission Disconnection",
-    "definition": "A gap where protocol growth does not directly flow to token holders due to compliance-driven design constraints.",
-    "notes": [
-      "Primary constraint is legal architecture",
-      "Tokenomics must be co-designed with regulation",
-      "The bottleneck is governance and compliance, not code"
+    "title": "Value Transmission Disconnection",
+    "subtitle": "A gap where protocol growth does not directly flow to token holders due to compliance-driven design constraints.",
+    "bullets": [
+      {"text": "Primary constraint: legal architecture", "tone": "accent", "icon": "1"},
+      {"text": "Design implication: co-design tokenomics with regulation", "icon": "2"},
+      {"text": "Bottleneck: governance and compliance, not code", "icon": "3"}
     ]
   }
 }
@@ -277,16 +277,16 @@ Component: Table
 Voiceover:
 This illustrates that if a token only possesses governance functions and cannot share in the benefits of protocol growth, then its premium will continue to shrink.
 
-Component: Definition
+Component: Bullet
 ```json
 {
   "props": {
-    "term": "Governance-Only Discount",
-    "definition": "If a token has governance rights but weak economic linkage to protocol growth, its valuation premium can compress over time.",
-    "notes": [
-      "Utility without cash-flow expectation gets discounted",
-      "Narrative premium decays without capture mechanisms",
-      "Growth must map to holder value in a compliant way"
+    "title": "Governance-Only Discount",
+    "subtitle": "If a token has governance rights but weak economic linkage to protocol growth, its valuation premium can compress over time.",
+    "bullets": [
+      {"text": "Discount driver: utility without cash-flow expectation", "tone": "accent", "icon": "1"},
+      {"text": "Narrative risk: premium decays without capture mechanisms", "icon": "2"},
+      {"text": "Design requirement: map growth to holder value compliantly", "icon": "3"}
     ]
   }
 }
@@ -378,16 +378,16 @@ Component: CalloutScene
 Voiceover:
 This plays a role in deflation in an economic sense, rather than just the distribution of funds.
 
-Component: Definition
+Component: Bullet
 ```json
 {
   "props": {
-    "term": "Deflationary Value Return",
-    "definition": "Economic return can be expressed through supply reduction, not only through direct payout.",
-    "notes": [
-      "Burning reduces circulating supply",
-      "Mechanism avoids explicit dividend framing",
-      "Focus shifts from distribution to token economics"
+    "title": "Deflationary Value Return",
+    "subtitle": "Economic return can be expressed through supply reduction, not only through direct payout.",
+    "bullets": [
+      {"text": "Mechanism: burning reduces circulating supply", "tone": "accent", "icon": "1"},
+      {"text": "Compliance angle: avoid explicit dividend framing", "icon": "2"},
+      {"text": "Economic focus: shift from distribution to token economics", "icon": "3"}
     ]
   }
 }
