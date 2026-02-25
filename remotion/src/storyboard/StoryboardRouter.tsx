@@ -4,9 +4,7 @@ import type {ZodTypeAny} from 'zod';
 import {
   AbsoluteFill,
   Sequence,
-  spring,
   staticFile,
-  useCurrentFrame,
   useDelayRender,
   useRemotionEnvironment,
   useVideoConfig,
@@ -14,11 +12,12 @@ import {
 } from 'remotion';
 import {linearTiming, TransitionSeries} from '@remotion/transitions';
 import {fade} from '@remotion/transitions/fade';
-import {colors, fonts, motion, tokens} from '../theme';
+import {colors, fonts, tokens} from '../theme';
 import type {LessonBlockContext} from '../lesson-config';
 import {ChartCard} from '../templates/ChartCard';
 import {resolveLessonPublicPath} from '../lib/lesson-paths';
 import type {StoryboardInjected} from './types';
+import {legacyCardNameMap} from './legacy-names';
 import {parseScriptMd as parseScriptMdShared} from './parse-script-md';
 import type {LessonScriptSegment} from './parse-script-md';
 
@@ -48,399 +47,6 @@ type StoryboardRouterProps = {
   useTransitions?: boolean;
   transitionDurationInFrames?: number;
   transitionStyle?: 'cut' | 'snap' | 'fade';
-};
-
-const legacyCardNameMap: Record<string, string> = {
-  BulletCard: 'Bullet',
-  StepsCard: 'Steps',
-  DefinitionCard: 'Definition',
-  WarningCard: 'Warning',
-  CompareCard: 'Compare',
-  GlossaryCard: 'Glossary',
-  TableCard: 'Table',
-  SplitImageCard: 'SplitImage',
-  CodeExplainCard: 'CodeExplain',
-};
-
-type SlideTable = {
-  columns: string[];
-  rows: string[][];
-};
-
-type SlideContentBase = {
-  title?: string;
-  subtitle?: string;
-  bullets: string[];
-  paragraphs: string[];
-};
-
-type SlideContentDefault = SlideContentBase & {
-  layout: 'default';
-};
-
-type SlideContentTable = SlideContentBase & {
-  layout: 'table';
-  table: SlideTable;
-};
-
-type SlideContentColumns = SlideContentBase & {
-  layout: 'columns';
-  columns: {left: SlideContent; right: SlideContent};
-};
-
-type SlideContent = SlideContentDefault | SlideContentTable | SlideContentColumns;
-
-const parseSlideMarkdown = (
-  markdown?: string,
-  fallbackTitle?: string,
-): SlideContent => {
-  const lines = (markdown ?? '')
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  const parseTable = (rawLines: string[]): SlideTable | null => {
-    // Basic GitHub-flavored markdown table:
-    // | A | B |
-    // |---|---|
-    // | 1 | 2 |
-    const headerIndex = rawLines.findIndex((l) => l.includes('|'));
-    if (headerIndex === -1) return null;
-    const header = rawLines[headerIndex];
-    const divider = rawLines[headerIndex + 1];
-    if (!divider || !divider.includes('-') || !divider.includes('|')) return null;
-
-    const splitRow = (row: string) =>
-      row
-        .split('|')
-        .map((c) => c.trim())
-        .filter((c) => c.length > 0);
-
-    const columns = splitRow(header);
-    if (columns.length < 2) return null;
-    const dividerCells = splitRow(divider);
-    if (dividerCells.length !== columns.length) return null;
-
-    const rows: string[][] = [];
-    for (const row of rawLines.slice(headerIndex + 2)) {
-      if (!row.includes('|')) break;
-      const cells = splitRow(row);
-      if (cells.length === columns.length) rows.push(cells);
-    }
-
-    if (rows.length === 0) return null;
-    return {columns, rows};
-  };
-
-  const hrIndex = lines.findIndex((l) => l === '---');
-  const table = parseTable(lines);
-
-  let title: string | undefined;
-  let subtitle: string | undefined;
-  const bullets: string[] = [];
-  const paragraphs: string[] = [];
-
-  for (const line of lines) {
-    if (/^#{1,6}\s+/.test(line)) {
-      const text = line.replace(/^#{1,6}\s+/, '').trim();
-      if (!title) {
-        title = text;
-      } else if (!subtitle) {
-        subtitle = text;
-      } else {
-        paragraphs.push(text);
-      }
-      continue;
-    }
-
-    if (/^[-*+]\s+/.test(line) || /^\d+\.\s+/.test(line)) {
-      bullets.push(line.replace(/^([-*+]|\d+\.)\s+/, '').trim());
-      continue;
-    }
-
-    paragraphs.push(line);
-  }
-
-  if (!title && fallbackTitle) {
-    title = fallbackTitle;
-  }
-
-  if (table) {
-    return {layout: 'table', title, subtitle, bullets, paragraphs, table};
-  }
-
-  if (hrIndex !== -1) {
-    const leftLines = lines.slice(0, hrIndex).filter((l) => l !== '---');
-    const rightLines = lines.slice(hrIndex + 1).filter((l) => l !== '---');
-    const left: SlideContent = parseSlideMarkdown(leftLines.join('\n'));
-    const right: SlideContent = parseSlideMarkdown(rightLines.join('\n'));
-    return {
-      layout: 'columns',
-      title: title ?? left.title ?? right.title,
-      subtitle,
-      bullets,
-      paragraphs,
-      columns: {left, right},
-    };
-  }
-
-  return {layout: 'default', title, subtitle, bullets, paragraphs};
-};
-
-const SlideScene: React.FC<{
-  markdown?: string;
-  sceneContent?: string;
-  imageSrc?: string | null;
-}> = ({markdown, sceneContent, imageSrc}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-
-  const reveal = spring({frame, fps, config: motion.spring.standard});
-  const slideContent = parseSlideMarkdown(markdown, sceneContent);
-  const slide = tokens.storyboard.slide;
-
-  return (
-    <AbsoluteFill
-      style={{
-        padding: tokens.storyboard.canvasPadding,
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-      }}
-    >
-      <div
-        style={{
-          width: '100%',
-          maxWidth: slide.panelMaxWidth,
-          padding: `${slide.panelPadY}px ${slide.panelPadX}px`,
-          borderRadius: slide.panelRadius,
-          backgroundColor: colors.panelSoft,
-          border: `1px solid ${colors.borderSoft}`,
-          boxShadow: 'none',
-          transform: `translateY(${(1 - reveal) * 18}px)`,
-          opacity: reveal,
-          display: slideContent.layout === 'columns' || imageSrc ? 'grid' : 'block',
-          gridTemplateColumns:
-            slideContent.layout === 'columns' || imageSrc ? '1.1fr 0.9fr' : undefined,
-          gap: slideContent.layout === 'columns' || imageSrc ? slide.panelGridGap : undefined,
-          alignItems: 'start',
-        }}
-      >
-        <div>
-          {slideContent.title ? (
-            <div
-              style={{
-                fontFamily: fonts.display,
-                fontSize: slide.titleSize,
-                fontWeight: 750,
-                color: colors.text,
-                marginBottom: 14,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              {slideContent.title}
-            </div>
-          ) : null}
-          {slideContent.subtitle ? (
-            <div
-              style={{
-                fontFamily: fonts.body,
-                fontSize: slide.subtitleSize,
-                color: colors.muted,
-                marginBottom: 22,
-              }}
-            >
-              {slideContent.subtitle}
-            </div>
-          ) : null}
-
-          {slideContent.layout === 'table' && 'table' in slideContent ? (
-            <div
-              style={{
-                marginTop: 10,
-                overflow: 'hidden',
-                borderRadius: 16,
-                border: `1px solid ${colors.borderSoft}`,
-                backgroundColor: colors.background,
-              }}
-            >
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: `repeat(${slideContent.table.columns.length}, 1fr)`,
-                  gap: 0,
-                  padding: 14,
-                  backgroundColor: colors.panelSoft,
-                  borderBottom: `1px solid ${colors.borderSoft}`,
-                  fontFamily: fonts.body,
-                  fontSize: slide.tableHeaderSize,
-                  fontWeight: 800,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: colors.muted,
-                }}
-              >
-                {slideContent.table.columns.map((c: string) => (
-                  <div key={c}>{c}</div>
-                ))}
-              </div>
-              <div style={{display: 'grid', gap: 0}}>
-                {slideContent.table.rows.map((row: string[], idx: number) => (
-                  <div
-                    key={`${idx}`}
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: `repeat(${row.length}, 1fr)`,
-                      padding: 14,
-                      borderBottom:
-                        idx === slideContent.table.rows.length - 1
-                          ? 'none'
-                          : `1px solid ${colors.borderSoft}`,
-                      fontFamily: fonts.body,
-                      fontSize: slide.tableBodySize,
-                      color: colors.text,
-                    }}
-                  >
-                    {row.map((cell: string, cellIdx: number) => (
-                      <div key={`${idx}-${cellIdx}`}>{cell}</div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : slideContent.layout === 'columns' && 'columns' in slideContent ? (
-            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18}}>
-              <div>
-                {slideContent.columns.left.paragraphs.map((paragraph: string) => (
-                  <div
-                    key={paragraph}
-                    style={{
-                      fontFamily: fonts.body,
-                      fontSize: slide.bodySize,
-                      color: colors.text,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {paragraph}
-                  </div>
-                ))}
-                {slideContent.columns.left.bullets.length ? (
-                  <div style={{display: 'grid', gap: 12, marginTop: 6}}>
-                    {slideContent.columns.left.bullets.map((bullet: string) => (
-                      <div
-                        key={bullet}
-                        style={{
-                          display: 'flex',
-                          gap: 12,
-                          alignItems: 'flex-start',
-                          fontFamily: fonts.body,
-                          fontSize: slide.bulletSize,
-                          color: colors.text,
-                        }}
-                      >
-                        <span style={{color: colors.muted}}>-</span>
-                        <span>{bullet}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-              <div>
-                {slideContent.columns.right.paragraphs.map((paragraph: string) => (
-                  <div
-                    key={paragraph}
-                    style={{
-                      fontFamily: fonts.body,
-                      fontSize: slide.bodySize,
-                      color: colors.text,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {paragraph}
-                  </div>
-                ))}
-                {slideContent.columns.right.bullets.length ? (
-                  <div style={{display: 'grid', gap: 12, marginTop: 6}}>
-                    {slideContent.columns.right.bullets.map((bullet: string) => (
-                      <div
-                        key={bullet}
-                        style={{
-                          display: 'flex',
-                          gap: 12,
-                          alignItems: 'flex-start',
-                          fontFamily: fonts.body,
-                          fontSize: slide.bulletSize,
-                          color: colors.text,
-                        }}
-                      >
-                        <span style={{color: colors.muted}}>-</span>
-                        <span>{bullet}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            </div>
-          ) : (
-            <>
-              {slideContent.paragraphs.map((paragraph: string) => (
-                <div
-                  key={paragraph}
-                  style={{
-                    fontFamily: fonts.body,
-                    fontSize: slide.bodySize,
-                    color: colors.text,
-                    marginBottom: 12,
-                  }}
-                >
-                  {paragraph}
-                </div>
-              ))}
-              {slideContent.bullets.length ? (
-                <div style={{display: 'grid', gap: 14, marginTop: 8}}>
-                  {slideContent.bullets.map((bullet: string) => (
-                    <div
-                      key={bullet}
-                      style={{
-                        display: 'flex',
-                        gap: 12,
-                        alignItems: 'flex-start',
-                        fontFamily: fonts.body,
-                        fontSize: slide.bulletSize,
-                        color: colors.text,
-                      }}
-                    >
-                      <span style={{color: colors.muted}}>-</span>
-                      <span>{bullet}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-            </>
-          )}
-        </div>
-
-        {imageSrc ? (
-          <div
-            style={{
-              width: '100%',
-              height: 520,
-              borderRadius: 18,
-              overflow: 'hidden',
-              border: `1px solid ${colors.borderSoft}`,
-              backgroundColor: colors.background,
-              boxShadow: 'none',
-            }}
-          >
-            <img
-              alt=""
-              src={imageSrc}
-              style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block'}}
-            />
-          </div>
-        ) : null}
-      </div>
-    </AbsoluteFill>
-  );
 };
 
 const resolveChartConfig = (json?: Record<string, unknown>): ChartConfig | null => {
@@ -557,19 +163,27 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   const resolved = useMemo(() => {
     if (!scriptSegments || !timings) return [];
     const timingsById = new Map(timings.map((t) => [Number(t.id), t]));
-    return scriptSegments
-      .map((seg) => {
-        const timing = timingsById.get(Number(seg.id));
-        if (!timing) return null;
-        return {
-          ...seg,
-          startMs: timing.startMs,
-          durationMs: timing.durationMs,
-        };
-      })
-      .filter(Boolean) as Array<
-      LessonScriptSegment & {startMs: number; durationMs: number}
-    >;
+    const matched: Array<LessonScriptSegment & {startMs: number; durationMs: number}> = [];
+    const dropped: number[] = [];
+    for (const seg of scriptSegments) {
+      const timing = timingsById.get(Number(seg.id));
+      if (!timing) {
+        dropped.push(Number(seg.id));
+        continue;
+      }
+      matched.push({
+        ...seg,
+        startMs: timing.startMs,
+        durationMs: timing.durationMs,
+      });
+    }
+    if (dropped.length > 0) {
+      console.warn(
+        `[StoryboardRouter] ${dropped.length} segment(s) dropped — no matching timing entry: ${dropped.join(', ')}. ` +
+          'Did you forget to regenerate segment timings after adding new segments?',
+      );
+    }
+    return matched;
   }, [scriptSegments, timings]);
 
   const {fps} = useVideoConfig();
