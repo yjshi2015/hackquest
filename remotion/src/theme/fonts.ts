@@ -1,7 +1,12 @@
 import {loadFont} from '@remotion/fonts';
+import {loadFont as loadNotoSans} from '@remotion/google-fonts/NotoSans';
 import {staticFile} from 'remotion';
 
 export const nextBook = 'NEXT BOOK';
+
+// Noto Sans — neutral body / UI text font with broad Unicode coverage.
+const {fontFamily: notoSansFamily} = loadNotoSans();
+export const notoSans = notoSansFamily;
 
 let registered = false;
 

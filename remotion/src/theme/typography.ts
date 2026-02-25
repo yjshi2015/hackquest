@@ -1,8 +1,8 @@
-import {nextBook} from './fonts';
+import {notoSans, nextBook} from './fonts';
 
 export const typography = {
   fonts: {
-    body: nextBook,
+    body: notoSans,
     display: nextBook,
     brand: nextBook,
     mono:
