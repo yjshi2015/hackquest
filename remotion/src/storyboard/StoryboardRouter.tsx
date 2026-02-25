@@ -47,6 +47,7 @@ type StoryboardRouterProps = {
   startAtFrame?: number;
   useTransitions?: boolean;
   transitionDurationInFrames?: number;
+  transitionStyle?: 'cut' | 'snap' | 'fade';
 };
 
 const legacyCardNameMap: Record<string, string> = {
@@ -485,6 +486,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   startAtFrame = 0,
   useTransitions = false,
   transitionDurationInFrames: transitionDurationOverride,
+  transitionStyle = 'snap',
 }) => {
   const [scriptSegments, setScriptSegments] = useState<LessonScriptSegment[] | null>(null);
   const [timings, setTimings] = useState<SegmentTiming[] | null>(null);
@@ -573,8 +575,14 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   const {fps} = useVideoConfig();
   // Align with the Remotion docs TransitionSeries model:
   // Sequence durations are extended by transition length to preserve overall timeline length.
+  const rawTransitionDurationInFrames =
+    transitionDurationOverride ??
+    (transitionStyle === 'fade' ? Math.round(fps * 0.33) : Math.max(2, Math.round(fps * 0.17)));
   const transitionDurationInFrames =
-    transitionDurationOverride ?? Math.round(fps); // default: ~1s at 30fps
+    transitionStyle === 'snap'
+      ? Math.max(2, Math.min(rawTransitionDurationInFrames, Math.max(2, Math.round(fps * 0.2))))
+      : Math.max(1, rawTransitionDurationInFrames);
+  const useOverlapTransitions = useTransitions && transitionStyle !== 'cut';
   const baseDurationFramesById = useMemo(() => {
     const map = new Map<number, number>();
     for (let i = 0; i < resolved.length; i += 1) {
@@ -740,7 +748,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
 
   if (!resolved.length) return null;
 
-  if (!useTransitions) {
+  if (!useOverlapTransitions) {
     const segmentSequences = resolved.map((seg) => {
       const fromFrames = Math.max(
         0,

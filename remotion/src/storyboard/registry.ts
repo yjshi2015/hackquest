@@ -13,12 +13,12 @@ import {CodeExplainCard, CodeExplainCardPropsSchema} from './components/scenes/p
 import {CalloutVideoFrame, CalloutVideoFramePropsSchema} from './components/scenes/page/CalloutVideoFrame';
 import {CalloutScene, CalloutScenePropsSchema} from './components/scenes/page/CalloutScene';
 import {HeroStatementCard, HeroStatementCardPropsSchema} from './components/scenes/canvas/HeroStatementCard';
+import {DemoOverlayCard, DemoOverlayCardPropsSchema} from './components/scenes/canvas/DemoOverlayCard';
 import {RoadmapCard, RoadmapCardPropsSchema} from './components/scenes/page/RoadmapCard';
 import {ArchitectureDiagramCard, ArchitectureDiagramCardPropsSchema} from './components/scenes/canvas/ArchitectureDiagramCard';
 import {QuadrantMapCard, QuadrantMapCardPropsSchema} from './components/scenes/page/QuadrantMapCard';
 import {FireTextCard, FireTextCardPropsSchema} from './components/scenes/canvas/FireTextCard';
 import {CodeHikeCard, CodeHikeCardPropsSchema} from './components/scenes/canvas/CodeHikeCard';
-import {DemoOverlay, DemoOverlayPropsSchema} from '../templates/DemoOverlay';
 
 export type StoryboardComponentDef = {
   component: ComponentType<any>;
@@ -47,8 +47,8 @@ export const registry: Record<string, StoryboardComponentDef> = {
     assetKind: 'video',
   },
   DemoOverlay: {
-    component: DemoOverlay,
-    propsSchema: DemoOverlayPropsSchema,
+    component: DemoOverlayCard,
+    propsSchema: DemoOverlayCardPropsSchema,
     assetKind: 'video',
   },
   CalloutScene: {

@@ -71,6 +71,7 @@ type LessonMeta = {
   transitions?: {
     enabled?: boolean;
     durationFrames?: number;
+    style?: 'cut' | 'snap' | 'fade';
   };
   overlays?: {
     captions?: {
@@ -328,7 +329,6 @@ const LessonContent: React.FC<{
 
   const progress =
     context.contentDurationFrames === 0 ? 0 : Math.min(1, frame / context.contentDurationFrames);
-
   return (
     <AbsoluteFill>
       <Background />
@@ -346,6 +346,7 @@ const LessonContent: React.FC<{
         metaFile={metaFile}
         useTransitions={meta.transitions?.enabled ?? false}
         transitionDurationInFrames={meta.transitions?.durationFrames}
+        transitionStyle={meta.transitions?.style}
       />
 
       {meta.sections?.length ? (
