@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "id": "l1-protocol-revenue-token-demand-decoupling",
+  "courseId": "course-tokenomics",
+  "unitId": "unit-1-tokenomics-1",
+  "lessonId": "l1-protocol-revenue-and-token-demand-decoupling",
+  "title": "L1: Protocol Revenue and Token Demand Decoupling",
+  "unitLabel": "Unit 1 · Tokenomics-1",
+  "courseLabel": "Tokenomics",
+  "fps": 30,
+  "accentColor": "#FFE866",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cover": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "L1",
+    "lessonTitle": "Protocol Revenue vs Token Demand",
+    "heroFile": "cover/hero.svg"
+  },
+  "outro": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "L1",
+    "lessonTitle": "Protocol Revenue vs Token Demand",
+    "titleLines": ["Lesson Complete", "Tokenomics L1"],
+    "nextLessonTitle": "Token Utility and Capture Design",
+    "nextLessonLabel": "L2",
+    "heroFile": "cover/hero.svg"
+  },
+  "sections": [],
+  "assets": {
+    "audioMerged": "generated/audio/voiceover.mp3",
+    "segmentTimings": "generated/voiceover-en-segment-timings.json",
+    "captionsLines": "generated/captions/lines.json",
+    "audioSegmentsDir": "generated/audio/segments"
+  },
+  "scriptFile": "source/script.md"
+}

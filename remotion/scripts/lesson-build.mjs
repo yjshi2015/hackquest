@@ -80,12 +80,11 @@ const resolveTtsOutputDir = async (configPath) => {
 };
 
 const pickTtsScriptName = (ttsConfig) => {
-  const provider = String(ttsConfig?.provider ?? "google")
-    .trim()
-    .toLowerCase();
-  if (provider === "doubao") return "tts-doubao.mjs";
-  if (provider === "minimax") return "tts-minimax.mjs";
-  return "tts-google.mjs";
+  const provider = String(ttsConfig?.provider ?? "minimax").trim().toLowerCase();
+  if (!provider || provider === "minimax") return "tts-minimax.mjs";
+  throw new Error(
+    `Unsupported TTS provider "${provider}". Only "minimax" is supported.`,
+  );
 };
 
 const readSegments = async (segmentsPath) => {

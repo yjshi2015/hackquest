@@ -119,16 +119,18 @@ const CaptionRenderer: React.FC<
       <div
         style={{
           maxWidth,
-          padding: `22px ${paddingX}px`,
+          padding: `12px ${paddingX - 8}px`,
           borderRadius: 12,
-          backgroundColor: colors.panel,
+          backgroundColor: 'rgba(0, 0, 0, 0.18)',
           textAlign: 'center',
-          color: colors.text,
+          color: '#FFFFFF',
           fontFamily: fonts.body,
           fontSize: resolvedFontSize,
           fontWeight: 600,
           lineHeight: 1.25,
           whiteSpace: 'nowrap',
+          textShadow:
+            '0 4px 16px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 0.75), 0 0 2px rgba(0, 0, 0, 0.65)',
         }}
       >
         {caption.text}

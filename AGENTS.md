@@ -60,6 +60,56 @@ Hook (01-05) → Quick Win (06-10) → Hard Fun (11-25) → Exploration (26-35) 
 - `StepsCard` 仅用于严格流程步骤；能力清单、协议清单、模块范围默认不用 `StepsCard`。
 - 若选型与规则表冲突，需在交付说明里给出明确理由。
 
+#### Step 3.1: 台词到 Component/Props 的精确映射（防错配）
+
+目标：让每个 Segment 的 `Voiceover`、`Component`、`props` 三者语义一致，避免“牛头不对马嘴”。
+
+执行顺序（必须按顺序）：
+
+1. 先写一句“语义锚点”（该段唯一核心意思，15-30 字）。
+2. 给这句锚点打类型标签：`定义` / `对比` / `流程` / `并列清单` / `演示` / `结论提醒`。
+3. 仅从 `docs/component-selection-rules.md` 里选该标签允许的组件。
+4. 再写 `props`，且每个字段都要能在旁白里找到对应表达。
+5. 最后做“反向朗读校验”：只看画面（不听音频）时，能否准确复述该段核心意思。
+
+`Voiceover -> Component` 快速映射：
+
+- 术语定义、概念边界：`DefinitionCard`
+- 两对象差异、权衡：`CompareCard`
+- 有严格先后依赖的步骤：`StepsCard`
+- 并列要点、能力清单：`BulletCard`
+- 字段化/结构化信息：`TableCard`
+- 过渡、警示、结论句：`CalloutScene` 或 `WarningCard`
+- 实操录屏讲解：`Scene Type: Video` + `DemoOverlay` / `CalloutVideoFrame`
+
+`props` 填充约束（强制）：
+
+1. 不把旁白整段粘进单个字段。优先拆成标题 + 2-4 个信息点。
+2. 不在 `props` 里新增“旁白没说过的新结论”。
+3. 数值、时间、协议名等关键实体必须与旁白逐字一致（大小写与术语统一）。
+4. `StepsCard.steps` 每一步必须是动作或状态变化，不能是泛泛名词。
+5. `CompareCard.left/right` 维度必须对齐，禁止左侧写优势、右侧写流程。
+6. 若使用 `Asset Ref`，画面资产必须直接支撑该段核心语义，不能只“相关但不证明”。
+
+组件与 schema 对齐检查：
+
+1. 先运行 `cd remotion && bun run lesson:components` 查看可用组件与 props。
+2. `Component:` 后必须紧跟 fenced `json` 且使用信封格式：`{"props": {...}}`。
+3. 写完后运行 `cd remotion && bun run lesson:validate -- --lesson-root <lessonRoot>`，确保组件名与 Zod schema 全通过。
+
+常见错配反例（写作时主动规避）：
+
+- 讲“定义”却用了 `BulletCard` 堆要点，导致边界不清。
+- 讲“并列能力项”却用了 `StepsCard`，错误制造流程感。
+- 讲“视频演示”却给纯文字卡片，旁白与镜头脱节。
+- `props` 字段齐全但语义空洞（只改字面，不承载该段主张）。
+
+交付前最小验收（每个 Segment 都要过）：
+
+1. 一句话说清该段主张（What）。
+2. 组件能表达“为什么是这个主张”（Why），不是只摆信息。
+3. 画面与旁白互相可验证，不互相依赖猜测。
+
 每个 Segment 的推荐结构如下（字段名区分大小写不严格，但建议保持一致）。
 
 注意：`Voiceover:` 之后会进入旁白文本采集模式。除“字段行”（如 `Scene Type:` / `Asset Ref:`）和 fenced code block 外，不要夹杂额外解释行，否则会被误当成旁白文本。

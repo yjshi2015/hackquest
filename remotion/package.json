@@ -18,15 +18,12 @@
     "public:sync": "bun scripts/sync-public-dir.mjs",
     "captions": "bun scripts/build-line-captions.mjs",
     "segments": "bun scripts/build-segments-from-script.mjs",
-    "tts:google": "bun scripts/tts-google.mjs",
-    "tts:doubao": "bun scripts/tts-doubao.mjs",
     "tts:minimax": "bun scripts/tts-minimax.mjs",
     "merge:voiceover": "bun scripts/merge-voiceover.mjs",
     "segments:timings": "bun scripts/build-segment-timings.mjs",
     "courses:kebab": "bun scripts/rename-courses-kebab.mjs"
   },
   "dependencies": {
-    "@google-cloud/text-to-speech": "^5.1.0",
     "@remotion/captions": "^4.0.0",
     "@remotion/cli": "^4.0.0",
     "@remotion/fonts": "4.0.417",

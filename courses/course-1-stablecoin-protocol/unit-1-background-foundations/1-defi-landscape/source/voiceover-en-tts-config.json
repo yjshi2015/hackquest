@@ -1,23 +1,16 @@
 {
-  "languageCode": "en-US",
-  "voiceName": "en-US-Chirp3-HD-Umbriel",
-  "speakingRate": 1.06,
+  "provider": "minimax",
+  "model": "speech-2.8-hd",
+  "languageBoost": "English",
+  "voiceId": "English_Insightful_Speaker",
+  "speed": 1.06,
+  "volume": 1.0,
   "pitch": 0,
-  "volumeGainDb": 0,
-  "audioEncoding": "MP3",
-  "useSsml": true,
-  "breaksMs": {
-    "comma": 120,
-    "dash": 160,
-    "sentence": 260,
-    "semicolon": 180
-  },
-  "emphasisLevel": "moderate",
-  "emphasisMode": "tag",
-  "emphasisPitch": "+1st",
-  "emphasisRate": "medium",
-  "emphasisWords": [
-  ],
+  "sampleRate": 32000,
+  "bitrate": 128000,
+  "format": "mp3",
+  "channel": 1,
+  "outputFormat": "hex",
   "pronunciations": {
     "DeFi": "dee-fye",
     "DeFi Llama": "dee-fye llama",
@@ -53,17 +46,5 @@
     "Arbitrum": "are-bi-trum",
     "Ethereum": "ee-theer-ee-um"
   },
-  "prosodyRules": [
-    {
-      "pattern": "^(Now|But|So|Alright|Here)\\b",
-      "pitch": "+1st",
-      "rate": "medium"
-    },
-    {
-      "pattern": "\\?$",
-      "pitch": "+1st",
-      "rate": "medium"
-    }
-  ],
   "outputDir": "generated/audio/segments"
 }

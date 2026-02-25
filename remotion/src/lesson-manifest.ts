@@ -17,7 +17,15 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 181
+    "durationInFrames": 12941
+  },
+  {
+    "id": "l1-protocol-revenue-token-demand-decoupling",
+    "metaFile": "course-tokenomics/unit-1-tokenomics-1/1-protocol-revenue-and-token-demand-decoupling/source/lesson.meta.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 9463
   },
   {
     "id": "prediction-market-curriculum-overview",
