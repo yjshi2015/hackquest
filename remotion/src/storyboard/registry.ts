@@ -3,8 +3,6 @@ import type {ZodTypeAny} from 'zod';
 
 import {BulletCard, BulletCardPropsSchema} from './components/scenes/page/BulletCard';
 import {StepsCard, StepsCardPropsSchema} from './components/scenes/page/StepsCard';
-import {DefinitionCard, DefinitionCardPropsSchema} from './components/scenes/page/DefinitionCard';
-import {WarningCard, WarningCardPropsSchema} from './components/scenes/page/WarningCard';
 import {CompareCard, CompareCardPropsSchema} from './components/scenes/page/CompareCard';
 import {GlossaryCard, GlossaryCardPropsSchema} from './components/scenes/page/GlossaryCard';
 import {TableCard, TableCardPropsSchema} from './components/scenes/page/TableCard';
@@ -30,8 +28,6 @@ export const registry: Record<string, StoryboardComponentDef> = {
   // Use from script.md as: `Component: Bullet` with a `{"props": ... }` JSON block.
   Bullet: {component: BulletCard, propsSchema: BulletCardPropsSchema},
   Steps: {component: StepsCard, propsSchema: StepsCardPropsSchema},
-  Definition: {component: DefinitionCard, propsSchema: DefinitionCardPropsSchema},
-  Warning: {component: WarningCard, propsSchema: WarningCardPropsSchema},
   Compare: {component: CompareCard, propsSchema: CompareCardPropsSchema},
   Glossary: {component: GlossaryCard, propsSchema: GlossaryCardPropsSchema},
   Table: {component: TableCard, propsSchema: TableCardPropsSchema},
