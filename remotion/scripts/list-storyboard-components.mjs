@@ -100,7 +100,7 @@ const describeProps = (propsSchema) => {
   // Instructor-facing docs: hide deprecated/not-recommended fields.
   // We keep runtime compatibility (schemas/components may still accept these),
   // but we don't want to encourage new usage.
-  const HIDDEN_PROPS = new Set(['eyebrow', 'badge', 'callouts']);
+  const HIDDEN_PROPS = new Set(['badge', 'callouts']);
 
   const out = {};
   for (const [key, fieldSchema] of Object.entries(shape)) {

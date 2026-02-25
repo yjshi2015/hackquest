@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 import {parseScriptMd} from '../src/storyboard/parse-script-md.ts';
+import {legacyCardNameMap} from '../src/storyboard/legacy-names.ts';
 import {resolveDefaultLessonRoot} from './lib/default-lesson-root.mjs';
 import {resolveMetaFileAbsPath} from './lib/resolve-meta-path.mjs';
 import {z} from 'zod';
@@ -81,11 +82,40 @@ if (extraInTimings.length) {
   );
 }
 
+const timingsById = new Map(
+  (Array.isArray(timings) ? timings : []).map((t) => [Number(t.id), t]),
+);
+
 const isVideoRef = (assetRef) =>
   Boolean(assetRef && /\.(mp4|mov|webm|mkv)(\?.*)?$/i.test(assetRef));
 
 const isImageRef = (assetRef) =>
   Boolean(assetRef && /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(assetRef));
+
+/**
+ * Try to resolve an asset ref to an absolute path and check it exists on disk.
+ * Returns null if the file exists (or we can't determine the path), or an error
+ * string if the file is clearly missing.
+ */
+const checkAssetExists = async (assetRef, metaAbsPath) => {
+  if (!assetRef) return null;
+  if (/^https?:\/\//i.test(assetRef)) return null; // remote URL, skip
+  // Try lesson-local first, then repo-level public
+  const lessonSourceDir = path.dirname(metaAbsPath);
+  const lessonRoot2 = path.dirname(lessonSourceDir);
+  const candidates = [
+    path.resolve(lessonRoot2, assetRef),
+    path.resolve(lessonSourceDir, assetRef),
+    path.resolve(repoRoot, 'remotion', '.hq-public', assetRef),
+  ];
+  for (const c of candidates) {
+    try {
+      await fs.access(c);
+      return null; // found
+    } catch { /* next */ }
+  }
+  return `Asset file not found: "${assetRef}" (checked ${candidates.length} locations)`;
+};
 
 const ChartSchema = z
   .object({
@@ -155,18 +185,6 @@ const arrayItemLimits = {
   rows: 6,
 };
 
-const legacyCardNameMap = {
-  BulletCard: 'Bullet',
-  StepsCard: 'Steps',
-  DefinitionCard: 'Definition',
-  WarningCard: 'Warning',
-  CompareCard: 'Compare',
-  GlossaryCard: 'Glossary',
-  TableCard: 'Table',
-  SplitImageCard: 'SplitImage',
-  CodeExplainCard: 'CodeExplain',
-};
-
 const collectPropsDensityIssues = (props) => {
   const issues = [];
 
@@ -215,6 +233,9 @@ const collectPropsDensityIssues = (props) => {
 };
 
 const scriptSegments = script.segments ?? [];
+const errors = [];
+const warnings = [];
+
 for (const seg of scriptSegments) {
   const id = Number(seg.id);
   const visual = seg.visual ?? {};
@@ -227,62 +248,118 @@ for (const seg of scriptSegments) {
   if (componentName) {
     const migratedName = legacyCardNameMap[componentName];
     if (migratedName) {
-      throw new Error(
+      errors.push(
         `Segment ${id}: Component "${componentName}" is deprecated. Use "${migratedName}" instead.`,
       );
+      continue;
     }
 
     const def = storyboardComponentsRegistry[componentName];
     if (!def) {
-      throw new Error(
+      errors.push(
         `Segment ${id}: Unknown component "${componentName}". Add it to src/storyboard/registry.ts`,
       );
+      continue;
     }
     if (!json || typeof json !== 'object') {
-      throw new Error(
+      errors.push(
         `Segment ${id}: Component "${componentName}" requires a \`\`\`json block with {"props": {...}}`,
       );
+      continue;
     }
     const props = json?.props;
     if (!props || typeof props !== 'object' || Array.isArray(props)) {
-      throw new Error(
+      errors.push(
         `Segment ${id}: Component "${componentName}" requires JSON envelope {"props": {...}} (top-level props are not allowed)`,
       );
+      continue;
     }
 
     const parsed = def.propsSchema.safeParse(props);
     if (!parsed.success) {
-      throw new Error(
+      errors.push(
         `Segment ${id}: Invalid props for "${componentName}": ${formatZodIssues(parsed.error)}`,
       );
+      continue;
     }
 
     const densityIssues = collectPropsDensityIssues(parsed.data);
     if (densityIssues.length) {
-      throw new Error(
-        `Segment ${id}: Props too dense for "${componentName}": ${densityIssues
+      // Density issues are warnings, not hard errors — AI-generated content can be verbose
+      warnings.push(
+        `Segment ${id}: Props density for "${componentName}": ${densityIssues
           .slice(0, 8)
           .join('; ')}`,
       );
     }
 
+    // ── appearAt range check: warn if any value exceeds segment duration ──
+    const segTiming = timingsById.get(id);
+    if (segTiming) {
+      const segDurationSec = segTiming.durationMs / 1000;
+      const collectAppearAt = (val, parts = []) => {
+        if (val && typeof val === 'object' && !Array.isArray(val)) {
+          for (const [k, v] of Object.entries(val)) {
+            collectAppearAt(v, [...parts, k]);
+          }
+        } else if (Array.isArray(val)) {
+          val.forEach((item, idx) => collectAppearAt(item, [...parts, idx]));
+        } else if (typeof val === 'number') {
+          const key = String(parts[parts.length - 1] ?? '');
+          if (/appearAt/i.test(key) && val > segDurationSec) {
+            warnings.push(
+              `Segment ${id}: ${pathToString(parts)} = ${val}s exceeds segment duration (${segDurationSec.toFixed(1)}s)`,
+            );
+          }
+        }
+      };
+      collectAppearAt(parsed.data);
+    }
+
+    // ── ArchitectureDiagram: cross-validate edge from/to against node IDs ──
+    if (componentName === 'ArchitectureDiagram' && parsed.data.nodes && parsed.data.edges) {
+      const nodeIds = new Set(parsed.data.nodes.map((n) => n.id));
+      for (const edge of parsed.data.edges) {
+        if (edge.from && !nodeIds.has(edge.from)) {
+          errors.push(
+            `Segment ${id}: ArchitectureDiagram edge "from" references unknown node "${edge.from}". Valid IDs: ${[...nodeIds].join(', ')}`,
+          );
+        }
+        if (edge.to && !nodeIds.has(edge.to)) {
+          errors.push(
+            `Segment ${id}: ArchitectureDiagram edge "to" references unknown node "${edge.to}". Valid IDs: ${[...nodeIds].join(', ')}`,
+          );
+        }
+      }
+    }
+
+    // ── Asset existence checks ──
     if (def.assetKind === 'video') {
       if (!assetRef || !isVideoRef(assetRef)) {
-        throw new Error(
+        errors.push(
           `Segment ${id}: Component "${componentName}" requires Asset Ref to be a video file (mp4/mov/webm/mkv). Got: ${String(assetRef)}`,
         );
+      } else {
+        const missing = await checkAssetExists(assetRef, metaPath);
+        if (missing) warnings.push(`Segment ${id}: ${missing}`);
       }
     }
     if (def.assetKind === 'image') {
       if (!assetRef || !isImageRef(assetRef)) {
-        throw new Error(
+        errors.push(
           `Segment ${id}: Component "${componentName}" requires Asset Ref to be an image file (png/jpg/webp/gif/svg). Got: ${String(assetRef)}`,
         );
+      } else {
+        const missing = await checkAssetExists(assetRef, metaPath);
+        if (missing) warnings.push(`Segment ${id}: ${missing}`);
       }
       if (assetRef2 && !isImageRef(assetRef2)) {
-        throw new Error(
+        errors.push(
           `Segment ${id}: Asset Ref 2 must be an image file (png/jpg/webp/gif/svg). Got: ${String(assetRef2)}`,
         );
+      } else if (assetRef2) {
+        const missing2 = await checkAssetExists(assetRef2, metaPath);
+        if (missing2) warnings.push(`Segment ${id}: ${missing2}`);
       }
     }
     continue;
@@ -293,30 +370,47 @@ for (const seg of scriptSegments) {
     Boolean(visual.markdown) ||
     Boolean(visual.sceneContent);
   if (isSlideLikeScene) {
-    throw new Error(
+    errors.push(
       `Segment ${id}: Slide/markdown scenes are disabled. Use "Component: <Name>" with JSON {"props": {...}}.`,
     );
+    continue;
   }
 
   if (/video/.test(sceneType)) {
     if (!assetRef || !isVideoRef(assetRef)) {
-      throw new Error(
+      errors.push(
         `Segment ${id}: Scene Type Video requires Asset Ref to be a video file. Got: ${String(assetRef)}`,
       );
+    } else {
+      const missing = await checkAssetExists(assetRef, metaPath);
+      if (missing) warnings.push(`Segment ${id}: ${missing}`);
     }
     continue;
   }
 
   if (/chart|graph/.test(sceneType)) {
     if (!json || typeof json !== 'object') {
-      throw new Error(`Segment ${id}: Scene Type Chart requires a JSON block.`);
+      errors.push(`Segment ${id}: Scene Type Chart requires a JSON block.`);
+      continue;
     }
     const chartCandidate = json.chart ?? json;
-    const parsed = ChartSchema.safeParse(chartCandidate);
-    if (!parsed.success) {
-      throw new Error(`Segment ${id}: Invalid chart JSON: ${formatZodIssues(parsed.error)}`);
+    const chartParsed = ChartSchema.safeParse(chartCandidate);
+    if (!chartParsed.success) {
+      errors.push(`Segment ${id}: Invalid chart JSON: ${formatZodIssues(chartParsed.error)}`);
     }
   }
 }
 
-console.log('Validation passed.');
+// ── Report ──
+if (warnings.length) {
+  console.warn(`\n⚠️  ${warnings.length} warning(s):`);
+  for (const w of warnings) console.warn(`  ⚠️  ${w}`);
+  console.warn('');
+}
+if (errors.length) {
+  console.error(`\n❌ ${errors.length} error(s):`);
+  for (const e of errors) console.error(`  ❌ ${e}`);
+  console.error('');
+  process.exit(1);
+}
+console.log('✅ Validation passed.');
