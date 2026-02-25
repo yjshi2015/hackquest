@@ -216,15 +216,15 @@ Component: CodeExplain
 
 ## Segment 11
 Voiceover:
-沉浸式录屏并带轻量标注时，用 DemoOverlay。通常一个标题、一个角标、一个重点框就足够。
+沉浸式录屏即使只做轻量标注，也优先用 CalloutVideoFrame。通常一个标题、一个角标、一个重点框就足够。
 
 Scene Type: Video
-Component: DemoOverlay
+Component: CalloutVideoFrame
 Asset Ref: assets/fake-ide-walkthrough.mp4
 ```json
 {
   "props": {
-    "title": "DemoOverlay",
+    "title": "CalloutVideoFrame",
     "badge": "组件",
     "callouts": [
       {"type": "rect", "x": 1080, "y": 220, "w": 620, "h": 340, "label": "重点区域"}
@@ -235,7 +235,7 @@ Asset Ref: assets/fake-ide-walkthrough.mp4
 
 ## Segment 12
 Voiceover:
-当你需要更强的视频包裹感时，用 CalloutVideoFrame。面对密集 UI 演示，它通常比裸 Overlay 更稳。
+当你需要更强的视频包裹感时，继续用同一个组件，再加副标题、模糊遮罩和多个标注。面对密集 UI 演示，它比裸 Overlay 更稳。
 
 Scene Type: Video
 Component: CalloutVideoFrame

@@ -25,13 +25,23 @@
     "durationFrames": 90,
     "lessonLabel": "Demo Lesson",
     "lessonTitle": "All Formats",
-    "titleLines": ["Lesson Complete", "All Formats"],
+    "titleLines": [
+      "Lesson Complete",
+      "All Formats"
+    ],
     "nextLessonLabel": "Next",
     "nextLessonTitle": "Component Optimization Sprint",
     "heroFile": "cover/hero.svg"
   },
-  "sections": [
-  ],
+  "sections": [],
+  "overlays": {
+    "captions": {
+      "enabled": false
+    },
+    "header": {
+      "enabled": false
+    }
+  },
   "assets": {
     "audioMerged": "generated/audio/voiceover.mp3",
     "segmentTimings": "generated/voiceover-en-segment-timings.json",

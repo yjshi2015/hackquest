@@ -216,15 +216,15 @@ Component: CodeExplain
 
 ## Segment 11
 Voiceover:
-Use DemoOverlay for immersive screen recordings with light annotation. One title, one badge, one focus callout is usually enough.
+Use CalloutVideoFrame for immersive screen recordings, even when annotation is light. One title, one badge, and one focus callout is usually enough.
 
 Scene Type: Video
-Component: DemoOverlay
+Component: CalloutVideoFrame
 Asset Ref: assets/fake-ide-walkthrough.mp4
 ```json
 {
   "props": {
-    "title": "DemoOverlay",
+    "title": "CalloutVideoFrame",
     "badge": "Component",
     "callouts": [
       {"type": "rect", "x": 1080, "y": 220, "w": 620, "h": 340, "label": "Focus"}
@@ -235,7 +235,7 @@ Asset Ref: assets/fake-ide-walkthrough.mp4
 
 ## Segment 12
 Voiceover:
-Use CalloutVideoFrame when you need stronger framing around video content. It is better than raw overlays for dense UI walkthroughs.
+Use the same component with subtitle, blur masks, and multiple callouts when you need stronger framing around video content.
 
 Scene Type: Video
 Component: CalloutVideoFrame
@@ -521,6 +521,65 @@ Component: Bullet
       {"text": "Copy guidelines by component type", "icon": "2"},
       {"text": "Visual QA checklist per scene", "icon": "3"}
     ]
+  }
+}
+```
+
+## Segment 23
+Voiceover:
+Use CodeHike when code evolves across steps. Start with the diff preset, which defaults to the timeline layout and mark annotations.
+
+Component: CodeHike
+Asset Ref: assets/codehike/segment-23.md
+```json
+{
+  "props": {
+    "title": "CodeHike · Diff Preset",
+    "subtitle": "preset: diff, layout: timeline, annotations: [mark]",
+    "preset": "diff",
+    "layout": "timeline",
+    "annotations": ["mark"],
+    "theme": "github-dark",
+    "transitionFrames": 48
+  }
+}
+```
+
+## Segment 24
+Voiceover:
+The walkthrough preset uses the minimal layout by default. Here we keep that layout, but override annotations and twoslash to show capabilities are independent from the visual shell.
+
+Component: CodeHike
+Asset Ref: assets/codehike/segment-26-matt.md
+```json
+{
+  "props": {
+    "title": "CodeHike · Walkthrough Preset + TS Annotations",
+    "subtitle": "preset: walkthrough, layout: minimal, annotations override + twoslash",
+    "preset": "walkthrough",
+    "layout": "minimal",
+    "annotations": ["mark", "callout", "error"],
+    "twoslash": true,
+    "theme": "github-dark"
+  }
+}
+```
+
+## Segment 25
+Voiceover:
+The TypeScript preset bundles the framed layout with twoslash enabled, which is the easiest mode for teaching type reasoning and compiler diagnostics.
+
+Component: CodeHike
+Asset Ref: assets/codehike/segment-26-matt.md
+```json
+{
+  "props": {
+    "title": "CodeHike · TypeScript Preset",
+    "subtitle": "preset: typescript, layout: framed, twoslash + callout/error",
+    "preset": "typescript",
+    "layout": "framed",
+    "theme": "github-dark",
+    "transitionFrames": 90
   }
 }
 ```
