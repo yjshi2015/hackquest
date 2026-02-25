@@ -40,7 +40,39 @@ export const tokens = {
     maxContentWidth: 1440,
   },
   storyboard: {
+    header: {
+      eyebrowSize: 17,
+      titleSizeDefault: 36,
+      subtitleSizeDefault: 24,
+      titleSizeStandard: 66,
+      titleSizeDefinition: 88,
+      titleSizeCallout: 74,
+      titleSizeVideoFrame: 64,
+      titleSizeCodeExplain: 70,
+      titleSizeSplitImageSingle: 70,
+      titleSizeSplitImageDual: 62,
+    },
     canvasPadding: 96,
+    architecture: {
+      eyebrowSize: 20,
+      titleSize: 44,
+      subtitleSize: 24,
+    },
+    codeHike: {
+      minimal: {
+        titleSize: 36,
+        subtitleSize: 22,
+      },
+      framed: {
+        eyebrowSize: 14,
+        titleSize: 34,
+        subtitleSize: 20,
+      },
+      timeline: {
+        titleSize: 34,
+        subtitleSize: 20,
+      },
+    },
     codeBlock: {
       borderRadius: 20,
       headerPadY: 18,

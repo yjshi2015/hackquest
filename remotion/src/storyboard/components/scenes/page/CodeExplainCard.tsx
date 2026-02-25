@@ -1,10 +1,10 @@
 import {z} from 'zod';
 
-import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts, tokens} from '../../theme';
-import {CodeBlock} from '../../ui/CodeBlock';
-import type {StoryboardInjected} from '../types';
-import {SceneScaffold} from './SceneScaffold';
+import type {LessonBlockContext} from '../../../../lesson-config';
+import {colors, fonts, tokens} from '../../../../theme';
+import {CodeBlock} from '../../../../ui/CodeBlock';
+import type {StoryboardInjected} from '../../../types';
+import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 
 export const CodeExplainCardPropsSchema = z
   .object({
@@ -34,7 +34,7 @@ export const CodeExplainCard: React.FC<
       eyebrow={eyebrow}
       title={title}
       contentTop={24}
-      titleSize={70}
+      titleSize={tokens.storyboard.header.titleSizeCodeExplain}
     >
       <div
         style={{

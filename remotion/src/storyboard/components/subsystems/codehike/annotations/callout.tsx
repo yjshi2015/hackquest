@@ -1,0 +1,69 @@
+import type {AnnotationHandler, HighlightedCode, InlineAnnotation} from 'codehike/code'
+import {InnerLine, Pre} from 'codehike/code'
+import {interpolate, useCurrentFrame} from 'remotion'
+
+export const calloutHandler: AnnotationHandler = {
+  name: 'callout',
+  transform: (annotation: InlineAnnotation) => {
+    const {name, query, lineNumber, fromColumn, toColumn, data} = annotation
+    return {
+      name,
+      query,
+      fromLineNumber: lineNumber,
+      toLineNumber: lineNumber,
+      data: {...data, column: (fromColumn + toColumn) / 2},
+    }
+  },
+  AnnotatedLine: ({annotation, ...props}) => {
+    const frame = useCurrentFrame()
+    const opacity = interpolate(frame, [25, 35], [0, 1], {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    })
+
+    const annData = (annotation.data ?? {}) as {
+      column?: number
+      codeblock?: HighlightedCode
+      children?: string
+    }
+    const column = Number(annData.column ?? 0)
+
+    return (
+      <>
+        <InnerLine merge={props} />
+        <div
+          style={{
+            opacity,
+            minWidth: `${Math.max(0, column) + 4}ch`,
+            marginLeft: `${props.indentation}ch`,
+            width: 'fit-content',
+            backgroundColor: 'rgb(32 42 57)',
+            padding: '0.5rem',
+            position: 'relative',
+            marginTop: '0.25rem',
+            whiteSpace: 'pre-wrap',
+            color: '#c9d1d9',
+            borderRadius: 8,
+          }}
+        >
+          <div
+            style={{
+              left: `${column - props.indentation - 0.5}ch`,
+              position: 'absolute',
+              width: '0.5rem',
+              height: '0.5rem',
+              transform: 'rotate(45deg) translateY(-50%)',
+              top: '-2px',
+              backgroundColor: 'rgb(32 42 57)',
+            }}
+          />
+          {annData.codeblock ? (
+            <Pre code={annData.codeblock} style={{margin: 0}} />
+          ) : (
+            annData.children || annotation.query
+          )}
+        </div>
+      </>
+    )
+  },
+}

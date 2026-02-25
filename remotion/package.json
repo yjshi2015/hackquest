@@ -32,11 +32,13 @@
     "@remotion/media": "^4.0.0",
     "@remotion/transitions": "4.0.417",
     "@web3icons/react": "^4.1.17",
+    "codehike": "1.0.0",
     "dotenv": "^17.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^5.5.0",
     "remotion": "^4.0.0",
+    "twoslash-cdn": "^0.2.9",
     "zod": "^3.25.76"
   },
   "devDependencies": {

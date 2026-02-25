@@ -1,7 +1,7 @@
 import type {CSSProperties, ReactNode} from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 
-import {colors, fonts, motion, tokens} from '../../theme';
+import {colors, fonts, motion, tokens} from '../../../../theme';
 
 type SceneScaffoldProps = {
   background?: string;
@@ -66,7 +66,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
               <div
                 style={{
                   fontFamily: fonts.brand,
-                  fontSize: 17,
+                  fontSize: tokens.storyboard.header.eyebrowSize,
                   fontWeight: 700,
                   letterSpacing: '0.16em',
                   textTransform: 'uppercase',
@@ -81,7 +81,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
               <div
                 style={{
                   fontFamily: fonts.display,
-                  fontSize: titleSize ?? 36,
+                  fontSize: titleSize ?? tokens.storyboard.header.titleSizeDefault,
                   fontWeight: 700,
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
@@ -97,7 +97,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
                 style={{
                   fontFamily: fonts.body,
                   fontWeight: 300,
-                  fontSize: 24,
+                  fontSize: tokens.storyboard.header.subtitleSizeDefault,
                   lineHeight: 1.3,
                   color: colors.muted,
                   maxWidth: 720,

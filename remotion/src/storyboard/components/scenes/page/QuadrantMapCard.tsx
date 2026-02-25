@@ -18,10 +18,10 @@ import {
 
 import type {IconComponentProps} from '@web3icons/react';
 
-import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts, motion, tokens} from '../../theme';
-import type {StoryboardInjected} from '../types';
-import {SceneScaffold} from './SceneScaffold';
+import type {LessonBlockContext} from '../../../../lesson-config';
+import {colors, fonts, motion, tokens} from '../../../../theme';
+import type {StoryboardInjected} from '../../../types';
+import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 
 /* ── Icon lookup ─────────────────────────────────────────────── */
 
@@ -171,6 +171,7 @@ export const QuadrantMapCard: React.FC<
       background="radial-gradient(circle at 12% 22%, rgba(255, 232, 102, 0.28), transparent 38%), radial-gradient(circle at 88% 80%, rgba(0, 0, 0, 0.05), transparent 42%), #ffffff"
       eyebrow={eyebrow}
       title={title}
+      titleSize={tokens.storyboard.header.titleSizeStandard}
       contentTop={22}
     >
       <div

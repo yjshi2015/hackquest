@@ -1,10 +1,10 @@
 import {Img, staticFile} from 'remotion';
 import {z} from 'zod';
 
-import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts} from '../../theme';
-import type {StoryboardInjected} from '../types';
-import {SceneScaffold} from './SceneScaffold';
+import type {LessonBlockContext} from '../../../../lesson-config';
+import {colors, fonts, tokens} from '../../../../theme';
+import type {StoryboardInjected} from '../../../types';
+import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 
 export const SplitImageCardPropsSchema = z
   .object({
@@ -45,7 +45,11 @@ export const SplitImageCard: React.FC<
       title={title}
       subtitle={subtitle}
       contentTop={24}
-      titleSize={hasDualImages ? 62 : 70}
+      titleSize={
+        hasDualImages
+          ? tokens.storyboard.header.titleSizeSplitImageDual
+          : tokens.storyboard.header.titleSizeSplitImageSingle
+      }
     >
       <div
         style={{

@@ -1,22 +1,23 @@
 import type {ComponentType} from 'react';
 import type {ZodTypeAny} from 'zod';
 
-import {BulletCard, BulletCardPropsSchema} from './components/BulletCard';
-import {StepsCard, StepsCardPropsSchema} from './components/StepsCard';
-import {DefinitionCard, DefinitionCardPropsSchema} from './components/DefinitionCard';
-import {WarningCard, WarningCardPropsSchema} from './components/WarningCard';
-import {CompareCard, CompareCardPropsSchema} from './components/CompareCard';
-import {GlossaryCard, GlossaryCardPropsSchema} from './components/GlossaryCard';
-import {TableCard, TableCardPropsSchema} from './components/TableCard';
-import {SplitImageCard, SplitImageCardPropsSchema} from './components/SplitImageCard';
-import {CodeExplainCard, CodeExplainCardPropsSchema} from './components/CodeExplainCard';
-import {CalloutVideoFrame, CalloutVideoFramePropsSchema} from './components/CalloutVideoFrame';
-import {CalloutScene, CalloutScenePropsSchema} from './components/CalloutScene';
-import {HeroStatementCard, HeroStatementCardPropsSchema} from './components/HeroStatementCard';
-import {RoadmapCard, RoadmapCardPropsSchema} from './components/RoadmapCard';
-import {ArchitectureDiagramCard, ArchitectureDiagramCardPropsSchema} from './components/ArchitectureDiagramCard';
-import {QuadrantMapCard, QuadrantMapCardPropsSchema} from './components/QuadrantMapCard';
-import {FireTextCard, FireTextCardPropsSchema} from './components/FireTextCard';
+import {BulletCard, BulletCardPropsSchema} from './components/scenes/page/BulletCard';
+import {StepsCard, StepsCardPropsSchema} from './components/scenes/page/StepsCard';
+import {DefinitionCard, DefinitionCardPropsSchema} from './components/scenes/page/DefinitionCard';
+import {WarningCard, WarningCardPropsSchema} from './components/scenes/page/WarningCard';
+import {CompareCard, CompareCardPropsSchema} from './components/scenes/page/CompareCard';
+import {GlossaryCard, GlossaryCardPropsSchema} from './components/scenes/page/GlossaryCard';
+import {TableCard, TableCardPropsSchema} from './components/scenes/page/TableCard';
+import {SplitImageCard, SplitImageCardPropsSchema} from './components/scenes/page/SplitImageCard';
+import {CodeExplainCard, CodeExplainCardPropsSchema} from './components/scenes/page/CodeExplainCard';
+import {CalloutVideoFrame, CalloutVideoFramePropsSchema} from './components/scenes/page/CalloutVideoFrame';
+import {CalloutScene, CalloutScenePropsSchema} from './components/scenes/page/CalloutScene';
+import {HeroStatementCard, HeroStatementCardPropsSchema} from './components/scenes/canvas/HeroStatementCard';
+import {RoadmapCard, RoadmapCardPropsSchema} from './components/scenes/page/RoadmapCard';
+import {ArchitectureDiagramCard, ArchitectureDiagramCardPropsSchema} from './components/scenes/canvas/ArchitectureDiagramCard';
+import {QuadrantMapCard, QuadrantMapCardPropsSchema} from './components/scenes/page/QuadrantMapCard';
+import {FireTextCard, FireTextCardPropsSchema} from './components/scenes/canvas/FireTextCard';
+import {CodeHikeCard, CodeHikeCardPropsSchema} from './components/scenes/canvas/CodeHikeCard';
 import {DemoOverlay, DemoOverlayPropsSchema} from '../templates/DemoOverlay';
 
 export type StoryboardComponentDef = {
@@ -73,6 +74,10 @@ export const registry: Record<string, StoryboardComponentDef> = {
   FireText: {
     component: FireTextCard,
     propsSchema: FireTextCardPropsSchema,
+  },
+  CodeHike: {
+    component: CodeHikeCard,
+    propsSchema: CodeHikeCardPropsSchema,
   },
 };
 

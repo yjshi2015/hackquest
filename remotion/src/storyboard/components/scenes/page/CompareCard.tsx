@@ -1,10 +1,10 @@
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
-import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts, motion} from '../../theme';
-import type {StoryboardInjected} from '../types';
-import {SceneScaffold} from './SceneScaffold';
+import type {LessonBlockContext} from '../../../../lesson-config';
+import {colors, fonts, motion, tokens} from '../../../../theme';
+import type {StoryboardInjected} from '../../../types';
+import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 
 export const CompareCardPropsSchema = z
   .object({
@@ -158,6 +158,7 @@ export const CompareCard: React.FC<
       }
       eyebrow={eyebrow}
       title={title}
+      titleSize={tokens.storyboard.header.titleSizeStandard}
       contentTop={26}
     >
       <div

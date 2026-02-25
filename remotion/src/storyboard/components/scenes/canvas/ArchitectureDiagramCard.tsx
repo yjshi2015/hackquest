@@ -1,9 +1,9 @@
 import {z} from 'zod';
 import {AbsoluteFill, spring, useCurrentFrame, useVideoConfig, interpolate} from 'remotion';
 
-import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts, motion} from '../../theme';
-import type {StoryboardInjected} from '../types';
+import type {LessonBlockContext} from '../../../../lesson-config';
+import {colors, fonts, motion, tokens} from '../../../../theme';
+import type {StoryboardInjected} from '../../../types';
 
 /* ------------------------------------------------------------------ */
 /*  Schema                                                             */
@@ -206,7 +206,7 @@ export const ArchitectureDiagramCard: React.FC<
           <div
             style={{
               fontFamily: fonts.brand,
-              fontSize: 20,
+              fontSize: tokens.storyboard.architecture.eyebrowSize,
               fontWeight: 800,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -219,7 +219,7 @@ export const ArchitectureDiagramCard: React.FC<
         <div
           style={{
             fontFamily: fonts.display,
-            fontSize: 44,
+            fontSize: tokens.storyboard.architecture.titleSize,
             fontWeight: 900,
             lineHeight: 1.08,
             letterSpacing: '-0.015em',
@@ -232,7 +232,7 @@ export const ArchitectureDiagramCard: React.FC<
           <div
             style={{
               fontFamily: fonts.body,
-              fontSize: 24,
+              fontSize: tokens.storyboard.architecture.subtitleSize,
               lineHeight: 1.3,
               color: colors.muted,
               maxWidth: 500,

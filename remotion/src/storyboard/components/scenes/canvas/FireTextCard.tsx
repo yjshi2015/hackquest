@@ -2,10 +2,10 @@ import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
-import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts, motion, tokens} from '../../theme';
-import type {StoryboardInjected} from '../types';
-import {SceneScaffold} from './SceneScaffold';
+import type {LessonBlockContext} from '../../../../lesson-config';
+import {colors, fonts, motion, tokens} from '../../../../theme';
+import type {StoryboardInjected} from '../../../types';
+import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 
 /* ── tokens shorthand ─────────────────────────────────── */
 

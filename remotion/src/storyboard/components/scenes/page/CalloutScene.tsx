@@ -1,8 +1,8 @@
 import {z} from 'zod';
 
-import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts} from '../../theme';
-import {SceneScaffold} from './SceneScaffold';
+import type {LessonBlockContext} from '../../../../lesson-config';
+import {colors, fonts, tokens} from '../../../../theme';
+import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 
 export const CalloutScenePropsSchema = z
   .object({
@@ -28,7 +28,7 @@ export const CalloutScene: React.FC<{
       eyebrow={eyebrow}
       title={title}
       contentTop={28}
-      titleSize={74}
+      titleSize={tokens.storyboard.header.titleSizeCallout}
     >
       <div
         style={{

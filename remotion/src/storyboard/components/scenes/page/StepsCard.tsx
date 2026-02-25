@@ -2,10 +2,10 @@ import {HiArrowDownCircle} from 'react-icons/hi2';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
-import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts, motion} from '../../theme';
-import type {StoryboardInjected} from '../types';
-import {SceneScaffold} from './SceneScaffold';
+import type {LessonBlockContext} from '../../../../lesson-config';
+import {colors, fonts, motion, tokens} from '../../../../theme';
+import type {StoryboardInjected} from '../../../types';
+import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 
 export const StepsCardPropsSchema = z
   .object({
@@ -45,6 +45,7 @@ export const StepsCard: React.FC<
       eyebrow={eyebrow}
       title={title}
       subtitle={subtitle}
+      titleSize={tokens.storyboard.header.titleSizeStandard}
       contentTop={24}
     >
       <div style={{height: '100%', display: 'flex', flexDirection: 'column', gap: 12}}>
