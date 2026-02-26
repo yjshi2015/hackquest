@@ -13,7 +13,6 @@ Endogenous vs Exogenous Collateralization
 
 Exogenous: Backed by external assets (gold, ETH, USD)
 ```
-Asset Ref: none
 
 ## Segment 02
 Scene Type: Animation
@@ -29,7 +28,6 @@ Always redeemable for gold
     ↓
 Maintains value
 ```
-Asset Ref: none
 
 ## Segment 03
 Scene Type: Slide
@@ -41,7 +39,6 @@ Coin pegged to gold price
 Governed by issuing entity
 Always exchangeable → maintains value
 ```
-Asset Ref: none
 
 ## Segment 04
 Scene Type: Animation
@@ -53,7 +50,6 @@ Bank hours reduce:
 Market reaction:
 No change → No change → ??? → Value shifts
 ```
-Asset Ref: none
 
 ## Segment 05
 Scene Type: Slide
@@ -67,7 +63,6 @@ Exogenous → Endogenous
 
 Backed by collateral → Backed by itself
 ```
-Asset Ref: none
 
 ## Segment 06
 Scene Type: Slide
@@ -81,7 +76,6 @@ Terra UST example:
 1 UST = 1 UST (not external collateral)
 Backed only by ecosystem
 ```
-Asset Ref: none
 
 ## Segment 07
 Scene Type: Slide
@@ -94,7 +88,6 @@ Most influential stablecoin design
 
 Foundation for understanding the market
 ```
-Asset Ref: none
 
 ## Segment 08
 Scene Type: Slide
@@ -107,7 +100,6 @@ Essential for market understanding
 
 Enables analysis of design choices
 ```
-Asset Ref: none
 
 ## Segment 09
 Scene Type: Slide
@@ -119,4 +111,3 @@ How collateralization ratios work
 
 How they protect the protocol
 ```
-Asset Ref: none

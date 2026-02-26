@@ -13,7 +13,6 @@ Understanding the categories that matter
 
 Traditional media gets this wrong
 ```
-Asset Ref: none
 
 ## Segment 02
 Scene Type: Slide
@@ -28,7 +27,6 @@ Algorithmic
 
 Helpful for beginners, but incomplete
 ```
-Asset Ref: none
 
 ## Segment 03
 Scene Type: Slide
@@ -42,7 +40,6 @@ Three dimensions that matter:
 2. Stability Method (Governed vs Algorithmic)
 3. Collateral Type
 ```
-Asset Ref: none
 
 ## Segment 04
 Scene Type: Slide
@@ -54,7 +51,6 @@ Stability is always relative
 
 Most popular: Pegged (Anchored) stablecoins
 ```
-Asset Ref: none
 
 ## Segment 05
 Scene Type: Slide
@@ -69,7 +65,6 @@ Examples:
 - USD Coin (USDC)
 - DAI
 ```
-Asset Ref: none
 
 ## Segment 06
 Scene Type: Slide
@@ -82,7 +77,6 @@ Track price of another asset
 Mechanisms make them
 interchangeable with pegged asset
 ```
-Asset Ref: none
 
 ## Segment 07
 Scene Type: Slide
@@ -96,7 +90,6 @@ Redeemable at any time
 DAI: Over-collateralization
 Permissionless, not bank-backed
 ```
-Asset Ref: none
 
 ## Segment 08
 Scene Type: Slide
@@ -108,7 +101,6 @@ Not pegged to any asset
 
 Buying power stays constant over time
 ```
-Asset Ref: none
 
 ## Segment 09
 Scene Type: Animation
@@ -121,7 +113,6 @@ Today:
 10 dollars = 5 apples
 (Inflation: prices doubled)
 ```
-Asset Ref: none
 
 ## Segment 10
 Scene Type: Animation
@@ -137,7 +128,6 @@ Future: $10 = 5 apples
 
 Apple Coin wins
 ```
-Asset Ref: none
 
 ## Segment 11
 Scene Type: Slide
@@ -150,7 +140,6 @@ By Reflexer Labs
 Uses PID controller mathematics
 Buying power adjusts algorithmically
 ```
-Asset Ref: none
 
 ## Segment 12
 Scene Type: Slide
@@ -163,7 +152,6 @@ Complex math (see Reflexer docs)
 Analogy to help understand:
 Anchor vs Buoy
 ```
-Asset Ref: none
 
 ## Segment 13
 Scene Type: Video
@@ -183,7 +171,6 @@ Buoy   = Floating stablecoin
 Anchor = Pegged stablecoin
          (fixed to ocean floor/USD)
 ```
-Asset Ref: none
 
 ## Segment 15
 Scene Type: Slide
@@ -196,7 +183,6 @@ Market volatility = Storm
 Both types need mechanisms
 to handle turbulence
 ```
-Asset Ref: none
 
 ## Segment 16
 Scene Type: Slide
@@ -209,7 +195,6 @@ Floating: Buying power constant
 
 Next: Stability Method
 ```
-Asset Ref: none
 
 ## Segment 17
 Scene Type: Slide
@@ -222,7 +207,6 @@ How does the coin stay stable?
 Involves: Minting and burning
 Question: Who controls supply?
 ```
-Asset Ref: none
 
 ## Segment 18
 Scene Type: Chart
@@ -243,7 +227,6 @@ Scene Content: Governed stablecoins on the spectrum
   }
 }
 ```
-Asset Ref: none
 
 ## Segment 19
 Scene Type: Slide
@@ -256,7 +239,6 @@ USDC, USDT, TUSD
 Centralized: Single body controls supply
 Can decentralize with DAO
 ```
-Asset Ref: none
 
 ## Segment 20
 Scene Type: Slide
@@ -269,7 +251,6 @@ No human intervention
 
 Disagreement #3 with traditional media
 ```
-Asset Ref: none
 
 ## Segment 21
 Scene Type: Slide
@@ -283,7 +264,6 @@ Permissionless code mints/burns
 Traditional media: "Algorithmic = under-collateralized"
 Too narrow. Incorrect.
 ```
-Asset Ref: none
 
 ## Segment 22
 Scene Type: Slide
@@ -297,7 +277,6 @@ Zero human meddling
 
 Taxonomy: Pegged vs Floating, Governed vs Algorithmic
 ```
-Asset Ref: none
 
 ## Segment 23
 Scene Type: Slide
@@ -309,4 +288,3 @@ What backs these stablecoins?
 
 Where the real engineering begins.
 ```
-Asset Ref: none

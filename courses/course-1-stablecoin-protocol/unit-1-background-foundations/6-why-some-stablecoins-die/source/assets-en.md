@@ -15,7 +15,6 @@ And... the $40B disaster: UST
 Hybrid systems exist
 tokens can be both governed and algorithmic
 ```
-Asset Ref: none
 
 ## Segment 02
 Scene Type: Chart
@@ -36,7 +35,6 @@ Scene Content: Spectrum from governed to algorithmic
   }
 }
 ```
-Asset Ref: none
 
 ## Segment 03
 Scene Type: Slide
@@ -50,7 +48,6 @@ Uses: "Dumb" vs Algorithmic
 Fiat collateralized → Governed
 Requires centralized entity
 ```
-Asset Ref: none
 
 ## Segment 04
 Scene Type: Slide
@@ -63,7 +60,6 @@ X-axis: Anchored vs Reflexive
 
 Y-axis: Algorithmic vs Governed
 ```
-Asset Ref: none
 
 ## Segment 05
 Scene Type: Slide
@@ -76,7 +72,6 @@ Governed: Human minting/burning
 
 Next: Collateral Type
 ```
-Asset Ref: none
 
 ## Segment 06
 Scene Type: Slide
@@ -90,7 +85,6 @@ USDC: Dollar collateral
 DAI: ETH and other assets
 UST: Luna (indirectly)
 ```
-Asset Ref: none
 
 ## Segment 07
 Scene Type: Slide
@@ -104,7 +98,6 @@ Endogenous: From inside protocol
 Test: If stablecoin fails,
 does collateral also fail?
 ```
-Asset Ref: none
 
 ## Segment 08
 Scene Type: Animation
@@ -120,7 +113,6 @@ Death spiral
     ↓
 $40B lost
 ```
-Asset Ref: none
 
 ## Segment 09
 Scene Type: Slide
@@ -133,7 +125,6 @@ Scene Content: Additional tests for collateral type
 
 Yes to either → Endogenous
 ```
-Asset Ref: none
 
 ## Segment 10
 Scene Type: Slide
@@ -147,7 +138,6 @@ Actually means: Endogenous collateral is dangerous
 
 Value comes from nothing
 ```
-Asset Ref: none
 
 ## Segment 11
 Scene Type: Slide
@@ -160,7 +150,6 @@ More collateral value than stablecoins
 
 Dirt Roads chart shows distribution
 ```
-Asset Ref: none
 
 ## Segment 12
 Scene Type: Chart
@@ -181,7 +170,6 @@ Scene Content: Dirt Roads comparison of stablecoins
   }
 }
 ```
-Asset Ref: none
 
 ## Segment 13
 Scene Type: Slide
@@ -194,7 +182,6 @@ Answer: Scale / Capital Efficiency
 Exogenous limit: Market cap ≤ Collateral value
 Endogenous: Can grow without collateral
 ```
-Asset Ref: none
 
 ## Segment 14
 Scene Type: Slide
@@ -208,7 +195,6 @@ Endogenous: Can start with $0
 
 Easier to become massive faster
 ```
-Asset Ref: none
 
 ## Segment 15
 Scene Type: Animation
@@ -222,7 +208,6 @@ Always redeemable → Never redeemable
     ↓
 Exogenous → Endogenous
 ```
-Asset Ref: none
 
 ## Segment 16
 Scene Type: Slide
@@ -236,7 +221,6 @@ Redeemable for gold
 
 Value maintained through redeemability
 ```
-Asset Ref: none
 
 ## Segment 17
 Scene Type: Slide
@@ -249,7 +233,6 @@ Scene Content: Bank closure progression
 Market reaction: Minimal initially
 Critical point: Permanent closure
 ```
-Asset Ref: none
 
 ## Segment 18
 Scene Type: Slide
@@ -263,7 +246,6 @@ Exogenous → Endogenous
 
 Terra's "reflexive" label
 ```
-Asset Ref: none
 
 ## Segment 19
 Scene Type: Animation
@@ -279,7 +261,6 @@ More UST selling
     ↓
 Death spiral
 ```
-Asset Ref: none
 
 ## Segment 20
 Scene Type: Slide
@@ -294,4 +275,3 @@ Exogenous = Safety (despite inefficiency)
 
 Always ask: What backs this coin?
 ```
-Asset Ref: none

@@ -8,7 +8,7 @@ This lesson is a design and engineering coverage test for the Remotion lesson pi
 - `Scene Type: Animation` (flow diagrams rendered as slides today)
 - `Scene Type: Chart` (JSON-driven chart card)
 - `Scene Type: Video` (full-screen video playback)
-- Image rendering via `Asset Ref` (PNG stills)
+- Image rendering via `SplitImage` component (inline `images[]` prop)
 - Cover + Outro (from `source/lesson.meta.json`)
 - Captions (`generated/captions/lines.json`)
 - Section overlay + header + progress bar (composition overlays)
@@ -31,7 +31,7 @@ This lesson is a design and engineering coverage test for the Remotion lesson pi
 - 03 Slide
 - 04 Chart
 - 05 Video
-- 06 Image (via `Asset Ref`)
+- 06 Image (via `SplitImage`)
 - 07-09 Slide (definition, warning, code)
 - 10 Animation
 - 11-13 Slide (comparison, references, bilingual terms)

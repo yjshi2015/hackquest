@@ -13,7 +13,6 @@ Critical yet vulnerable component
 
 Chainlink: Decentralized oracle network
 ```
-Asset Ref: none
 
 ## Segment 02
 Scene Type: Slide
@@ -27,7 +26,6 @@ Fetch and aggregate data
 AggregatorV3Interface
 → getLatestRoundData()
 ```
-Asset Ref: none
 
 ## Segment 03
 Scene Type: Slide
@@ -40,7 +38,6 @@ Deviation threshold: Trigger update
 
 Ensures fresh, accurate prices
 ```
-Asset Ref: none
 
 ## Segment 04
 Scene Type: Slide
@@ -53,7 +50,6 @@ Oracle fails to update
 
 Exploitable in volatile markets
 ```
-Asset Ref: none
 
 ## Segment 05
 Scene Type: Slide
@@ -66,7 +62,6 @@ Borrow massive amounts (no collateral)
 
 Vulnerable if using DEX as oracle
 ```
-Asset Ref: none
 
 ## Segment 06
 Scene Type: Slide
@@ -79,7 +74,6 @@ Validators see pending txs
 
 Front-run oracle updates
 ```
-Asset Ref: none
 
 ## Segment 07
 Scene Type: Slide
@@ -92,7 +86,6 @@ OracleLib implementation:
 - Revert if stale
 - Use fallback if needed
 ```
-Asset Ref: none
 
 ## Segment 08
 Scene Type: Slide
@@ -106,7 +99,6 @@ Deviation thresholds:
 Circuit breakers:
 → Pause functions in extreme conditions
 ```
-Asset Ref: none
 
 ## Segment 09
 Scene Type: Video
@@ -127,7 +119,6 @@ Compound: Oracle issues caused problems
 
 Lesson: Robust validation essential
 ```
-Asset Ref: none
 
 ## Segment 11
 Scene Type: Slide
@@ -140,7 +131,6 @@ Exotic assets: Slower, higher deviation
 
 Match risk parameters to oracle characteristics
 ```
-Asset Ref: none
 
 ## Segment 12
 Scene Type: Video
@@ -160,7 +150,6 @@ Scene Content: Summary of protections
 - Multiple data sources
 - Extensive testing
 ```
-Asset Ref: none
 
 ## Segment 14
 Scene Type: Slide
@@ -175,4 +164,3 @@ Adapt to your protocol
 
 Remember: Oracles are the weakest link
 ```
-Asset Ref: none

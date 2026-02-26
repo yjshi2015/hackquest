@@ -13,7 +13,6 @@ What are the incentives?
 
 The incentive structure reveals why these systems exist.
 ```
-Asset Ref: none
 
 ## Segment 02
 Scene Type: Slide
@@ -25,7 +24,6 @@ Pegged, algorithmic, exogenous
 Most influential DeFi project
 Supercharged the DeFi space
 ```
-Asset Ref: none
 
 ## Segment 03
 Scene Type: Animation
@@ -39,7 +37,6 @@ Must mint less than collateral value
     ↓
 System always over-collateralized
 ```
-Asset Ref: none
 
 ## Segment 04
 Scene Type: Slide
@@ -53,7 +50,6 @@ Use DAI freely
 To redeem: Return DAI → Get ETH back
 Contract burns DAI, returns collateral
 ```
-Asset Ref: none
 
 ## Segment 05
 Scene Type: Slide
@@ -65,7 +61,6 @@ We owe DAI to the protocol
 All DAI minted from Maker
 Someone must pay it back
 ```
-Asset Ref: none
 
 ## Segment 06
 Scene Type: Slide
@@ -79,7 +74,6 @@ If collateral value < DAI value
 
 Protects system solvency
 ```
-Asset Ref: none
 
 ## Segment 07
 Scene Type: Slide
@@ -92,7 +86,6 @@ Why spend money to mint stablecoins?
 Who are the minters?
 What are their incentives?
 ```
-Asset Ref: none
 
 ## Segment 08
 Scene Type: Slide
@@ -105,7 +98,6 @@ Backed by real dollars
 
 UST/Luna: What went wrong?
 ```
-Asset Ref: none
 
 ## Segment 09
 Scene Type: Animation
@@ -121,7 +113,6 @@ Harder to maintain UST peg
     ↓
 Death spiral
 ```
-Asset Ref: none
 
 ## Segment 10
 Scene Type: Slide
@@ -133,7 +124,6 @@ Frax: Hybrid endogenous + exogenous
 RAI: Floating, minimal governance
 Pure ETH collateral, algorithmic
 ```
-Asset Ref: none
 
 ## Segment 11
 Scene Type: Slide
@@ -145,7 +135,6 @@ Supply and demand based
 PID controller mathematics
 See Reflexer documentation
 ```
-Asset Ref: none
 
 ## Segment 12
 Scene Type: Slide
@@ -159,7 +148,6 @@ Governed: USDC, USDT
 Algorithmic: DAI, RAI
 Each has trade-offs
 ```
-Asset Ref: none
 
 ## Segment 13
 Scene Type: Slide
@@ -172,7 +160,6 @@ RAI: Stable buying power, decentralized
 
 No "best" coin exists
 ```
-Asset Ref: none
 
 ## Segment 14
 Scene Type: Slide
@@ -185,7 +172,6 @@ Market cap in billions
 
 Average people won't pay this
 ```
-Asset Ref: none
 
 ## Segment 15
 Scene Type: Slide
@@ -200,7 +186,6 @@ Protocols need revenue:
 
 Who pays to keep coins circulating?
 ```
-Asset Ref: none
 
 ## Segment 16
 Scene Type: Animation
@@ -214,7 +199,6 @@ Sell stablecoin → Buy more ETH
     ↓
 Leveraged position
 ```
-Asset Ref: none
 
 ## Segment 17
 Scene Type: Slide
@@ -227,7 +211,6 @@ Web3 equivalent of traditional finance
 
 Mint stablecoins → Buy more crypto
 ```
-Asset Ref: none
 
 ## Segment 18
 Scene Type: Slide
@@ -241,7 +224,6 @@ Investors want leverage
 DAI market cap > RAI
 Leverage opportunity wins
 ```
-Asset Ref: none
 
 ## Segment 19
 Scene Type: Slide
@@ -254,7 +236,6 @@ Aave + Curve: New initiatives
 
 Different utilities → Different prices
 ```
-Asset Ref: none
 
 ## Segment 20
 Scene Type: Slide
@@ -268,4 +249,3 @@ Trade-offs: Capital efficiency vs stability
 Space continues to evolve
 Critical evaluation essential
 ```
-Asset Ref: none
