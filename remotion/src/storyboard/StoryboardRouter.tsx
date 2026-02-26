@@ -160,6 +160,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         !Array.isArray(timingsJson) ||
         timingsJson.length === 0
       ) {
+        // New lesson without generated timings: use placeholder so preview still works
         timingsJson = parsedSegments.map((seg, i) => ({
           id: seg.id,
           startMs: i * PLACEHOLDER_SEGMENT_MS,
