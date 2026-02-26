@@ -8,14 +8,12 @@ import {
   useDelayRender,
   useRemotionEnvironment,
   useVideoConfig,
-  Video,
 } from 'remotion';
 import {linearTiming, TransitionSeries} from '@remotion/transitions';
 import {fade} from '@remotion/transitions/fade';
 import {colors, fonts, tokens} from '../theme';
 import type {LessonBlockContext} from '../lesson-config';
 import {ChartCard} from '../templates/ChartCard';
-import {resolveLessonPublicPath} from '../lib/lesson-paths';
 import type {StoryboardInjected} from './types';
 import {legacyCardNameMap} from './legacy-names';
 import {parseScriptMd as parseScriptMdShared} from './parse-script-md';
@@ -75,12 +73,6 @@ const resolveComponentProps = (
     `Segment ${opts.segmentId}: Component ${opts.componentName} requires JSON envelope {"props": {...}} (top-level props are not allowed)`,
   );
 };
-
-const isVideoRef = (assetRef?: string | null) =>
-  Boolean(assetRef && /\.(mp4|mov|webm|mkv)(\?.*)?$/i.test(assetRef));
-
-const isImageRef = (assetRef?: string | null) =>
-  Boolean(assetRef && /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(assetRef));
 
 export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   scriptFile,
@@ -214,14 +206,6 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   const renderSegment = (seg: LessonScriptSegment & {startMs: number; durationMs: number}) => {
     const segVisual = seg.visual ?? {};
     const segSceneType = segVisual.sceneType?.toLowerCase() ?? '';
-    const segAssetRef = segVisual.assetRef ?? null;
-    const segResolvedAssetRef = segAssetRef
-      ? resolveLessonPublicPath(metaFile, segAssetRef) ?? segAssetRef
-      : null;
-    const segAssetRef2 = segVisual.assetRef2 ?? null;
-    const segResolvedAssetRef2 = segAssetRef2
-      ? resolveLessonPublicPath(metaFile, segAssetRef2) ?? segAssetRef2
-      : null;
     const segComponentName = segVisual.component;
     const segCustomComponent = segComponentName ? components?.[segComponentName] : null;
     const segMigratedName = segComponentName ? legacyCardNameMap[segComponentName] : null;
@@ -248,24 +232,10 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       !segShouldRenderComponent &&
       Boolean(segChartConfig) &&
       (!segSceneType || /chart|graph/.test(segSceneType));
-    const segShouldRenderVideo =
-      !segShouldRenderComponent &&
-      !segShouldRenderChart &&
-      Boolean(segResolvedAssetRef) &&
-      (isVideoRef(segResolvedAssetRef) || /video/.test(segSceneType)) &&
-      !(/slide|outline|ppt|deck|card/.test(segSceneType) || Boolean(segVisual.markdown));
-    const segShouldRenderImage =
-      !segShouldRenderComponent &&
-      !segShouldRenderChart &&
-      !segShouldRenderVideo &&
-      Boolean(segResolvedAssetRef) &&
-      isImageRef(segResolvedAssetRef) &&
-      !(/slide|outline|ppt|deck|card/.test(segSceneType) || Boolean(segVisual.markdown));
+
     const segShouldRenderSlide =
       !segShouldRenderComponent &&
       !segShouldRenderChart &&
-      !segShouldRenderVideo &&
-      !segShouldRenderImage &&
       (/slide|outline|ppt|deck|card/.test(segSceneType) ||
         Boolean(segVisual.markdown) ||
         Boolean(segVisual.sceneContent));
@@ -286,9 +256,6 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         blockDurationFrames: segFrames,
       };
       const injected: StoryboardInjected = {
-        assetRef: segResolvedAssetRef,
-        assetRef2: segResolvedAssetRef2,
-        playbackRate: segVisual.playbackRate,
         sceneType: segSceneType,
         sceneContent: segVisual.sceneContent,
         markdown: segVisual.markdown,
@@ -325,36 +292,13 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       );
     }
 
-    if (segShouldRenderVideo && segResolvedAssetRef) {
-      const src = /^https?:\/\//i.test(segResolvedAssetRef)
-        ? segResolvedAssetRef
-        : staticFile(segResolvedAssetRef);
-      const rate = segVisual.playbackRate ?? 1;
-      return (
-        <AbsoluteFill style={{backgroundColor: colors.background}}>
-          <Video src={src} playbackRate={rate} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-        </AbsoluteFill>
-      );
-    }
-
-    if (segShouldRenderImage && segResolvedAssetRef) {
-      const src = /^https?:\/\//i.test(segResolvedAssetRef)
-        ? segResolvedAssetRef
-        : staticFile(segResolvedAssetRef);
-      return (
-        <AbsoluteFill style={{backgroundColor: colors.background}}>
-          <img alt="" src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-        </AbsoluteFill>
-      );
-    }
-
     return (
       <AbsoluteFill style={{backgroundColor: colors.background, padding: tokens.storyboard.canvasPadding, justifyContent: 'center', alignItems: 'center', fontFamily: fonts.body, color: colors.text}}>
         <div style={{maxWidth: 1200, padding: '32px 40px', borderRadius: 20, backgroundColor: colors.panelSoft, border: `1px solid ${colors.borderSoft}`, boxShadow: 'none', textAlign: 'center'}}>
           <div style={{fontSize: tokens.storyboard.slide.fallbackKickerSize, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: colors.muted, marginBottom: 14}}>
             Missing Visual
           </div>
-          <div style={{fontSize: tokens.storyboard.slide.fallbackBodySize, fontWeight: 600}}>{segVisual.sceneContent ?? segAssetRef ?? 'Scene not configured.'}</div>
+          <div style={{fontSize: tokens.storyboard.slide.fallbackBodySize, fontWeight: 600}}>{segVisual.sceneContent ?? 'Scene not configured.'}</div>
         </div>
       </AbsoluteFill>
     );

@@ -21,7 +21,6 @@ import {CodeHikeCard, CodeHikeCardPropsSchema} from './components/scenes/canvas/
 export type StoryboardComponentDef = {
   component: ComponentType<any>;
   propsSchema: ZodTypeAny;
-  assetKind?: 'video' | 'image';
 };
 
 export const registry: Record<string, StoryboardComponentDef> = {
@@ -34,18 +33,15 @@ export const registry: Record<string, StoryboardComponentDef> = {
   SplitImage: {
     component: SplitImageCard,
     propsSchema: SplitImageCardPropsSchema,
-    assetKind: 'image',
   },
   CodeExplain: {component: CodeExplainCard, propsSchema: CodeExplainCardPropsSchema},
   CalloutVideoFrame: {
     component: CalloutVideoFrame,
     propsSchema: CalloutVideoFramePropsSchema,
-    assetKind: 'video',
   },
   DemoOverlay: {
     component: DemoOverlayCard,
     propsSchema: DemoOverlayCardPropsSchema,
-    assetKind: 'video',
   },
   CalloutScene: {
     component: CalloutScene,

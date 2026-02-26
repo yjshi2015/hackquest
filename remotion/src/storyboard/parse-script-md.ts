@@ -7,21 +7,10 @@ export type LessonScriptSegment = {
   visual?: {
     sceneType?: string;
     sceneContent?: string;
-    assetRef?: string | null;
-    assetRef2?: string | null;
-    playbackRate?: number;
     component?: string;
     markdown?: string;
     json?: Record<string, unknown>;
   };
-};
-
-const normalizeAssetRef = (value?: string | null) => {
-  if (!value) return null;
-  const cleaned = String(value).trim();
-  if (!cleaned) return null;
-  if (/^(none|n\/a|null)$/i.test(cleaned)) return null;
-  return cleaned;
 };
 
 const getFieldValue = (line: string, label: string) => {
@@ -111,9 +100,9 @@ export const parseScriptMd = (markdown: string): LessonScriptSegment[] => {
 
     // ── Structural field matching ──
     // When in voiceover mode, only match unambiguous structural prefixes
-    // (Component, Asset Ref, Scene Type, etc.) that clearly signal we've
+    // (Component, Scene Type, etc.) that clearly signal we've
     // left the narration block. Generic prefixes like bare "Type:" or
-    // "Asset:" are too likely to appear in natural speech, so we skip them
+    // "Content:" are too likely to appear in natural speech, so we skip them
     // when accumulating voiceover text.
 
     const postGapValue =
@@ -130,25 +119,6 @@ export const parseScriptMd = (markdown: string): LessonScriptSegment[] => {
     if (componentValue) {
       current.visual = current.visual ?? {};
       current.visual.component = componentValue.trim();
-      mode = null;
-      continue;
-    }
-
-    // Asset Ref / Asset Ref 2 — unambiguous compound prefix.
-    const assetValue =
-      getFieldValue(trimmed, 'Asset Ref') ?? (mode !== 'voiceover' ? getFieldValue(trimmed, 'Asset') : null);
-    if (assetValue) {
-      current.visual = current.visual ?? {};
-      current.visual.assetRef = normalizeAssetRef(assetValue);
-      mode = null;
-      continue;
-    }
-
-    const assetValue2 =
-      getFieldValue(trimmed, 'Asset Ref 2') ?? (mode !== 'voiceover' ? getFieldValue(trimmed, 'Asset 2') : null);
-    if (assetValue2) {
-      current.visual = current.visual ?? {};
-      current.visual.assetRef2 = normalizeAssetRef(assetValue2);
       mode = null;
       continue;
     }
@@ -173,18 +143,6 @@ export const parseScriptMd = (markdown: string): LessonScriptSegment[] => {
     if (contentValue) {
       current.visual = current.visual ?? {};
       current.visual.sceneContent = contentValue;
-      mode = null;
-      continue;
-    }
-
-    const rateValue =
-      getFieldValue(trimmed, 'Playback Rate') ?? (mode !== 'voiceover' ? getFieldValue(trimmed, 'Speed') : null);
-    if (rateValue) {
-      const num = Number(rateValue);
-      if (Number.isFinite(num) && num > 0) {
-        current.visual = current.visual ?? {};
-        current.visual.playbackRate = num;
-      }
       mode = null;
       continue;
     }

@@ -86,27 +86,20 @@ const timingsById = new Map(
   (Array.isArray(timings) ? timings : []).map((t) => [Number(t.id), t]),
 );
 
-const isVideoRef = (assetRef) =>
-  Boolean(assetRef && /\.(mp4|mov|webm|mkv)(\?.*)?$/i.test(assetRef));
-
-const isImageRef = (assetRef) =>
-  Boolean(assetRef && /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(assetRef));
-
 /**
- * Try to resolve an asset ref to an absolute path and check it exists on disk.
+ * Try to resolve a relative asset path to an absolute location and check it exists on disk.
  * Returns null if the file exists (or we can't determine the path), or an error
  * string if the file is clearly missing.
  */
-const checkAssetExists = async (assetRef, metaAbsPath) => {
-  if (!assetRef) return null;
-  if (/^https?:\/\//i.test(assetRef)) return null; // remote URL, skip
-  // Try lesson-local first, then repo-level public
+const checkAssetExists = async (assetPath, metaAbsPath) => {
+  if (!assetPath) return null;
+  if (/^https?:\/\//i.test(assetPath)) return null; // remote URL, skip
   const lessonSourceDir = path.dirname(metaAbsPath);
   const lessonRoot2 = path.dirname(lessonSourceDir);
   const candidates = [
-    path.resolve(lessonRoot2, assetRef),
-    path.resolve(lessonSourceDir, assetRef),
-    path.resolve(repoRoot, 'remotion', '.hq-public', assetRef),
+    path.resolve(lessonRoot2, assetPath),
+    path.resolve(lessonSourceDir, assetPath),
+    path.resolve(repoRoot, 'remotion', '.hq-public', assetPath),
   ];
   for (const c of candidates) {
     try {
@@ -114,7 +107,7 @@ const checkAssetExists = async (assetRef, metaAbsPath) => {
       return null; // found
     } catch { /* next */ }
   }
-  return `Asset file not found: "${assetRef}" (checked ${candidates.length} locations)`;
+  return `Asset file not found: "${assetPath}" (checked ${candidates.length} locations)`;
 };
 
 const ChartSchema = z
@@ -241,8 +234,6 @@ for (const seg of scriptSegments) {
   const visual = seg.visual ?? {};
   const sceneType = String(visual.sceneType ?? '').toLowerCase();
   const componentName = visual.component ? String(visual.component).trim() : '';
-  const assetRef = visual.assetRef ?? null;
-  const assetRef2 = visual.assetRef2 ?? null;
   const json = visual.json;
 
   if (componentName) {
@@ -333,33 +324,23 @@ for (const seg of scriptSegments) {
       }
     }
 
-    // ── Asset existence checks ──
-    if (def.assetKind === 'video') {
-      if (!assetRef || !isVideoRef(assetRef)) {
-        errors.push(
-          `Segment ${id}: Component "${componentName}" requires Asset Ref to be a video file (mp4/mov/webm/mkv). Got: ${String(assetRef)}`,
-        );
-      } else {
-        const missing = await checkAssetExists(assetRef, metaPath);
-        if (missing) warnings.push(`Segment ${id}: ${missing}`);
-      }
+    // ── Asset existence checks: inspect known props for file references ──
+    const propsData = parsed.data;
+    if (propsData.videoSrc && typeof propsData.videoSrc === 'string') {
+      const missing = await checkAssetExists(propsData.videoSrc, metaPath);
+      if (missing) warnings.push(`Segment ${id}: ${missing}`);
     }
-    if (def.assetKind === 'image') {
-      if (!assetRef || !isImageRef(assetRef)) {
-        errors.push(
-          `Segment ${id}: Component "${componentName}" requires Asset Ref to be an image file (png/jpg/webp/gif/svg). Got: ${String(assetRef)}`,
-        );
-      } else {
-        const missing = await checkAssetExists(assetRef, metaPath);
-        if (missing) warnings.push(`Segment ${id}: ${missing}`);
-      }
-      if (assetRef2 && !isImageRef(assetRef2)) {
-        errors.push(
-          `Segment ${id}: Asset Ref 2 must be an image file (png/jpg/webp/gif/svg). Got: ${String(assetRef2)}`,
-        );
-      } else if (assetRef2) {
-        const missing2 = await checkAssetExists(assetRef2, metaPath);
-        if (missing2) warnings.push(`Segment ${id}: ${missing2}`);
+    if (propsData.sidecarFile && typeof propsData.sidecarFile === 'string') {
+      const missing = await checkAssetExists(propsData.sidecarFile, metaPath);
+      if (missing) warnings.push(`Segment ${id}: ${missing}`);
+    }
+    if (Array.isArray(propsData.images)) {
+      for (const img of propsData.images) {
+        const src = typeof img === 'string' ? img : img?.src;
+        if (src) {
+          const missing = await checkAssetExists(src, metaPath);
+          if (missing) warnings.push(`Segment ${id}: ${missing}`);
+        }
       }
     }
     continue;
@@ -377,14 +358,9 @@ for (const seg of scriptSegments) {
   }
 
   if (/video/.test(sceneType)) {
-    if (!assetRef || !isVideoRef(assetRef)) {
-      errors.push(
-        `Segment ${id}: Scene Type Video requires Asset Ref to be a video file. Got: ${String(assetRef)}`,
-      );
-    } else {
-      const missing = await checkAssetExists(assetRef, metaPath);
-      if (missing) warnings.push(`Segment ${id}: ${missing}`);
-    }
+    errors.push(
+      `Segment ${id}: Bare "Scene Type: Video" is deprecated. Use "Component: DemoOverlay" with {"props": {"videoSrc": "..."}}.`,
+    );
     continue;
   }
 
