@@ -43,6 +43,13 @@
 - **CodeHike** 通过 sidecar `.md` 的 `!duration <frames>` 指令按台词节奏控制 step 切换。
 - 完整策略与自检清单见 `courses/AGENTS.md`。
 
+## `Prompt:` 图片生成字段（摘要）
+
+`script.md` 中的 `Prompt:` 字段只写**内容**（形状、标签、空间关系、焦点），**不写风格**。
+`HQ_STYLE_SYSTEM`（Modern Editorial 风格：Noto Sans / 干净矢量 3D 积木 / 黄色 marker 高光 / 白底黑线）由 `remotion/scripts/generate-segment-images.mjs` 自动注入。
+`validate-script.mjs` 会 lint 检查 banned 风格词（error）和冗余风格指令（warning）。
+完整规范见 `courses/AGENTS.md` 的"Prompt: 图片生成字段写作规范"章节。
+
 ## 最小验证命令
 
 ```bash

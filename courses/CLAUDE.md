@@ -236,6 +236,96 @@ CodeHike 通过 sidecar `.md` 文件（props 中 `sidecarFile` 指定的 markdow
 - step 之间有 `transitionFrames`（默认 48-90 帧）的过渡动画，`!duration` 包含过渡时间。
 - 旁白中每个 step 的触发词应清晰（"first"、"now"、"finally"），帮助观众识别代码变化。
 
+## `Prompt:` 图片生成字段写作规范
+
+### 架构概述
+`Prompt:` 是 `script.md` 中用于 AI 图片生成的视觉描述字段。生成脚本（`remotion/scripts/generate-segment-images.mjs`）会**自动在每条 Prompt 前注入 `HQ_STYLE_SYSTEM`**——一段 50 行的 HackQuest 视觉设计系统指令，覆盖调色板、排版、禁忌项等全部风格规则。因此：
+
+> **Prompt 只写内容（WHAT），不写风格（HOW）。**
+
+### 好的 Prompt ✅
+只描述概念布局——形状、标签、空间关系、哪个元素是焦点：
+
+```
+Prompt: Three boxes side by side with equal spacing. Left box: vault icon with
+a dollar sign inside, labeled "Fiat-Backed". Center box: lock icon with a
+diamond inside, labeled "Crypto-Backed" — this box is the highlighted focal
+element. Right box: two intersecting supply-and-demand curves inside, labeled
+"Algorithmic".
+```
+
+```
+Prompt: A balance scale in the center. Left pan holds a box labeled "$".
+Right pan holds a box labeled with a chain-link. Below the scale, a pill-shaped
+badge highlights the word "PEG". Minimal labels only.
+```
+
+### 坏的 Prompt ❌
+混入风格指令——与 `HQ_STYLE_SYSTEM` 冲突或冗余：
+
+```
+Prompt: Modern editorial infographic on pure white background (#FFFFFF).
+Use Noto Sans bold for headlines. Clean vector lines, 2-3px strokes.
+Yellow #FFE866 highlight marker on key words. No shadows, no gradients.
+Three boxes side by side...
+```
+
+问题：前半段全部已由 `HQ_STYLE_SYSTEM` 覆盖，白写且占 token。
+
+### 内容聚焦要素清单
+
+写 Prompt 时只需回答以下问题：
+
+| 要素 | 示例 |
+|---|---|
+| **形状与布局** | "center: large box; left: small circle; right: arrow pointing down" |
+| **标签文字** | `labeled "CDP Vault"`, `badge text "PEG"` |
+| **空间关系** | "three boxes arranged left to right", "top-to-bottom flowchart" |
+| **高亮焦点** | "this box is the highlighted focal element"（生成器会自动用 #FFE866） |
+| **图标暗示** | "vault icon", "chain-link icon", "dollar-sign icon"（生成器自动用干净矢量线条风格） |
+| **数量与层级** | "five boxes", "three-layer architecture", "four arrows" |
+
+### 不要写的内容
+
+| 禁写 | 理由 |
+|---|---|
+| 色值（`#FFFFFF`, `#0B0B0B`） | 已在 `HQ_STYLE_SYSTEM` 中定义 |
+| "pure white background" | 已在系统提示中强制 |
+| "editorial infographic" / "modern editorial" | 已在系统提示中强制 |
+| "Noto Sans" / 字体指令 | 已在系统提示中强制 |
+| "No shadows / No gradients / No 3D" | 已在系统提示 BANNED 列表中 |
+| "hand-drawn" / "sketchy" | 会被 lint 检测为 warning（风格由系统控制） |
+| "1920×1080" / 分辨率指令 | 由 `imageConfig` 参数控制 |
+| 非 HQ 色彩（blue/red/green/purple） | 会被 lint 检测为 error |
+| neon/cyberpunk/glitch/sci-fi 风格词 | 会被 lint 检测为 error |
+| photorealistic / realistic photo | 会被 lint 检测为 error |
+
+### Lint 自动检查
+
+`validate-script.mjs` 会在校验时自动检查所有 `Prompt:` 字段：
+
+- **Error**：命中 `PROMPT_BANNED_PATTERNS`（neon/cyberpunk/drop-shadow/非 HQ 色值/非 HQ 色彩填充）→ 必须修复。
+- **Warning**：命中 `PROMPT_REDUNDANT_PATTERNS`（editorial infographic/hand-drawn/Noto Sans/pure white bg/No shadows 等）→ 建议删除。
+- **Warning**：Prompt 超过 800 字符 → 建议精简至 ≤500 字符。
+
+运行方式：
+```bash
+cd remotion && bun run lesson:validate -- --lesson-root <lessonRoot>
+```
+
+### 图片生成命令
+
+```bash
+cd remotion
+GEMINI_API_KEY=<key> node --experimental-strip-types scripts/generate-segment-images.mjs \
+  --lesson-root <lessonRoot> \
+  --size 2K           # 可选: 1K / 2K / 4K，默认 2K
+```
+
+- 默认模型：`gemini-3-pro-image-preview`（Nano Banana Pro），16:9 / 2K → 2752×1536
+- 已生成的图片不会覆盖，加 `--force` 强制重新生成
+- 产物输出至 `<lessonRoot>/assets/generated/segment-{id}.png`
+
 ## 质量检查
 - 时长建议：单段语音通常 6-12 秒，尽量避免超过 18 秒，必要时拆段。
 - 结尾要求：倒数第二段回顾提炼，最后一段为下一课过渡，不剧透细节。
