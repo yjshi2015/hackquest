@@ -229,12 +229,58 @@ const scriptSegments = script.segments ?? [];
 const errors = [];
 const warnings = [];
 
+// ── Prompt: style‐conflict linting ──────────────────────────
+// The generate-segment-images script injects HQ_STYLE_SYSTEM automatically.
+// Prompts in script.md should describe CONTENT only, not visual style.
+// We warn on keywords that duplicate or conflict with the system prompt.
+const PROMPT_BANNED_PATTERNS = [
+  // Aesthetic keywords that violate HQ style — only match if NOT preceded by "no " / "no, " / "without "
+  {re: /(?<!\bno\s)(?<!\bno,\s)(?<!\bwithout\s)\b(neon|cyberpunk|sci-fi|glitch)\b/i, msg: 'banned aesthetic keyword'},
+  {re: /(?<!\bno\s)(?<!\bno,\s)(?<!\bwithout\s)\b(drop.?shadow|box.?shadow)\b/i, msg: 'banned shadow keyword'},
+  {re: /(?<!\bno\s)(?<!\bno,\s)(?<!\bwithout\s)\b(photorealistic|realistic photo)\b/i, msg: 'banned photorealistic keyword'},
+  // Non-HQ hex colors (allow #FFFFFF #FFF #000 #0B0B0B #1A1A1A #6B6B6B #FFE866)
+  {re: /#(?!FFFFFF|FFF|000|0B0B0B|1A1A1A|6B6B6B|FFE866)[0-9A-Fa-f]{3,6}\b/, msg: 'non-HQ hex color (only #FFFFFF/#0B0B0B/#1A1A1A/#6B6B6B/#FFE866 allowed)'},
+  // Explicit color requests as fill/accent (not in a negation)
+  {re: /(?<!\bno\s)\b(blue|red|green|purple|orange|pink|teal|cyan)\s+(background|fill|color|accent|highlight)\b/i, msg: 'non-HQ color reference'},
+];
+const PROMPT_REDUNDANT_PATTERNS = [
+  // Style instructions that are already in HQ_STYLE_SYSTEM — redundant in the prompt
+  {re: /\beditorial (sketch|infographic)\b/i, msg: '"editorial sketch/infographic" — already in system prompt'},
+  {re: /\bhand-?drawn\b/i, msg: '"hand-drawn" — style handled by system prompt'},
+  {re: /\bpure white background\b/i, msg: '"pure white background" — already in system prompt'},
+  {re: /\bNo shadows\b/i, msg: '"No shadows" — already in system prompt'},
+  {re: /\bNo gradients\b/i, msg: '"No gradients" — already in system prompt'},
+  {re: /\bsentence case\b/i, msg: '"sentence case" — already in system prompt'},
+  {re: /\byellow.*highlight(er)?\s+marker\b/i, msg: '"yellow highlight marker" — already in system prompt'},
+  {re: /\b1920\s*[x×]\s*1080\b/, msg: '"1920x1080" — resolution handled by imageConfig'},
+];
+
 for (const seg of scriptSegments) {
   const id = Number(seg.id);
   const visual = seg.visual ?? {};
   const sceneType = String(visual.sceneType ?? '').toLowerCase();
   const componentName = visual.component ? String(visual.component).trim() : '';
   const json = visual.json;
+
+  // ── Lint image generation prompts ──
+  const prompt = visual.prompt;
+  if (typeof prompt === 'string' && prompt.trim()) {
+    for (const {re, msg} of PROMPT_BANNED_PATTERNS) {
+      const m = prompt.match(re);
+      if (m) {
+        errors.push(`Segment ${id}: Prompt contains ${msg}: "${m[0]}". Remove style directives — HQ_STYLE_SYSTEM is auto-injected.`);
+      }
+    }
+    for (const {re, msg} of PROMPT_REDUNDANT_PATTERNS) {
+      const m = prompt.match(re);
+      if (m) {
+        warnings.push(`Segment ${id}: Prompt has redundant style: ${msg}. Focus on CONTENT, style is auto-injected.`);
+      }
+    }
+    if (prompt.length > 800) {
+      warnings.push(`Segment ${id}: Prompt is ${prompt.length} chars (recommended ≤ 500). Shorter content-focused prompts work better with HQ_STYLE_SYSTEM.`);
+    }
+  }
 
   if (componentName) {
     const migratedName = legacyCardNameMap[componentName];
