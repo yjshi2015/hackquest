@@ -124,11 +124,11 @@ Use `Scene Type: Video` for real video/demo segments (for example with `DemoOver
 
 Parser supports these common fields:
 
-- `Asset Ref`
-- `Asset Ref 2` (optional, when supported by a component)
-- `Playback Rate` (for video scenes)
+- `Scene Type`
+- `Component`
+- `PostGapMs`
 
-Exact rendering support depends on the component/schema and renderer path.
+Asset paths (video, image, sidecar) are specified inside component JSON props (e.g. `videoSrc`, `sidecarFile`, `images[].src`).
 
 ## Shared Rules for Demo Copy (Applies to All Teams)
 
@@ -482,13 +482,12 @@ Explanatory text + supporting image evidence in one scene.
 
 ### Typical Fields
 
-- `Asset Ref` (image)
+- `images[]` (inline image objects with `src`, optional `label`/`caption`/`fit`/`appearAt`/`exitAt`)
 - `eyebrow` (optional)
 - `title`
 - `subtitle` (optional)
 - `layout` (`text-image` | `image-text` | `hero` | `compare` | `gallery`; auto-detected when omitted)
 - `variant` (deprecated alias for `layout`; will be removed)
-- `images[]` (inline image objects; alternative to `Asset Ref`)
 - `bullets[]`
 - `note` (optional)
 - `compare` (optional; triggers compare layout)
@@ -509,19 +508,16 @@ Explanatory text + supporting image evidence in one scene.
   }
 }
 ```
-```md
-Asset Ref: assets/diagram-system-boundary.png
-```
 
 ### Boundary Cases To Include In Demo/QA
 
-- `No Image`: omit `Asset Ref` and verify text-only fallback still looks intentional
-- `Single Image`: standard `Asset Ref` flow (cover mode)
-- `Dual Image`: add `Asset Ref 2` to exercise split stacked-image layout
+- `No Image`: omit `images[]` and verify text-only fallback still looks intentional
+- `Single Image`: one entry in `images[]` (cover mode)
+- `Dual Image`: two entries in `images[]` to exercise split stacked-image layout
 - `Layout Override`: set `layout: "hero"` explicitly to force hero mode regardless of image count
 - `Optional Title`: omit `title` but keep `subtitle`/`bullets` to test heading area balance
 - `Compare Layout`: supply `compare` object with `rows` to exercise compare-table mode
-- `Failure Probe`: non-image `Asset Ref` extension (validator should reject)
+- `Failure Probe`: non-image `src` extension in `images[]` (validator should reject)
 
 ---
 
@@ -596,11 +592,11 @@ See schema docs for the exact props shape used in the current implementation.
 
 ### Intent
 
-Annotated framing over a video segment with `Asset Ref`.
+Annotated framing over a video segment with `videoSrc` prop.
 
 ### Typical Fields
 
-- `Asset Ref` (video)
+- `videoSrc` (video path in props)
 - component props per schema
 
 ### Demo Copy (EN, content intent)
@@ -626,8 +622,8 @@ Screen/demo walkthrough with overlay guidance on top of a real video asset.
 ### Typical Fields
 
 - `Scene Type: Video`
-- `Asset Ref` (video)
-- optional `Playback Rate`
+- `videoSrc` (video path in props)
+- `playbackRate` (optional, in props)
 - `Component: DemoOverlay` (when overlay props are used)
 
 ### Demo Copy (EN, content intent)
@@ -641,8 +637,8 @@ Screen/demo walkthrough with overlay guidance on top of a real video asset.
 - `No Title`: badge-only overlay
 - `No Callouts`: plain video frame with overlay chrome
 - `Mixed Callouts`: `rect` + `blur` in same payload
-- `Playback`: test with and without `Playback Rate` in script metadata
-- `Failure Probe`: missing/invalid video `Asset Ref`
+- `Playback`: test with and without `playbackRate` in component props
+- `Failure Probe`: missing/invalid `videoSrc` prop
 
 ## Boundary-Oriented Demo Snippets (Ready To Reuse)
 
@@ -707,11 +703,10 @@ This is intentionally invalid and should fail schema validation.
 
 ````md
 Component: SplitImage
-Asset Ref: assets/diagram-before.png
-Asset Ref 2: assets/diagram-after.png
 ```json
 {
   "props": {
+    "images": [{"src": "assets/diagram-before.png"}, {"src": "assets/diagram-after.png"}],
     "eyebrow": "Boundary Demo",
     "title": "SplitImage",
     "subtitle": "Dual images switch the component to stacked-image mode.",
@@ -802,6 +797,6 @@ Use this before handing a template to another team.
 - Component name matches registry (`no *Card` public name)
 - JSON uses `{"props": {...}}` envelope
 - Demo copy reflects real content density (not lorem ipsum)
-- Visual asset requirements are explicit (`Asset Ref` / image/video)
+- Visual asset requirements are in component props (`videoSrc` / `sidecarFile` / `images[]`)
 - Owner is clear (Design / Engineering / Content)
 - Public vs Private classification is recorded

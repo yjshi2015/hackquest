@@ -95,7 +95,7 @@
 
 关键字段：
 - `Scene Type: Video`
-- `Asset Ref`: 演示素材路径
+- `DemoOverlay.props.videoSrc`: 演示素材路径
 - `DemoOverlay.props.title`: 当前镜头标题
 
 ---
