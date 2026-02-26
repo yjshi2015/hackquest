@@ -1,9 +1,9 @@
-import {Img, staticFile} from 'remotion';
+import {Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import {resolveLessonPublicPath} from '../../../../lib/lesson-paths';
 import type {LessonBlockContext} from '../../../../lesson-config';
-import {colors, fonts, tokens} from '../../../../theme';
+import {colors, fonts, motion, tokens} from '../../../../theme';
 import type {StoryboardInjected} from '../../../types';
 import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 
@@ -26,6 +26,10 @@ const ImageItemSchema = z.union([
       label: z.string().optional(),
       caption: z.string().optional(),
       fit: z.enum(['cover', 'contain']).optional(),
+      /** Seconds (relative to segment start) when this image fades in. */
+      appearAt: z.number().nonnegative().optional(),
+      /** Seconds (relative to segment start) when this image fades out. */
+      exitAt: z.number().nonnegative().optional(),
     })
     .strict(),
 ]);
@@ -80,9 +84,8 @@ const LEGACY_VARIANTS = [
  * | `compare`    | Comparison table left, two images right     |
  * | `gallery`    | Multi-image grid, optional text left        |
  *
- * Image sources (priority):
- * 1. `images` prop array — for labelled / multi-image cases
- * 2. `Asset Ref` / `Asset Ref 2` in script.md (injected via hq)
+ * Image sources:
+ * - `images` prop array — for labelled / multi-image / single-image cases
  *
  * When no image is available, a dashed wireframe placeholder is shown.
  */
@@ -114,6 +117,10 @@ type ResolvedImage = {
   caption?: string;
   fit: 'cover' | 'contain';
   key: string;
+  /** Frame at which this image starts appearing (undefined = visible immediately). */
+  appearAtFrame?: number;
+  /** Frame at which this image starts exiting (undefined = stays visible). */
+  exitAtFrame?: number;
 };
 
 type Layout = (typeof LAYOUTS)[number];
@@ -138,30 +145,31 @@ const resolveMediaSrc = (raw: string | null | undefined, metaFile: string): stri
   return /^https?:\/\//i.test(resolved) ? resolved : staticFile(resolved);
 };
 
-/** Merge images from props with Asset Ref fallbacks into a resolved list. */
+/** Resolve images from props into a resolved list. */
 const resolveImages = (
   images: SplitImageCardProps['images'],
   imageFit: SplitImageCardProps['imageFit'],
+  fps: number,
   hq?: StoryboardInjected,
 ): ResolvedImage[] => {
   const metaFile = hq?.metaFile ?? '';
   const defaultFit = imageFit ?? 'contain';
-  const sources =
-    images && images.length > 0
-      ? images
-      : ([hq?.assetRef, hq?.assetRef2].filter(Boolean) as string[]);
+  const sources = images ?? [];
 
   return sources
     .map((entry, idx): ResolvedImage | null => {
       const raw = typeof entry === 'string' ? entry : entry.src;
       const src = resolveMediaSrc(raw, metaFile);
       if (!src) return null;
+      const isObj = typeof entry !== 'string';
       return {
         src,
-        label: typeof entry === 'string' ? undefined : entry.label,
-        caption: typeof entry === 'string' ? undefined : entry.caption,
-        fit: typeof entry === 'string' ? defaultFit : (entry.fit ?? defaultFit),
+        label: isObj ? entry.label : undefined,
+        caption: isObj ? entry.caption : undefined,
+        fit: isObj ? (entry.fit ?? defaultFit) : defaultFit,
         key: `${idx}-${raw}`,
+        appearAtFrame: isObj && entry.appearAt != null ? Math.round(entry.appearAt * fps) : undefined,
+        exitAtFrame: isObj && entry.exitAt != null ? Math.round(entry.exitAt * fps) : undefined,
       };
     })
     .filter((x): x is ResolvedImage => x !== null);
@@ -243,74 +251,135 @@ const ImagePlaceholder: React.FC<{label?: string}> = ({label}) => (
   </div>
 );
 
-/** Single image tile with optional label badge and caption overlay. */
-const MediaTile: React.FC<{item: ResolvedImage; radius?: number}> = ({
+/** Default stagger per image index when no explicit appearAt is provided (frames). */
+const IMAGE_STAGGER_FRAMES = 8;
+
+/** Single image tile with optional label badge, caption overlay, and appear/exit animation. */
+const MediaTile: React.FC<{item: ResolvedImage; radius?: number; index?: number}> = ({
   item,
   radius = tokens.radii.md,
-}) => (
-  <div
-    style={{
-      borderRadius: radius,
-      overflow: 'hidden',
-      border: `${tokens.stroke.hairline}px solid ${tokens.colors.borderSoft}`,
-      backgroundColor: tokens.colors.panelSoft,
-      position: 'relative',
-      width: '100%',
-      height: '100%',
-      minHeight: 0,
-    }}
-  >
-    <Img
-      src={item.src}
+  index = 0,
+}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+
+  /* ── Appear ── */
+  const enterFrame = item.appearAtFrame ?? index * IMAGE_STAGGER_FRAMES;
+  const enterProg = spring({
+    frame: Math.max(0, frame - enterFrame),
+    fps,
+    config: motion.spring.standard,
+  });
+  const enterY = interpolate(enterProg, [0, 1], [30, 0]);
+  const enterScale = interpolate(enterProg, [0, 1], [0.92, 1]);
+  const enterOpacity = interpolate(enterProg, [0, 1], [0, 1]);
+
+  /* ── Exit ── */
+  let exitOpacity = 1;
+  let exitScale = 1;
+  if (item.exitAtFrame != null) {
+    const exitProg = spring({
+      frame: Math.max(0, frame - item.exitAtFrame),
+      fps,
+      config: motion.spring.fast,
+    });
+    exitOpacity = interpolate(exitProg, [0, 1], [1, 0]);
+    exitScale = interpolate(exitProg, [0, 1], [1, 0.92]);
+  }
+
+  const opacity = enterOpacity * exitOpacity;
+  const scale = enterScale * exitScale;
+
+  return (
+    <div
       style={{
-        display: 'block',
+        borderRadius: radius,
+        overflow: 'hidden',
+        border: `${tokens.stroke.hairline}px solid ${tokens.colors.borderSoft}`,
+        backgroundColor: tokens.colors.panelSoft,
+        position: 'relative',
         width: '100%',
         height: '100%',
-        objectFit: item.fit,
-        backgroundColor: tokens.colors.bg,
+        minHeight: 0,
+        opacity,
+        transform: `translateY(${enterY}px) scale(${scale})`,
       }}
-    />
-    {item.label ? (
-      <div
+    >
+      <Img
+        src={item.src}
         style={{
-          position: 'absolute',
-          left: 12,
-          top: 12,
-          padding: '5px 12px',
-          borderRadius: tokens.radii.pill,
-          backgroundColor: 'rgba(255, 255, 255, 0.92)',
-          border: `${tokens.stroke.hairline}px solid rgba(0, 0, 0, 0.1)`,
-          fontFamily: fonts.brand,
-          fontSize: 18,
-          fontWeight: 700,
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase' as const,
-          color: colors.text,
+          display: 'block',
+          width: '100%',
+          height: '100%',
+          objectFit: item.fit,
+          backgroundColor: tokens.colors.bg,
         }}
-      >
-        {item.label}
-      </div>
-    ) : null}
-    {item.caption ? (
-      <div
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          padding: '28px 14px 12px',
-          background: 'linear-gradient(0deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0) 100%)',
-          fontFamily: fonts.body,
-          fontSize: 22,
-          lineHeight: 1.25,
-          color: colors.text,
-        }}
-      >
-        {item.caption}
-      </div>
-    ) : null}
-  </div>
-);
+      />
+      {item.label ? (
+        <div
+          style={{
+            position: 'absolute',
+            left: 12,
+            top: 12,
+            padding: '5px 12px',
+            borderRadius: tokens.radii.pill,
+            backgroundColor: 'rgba(255, 255, 255, 0.92)',
+            border: `${tokens.stroke.hairline}px solid rgba(0, 0, 0, 0.1)`,
+            fontFamily: fonts.brand,
+            fontSize: 18,
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase' as const,
+            color: colors.text,
+          }}
+        >
+          {item.label}
+        </div>
+      ) : null}
+      {item.caption ? (
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            padding: '28px 14px 12px',
+            background: 'linear-gradient(0deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0) 100%)',
+            fontFamily: fonts.body,
+            fontSize: 22,
+            lineHeight: 1.25,
+            color: colors.text,
+          }}
+        >
+          {item.caption}
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+/**
+ * Stacks multiple images in the same position — appear/exit timing creates
+ * a Fireship-style rapid switching effect.  Falls back to a single MediaTile
+ * when only one image is provided, and to a placeholder when empty.
+ */
+const ImageStack: React.FC<{items: ResolvedImage[]; radius?: number}> = ({
+  items,
+  radius = tokens.radii.lg,
+}) => {
+  if (items.length === 0) return <ImagePlaceholder />;
+  if (items.length === 1) return <MediaTile item={items[0]} radius={radius} index={0} />;
+
+  return (
+    <div style={{position: 'relative', width: '100%', height: '100%'}}>
+      {items.map((item, idx) => (
+        <div key={item.key} style={{position: 'absolute', inset: 0}}>
+          <MediaTile item={item} radius={radius} index={idx} />
+        </div>
+      ))}
+    </div>
+  );
+};
 
 /** Bullet list with optional note box — minimal styling, text is annotation not hero. */
 const TextPanel: React.FC<{
@@ -544,7 +613,8 @@ const CompareTable: React.FC<{
 export const SplitImageCard: React.FC<
   SplitImageCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, subtitle, layout: rawLayout, variant, images, imageFit, bullets, note, compare, hq, context}) => {
-  const media = resolveImages(images, imageFit, hq);
+  const {fps} = useVideoConfig();
+  const media = resolveImages(images, imageFit, fps, hq);
   const layout = resolveLayout(rawLayout, variant, media.length, Boolean(compare));
   const hasText = bullets.length > 0 || Boolean(note);
   const isCompact = layout === 'compare' || layout === 'gallery';
@@ -556,15 +626,22 @@ export const SplitImageCard: React.FC<
   /* ── text-image / image-text ────────────────────────────────── */
   const renderSideBySide = (imageFirst: boolean) => {
     const textCol = hasText ? <TextPanel bullets={bullets} note={note} /> : null;
-    const imageCol =
-      media.length > 0 ? (
-        <MediaTile item={media[0]} radius={tokens.radii.lg} />
-      ) : (
-        <ImagePlaceholder />
-      );
+    const imageCol = <ImageStack items={media} radius={tokens.radii.lg} />;
 
     if (!hasText && media.length === 0) return <ImagePlaceholder />;
-    if (!hasText) return <div style={{height: '100%'}}>{imageCol}</div>;
+    if (!hasText)
+      return (
+        <div
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{width: '75%', height: '80%'}}>{imageCol}</div>
+        </div>
+      );
     if (media.length === 0) return <div>{textCol}</div>;
 
     return (
@@ -594,22 +671,28 @@ export const SplitImageCard: React.FC<
 
   /* ── hero ────────────────────────────────────────────────────── */
   const renderHero = () => {
-    const imageBlock =
-      media.length > 0 ? (
-        <div style={{flex: 1, minHeight: 0}}>
-          <MediaTile item={media[0]} radius={tokens.radii.lg} />
-        </div>
-      ) : (
-        <div style={{flex: 1, minHeight: 0}}>
-          <ImagePlaceholder />
-        </div>
-      );
+    const imageBlock = (
+      <div style={{width: '100%', height: '100%', minHeight: 0}}>
+        <ImageStack items={media} radius={tokens.radii.lg} />
+      </div>
+    );
 
     return (
-      <div style={{height: '100%', display: 'flex', flexDirection: 'column', gap: 14}}>
-        {imageBlock}
+      <div
+        style={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: hasText ? 14 : 0,
+          alignItems: 'center',
+          justifyContent: hasText ? 'flex-start' : 'center',
+        }}
+      >
+        <div style={{flex: hasText ? 1 : undefined, minHeight: 0, width: '100%', height: hasText ? undefined : '90%'}}>
+          {imageBlock}
+        </div>
         {hasText ? (
-          <div style={{flexShrink: 0, maxHeight: '30%', overflow: 'hidden'}}>
+          <div style={{flexShrink: 0, maxHeight: '30%', overflow: 'hidden', width: '100%'}}>
             <TextPanel bullets={bullets} note={note} compact />
           </div>
         ) : null}
@@ -635,12 +718,12 @@ export const SplitImageCard: React.FC<
         }}
       >
         {imgs.length >= 1 ? (
-          <MediaTile item={imgs[0]} radius={tokens.radii.md} />
+          <MediaTile item={imgs[0]} radius={tokens.radii.md} index={0} />
         ) : (
           <ImagePlaceholder label={compare?.leftLabel ?? 'Image 1'} />
         )}
         {imgs.length >= 2 ? (
-          <MediaTile item={imgs[1]} radius={tokens.radii.md} />
+          <MediaTile item={imgs[1]} radius={tokens.radii.md} index={1} />
         ) : (
           <ImagePlaceholder label={compare?.rightLabel ?? 'Image 2'} />
         )}
@@ -660,20 +743,34 @@ export const SplitImageCard: React.FC<
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: 16,
+          gap: hasBottom ? 16 : 0,
+          alignItems: 'center',
+          justifyContent: hasBottom ? 'flex-start' : 'center',
         }}
       >
-        {imageRow}
-        {bottomPanel ? <div style={{flexShrink: 0}}>{bottomPanel}</div> : null}
+        <div style={{flex: hasBottom ? 1 : undefined, minHeight: 0, width: '100%', height: hasBottom ? undefined : '80%'}}>
+          {imageRow}
+        </div>
+        {bottomPanel ? <div style={{flexShrink: 0, width: '100%'}}>{bottomPanel}</div> : null}
       </div>
     );
   };
 
   /* ── gallery ────────────────────────────────────────────────── */
   const renderGallery = () => {
-    const cols = hasText ? 2 : 3;
-    const maxVisible = cols === 3 ? 6 : 4;
+    /** Adaptive column count based on image count and whether text is present. */
+    const adaptiveCols = (count: number, withText: boolean): number => {
+      if (count <= 1) return 1;
+      if (count === 2) return 2;
+      if (withText) return 2;        // text + grid: always 2 cols
+      if (count === 3) return 3;     // single row of 3
+      if (count === 4) return 2;     // 2×2
+      return 3;                       // 5-6 → 3 cols
+    };
+
+    const maxVisible = hasText ? 6 : 6;
     const visible = media.slice(0, maxVisible);
+    const cols = adaptiveCols(visible.length, hasText);
 
     const grid =
       visible.length > 0 ? (
@@ -686,15 +783,27 @@ export const SplitImageCard: React.FC<
             height: '100%',
           }}
         >
-          {visible.map((item) => (
-            <MediaTile key={item.key} item={item} radius={14} />
+          {visible.map((item, idx) => (
+            <MediaTile key={item.key} item={item} radius={14} index={idx} />
           ))}
         </div>
       ) : (
         <ImagePlaceholder />
       );
 
-    if (!hasText) return <div style={{height: '100%'}}>{grid}</div>;
+    if (!hasText)
+      return (
+        <div
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{width: '90%', height: '85%'}}>{grid}</div>
+        </div>
+      );
 
     return (
       <div
