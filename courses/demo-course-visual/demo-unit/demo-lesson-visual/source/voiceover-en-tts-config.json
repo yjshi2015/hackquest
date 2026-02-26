@@ -1,0 +1,27 @@
+{
+  "provider": "minimax",
+  "model": "speech-2.8-hd",
+  "languageBoost": "English",
+  "voiceId": "English_Insightful_Speaker",
+  "speed": 0.98,
+  "volume": 1.0,
+  "pitch": 0,
+  "sampleRate": 32000,
+  "bitrate": 128000,
+  "format": "mp3",
+  "channel": 1,
+  "outputFormat": "hex",
+  "pronunciations": {
+    "DeFi": "dee-fye",
+    "CDP": "see-dee-pee",
+    "TVL": "tee-vee-ell",
+    "stablecoin": "stable-coin",
+    "stablecoins": "stable-coins",
+    "DAI": "dye",
+    "USDC": "you-ess-dee-see",
+    "USDT": "you-ess-dee-tee",
+    "TradFi": "trad-fye",
+    "oracles": "or-uh-kulls"
+  },
+  "outputDir": "generated/audio/segments"
+}
