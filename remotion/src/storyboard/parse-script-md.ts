@@ -10,6 +10,8 @@ export type LessonScriptSegment = {
     component?: string;
     markdown?: string;
     json?: Record<string, unknown>;
+    /** Image-generation prompt (e.g. for nano-banana). Not rendered directly. */
+    prompt?: string;
   };
 };
 
@@ -119,6 +121,15 @@ export const parseScriptMd = (markdown: string): LessonScriptSegment[] => {
     if (componentValue) {
       current.visual = current.visual ?? {};
       current.visual.component = componentValue.trim();
+      mode = null;
+      continue;
+    }
+
+    // Prompt: image-generation prompt (e.g. for nano-banana). Breaks voiceover.
+    const promptValue = getFieldValue(trimmed, 'Prompt');
+    if (promptValue) {
+      current.visual = current.visual ?? {};
+      current.visual.prompt = promptValue;
       mode = null;
       continue;
     }

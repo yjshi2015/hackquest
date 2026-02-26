@@ -42,6 +42,7 @@ for (const seg of segments) {
     if (v.sceneType) lines.push(`Scene Type: ${v.sceneType}`);
     if (v.sceneContent) lines.push(`Scene Content: ${v.sceneContent}`);
     if (v.assetRef) lines.push(`Asset Ref: ${v.assetRef}`);
+    if (v.prompt) lines.push(`Prompt: ${v.prompt}`);
     if (v.component) lines.push(`Component: ${v.component}`);
     if (typeof seg.voiceover?.postGapMs === 'number') {
       lines.push(`Post Gap Ms: ${seg.voiceover.postGapMs}`);
