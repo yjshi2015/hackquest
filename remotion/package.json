@@ -21,9 +21,11 @@
     "tts:minimax": "bun scripts/tts-minimax.mjs",
     "merge:voiceover": "bun scripts/merge-voiceover.mjs",
     "segments:timings": "bun scripts/build-segment-timings.mjs",
-    "courses:kebab": "bun scripts/rename-courses-kebab.mjs"
+    "courses:kebab": "bun scripts/rename-courses-kebab.mjs",
+    "generate:images": "bun scripts/generate-segment-images.mjs"
   },
   "dependencies": {
+    "@google/genai": "^1.43.0",
     "@remotion/captions": "^4.0.0",
     "@remotion/cli": "^4.0.0",
     "@remotion/fonts": "4.0.417",
