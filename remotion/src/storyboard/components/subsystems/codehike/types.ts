@@ -11,6 +11,7 @@ export const CodeHikeCardPropsSchema = z
     eyebrow: z.string().optional(),
     title: z.string().optional(),
     subtitle: z.string().optional(),
+    sidecarFile: z.string(),
     preset: CodeHikePresetSchema.default('diff'),
     layout: CodeHikeLayoutSchema.optional(),
     annotations: z.array(CodeHikeAnnotationSchema).optional(),

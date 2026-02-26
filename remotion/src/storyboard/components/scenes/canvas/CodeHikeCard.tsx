@@ -4,6 +4,7 @@ import {AbsoluteFill, Sequence, cancelRender, continueRender, delayRender, sprin
 
 import type {LessonBlockContext} from '../../../../lesson-config'
 import {motion} from '../../../../theme'
+import {resolveLessonPublicPath} from '../../../../lib/lesson-paths'
 import type {StoryboardInjected} from '../../../types'
 import {CodeStepFrame} from '../../subsystems/codehike/code'
 import {buildHandlers} from '../../subsystems/codehike/handlers'
@@ -32,6 +33,7 @@ export const CodeHikeCard: React.FC<
   eyebrow,
   title,
   subtitle,
+  sidecarFile,
   preset = 'diff',
   layout,
   annotations,
@@ -63,7 +65,10 @@ export const CodeHikeCard: React.FC<
   const [highlightHandle] = useState(() => delayRender('codehike-highlight'))
   const highlightDone = useRef(false)
 
-  const resolvedContentFile = hq?.assetRef ?? null
+  const metaFile = hq?.metaFile ?? ''
+  const resolvedContentFile = sidecarFile
+    ? (resolveLessonPublicPath(metaFile, sidecarFile) ?? sidecarFile)
+    : null
   const highlightKey = `${resolvedLayout}::${String(resolvedTheme)}::${enableTwoslash ? 'twoslash' : 'plain'}::${resolvedContentFile ?? ''}`
 
   useEffect(() => {
@@ -73,7 +78,7 @@ export const CodeHikeCard: React.FC<
 
       if (!resolvedContentFile) {
         throw new Error(
-          'CodeHike requires an `Asset Ref` markdown sidecar (for example: assets/codehike/segment-23.md).',
+          'CodeHike requires a `sidecarFile` prop (for example: "assets/codehike/segment-23.md").',
         )
       }
 
