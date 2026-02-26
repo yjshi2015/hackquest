@@ -32,7 +32,7 @@ const EdgeSchema = z.object({
 export const ArchitectureDiagramCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     subtitle: z.string().optional(),
     nodes: z.array(NodeSchema).min(1),
     edges: z.array(EdgeSchema).default([]),
@@ -216,18 +216,20 @@ export const ArchitectureDiagramCard: React.FC<
             {eyebrow}
           </div>
         ) : null}
-        <div
-          style={{
-            fontFamily: fonts.display,
-            fontSize: tokens.storyboard.architecture.titleSize,
-            fontWeight: 900,
-            lineHeight: 1.08,
-            letterSpacing: '-0.015em',
-            color: colors.text,
-          }}
-        >
-          {title}
-        </div>
+        {title ? (
+          <div
+            style={{
+              fontFamily: fonts.display,
+              fontSize: tokens.storyboard.architecture.titleSize,
+              fontWeight: 900,
+              lineHeight: 1.08,
+              letterSpacing: '-0.015em',
+              color: colors.text,
+            }}
+          >
+            {title}
+          </div>
+        ) : null}
         {subtitle ? (
           <div
             style={{

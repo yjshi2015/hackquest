@@ -70,7 +70,7 @@ const MarkerSchema = z
 export const QuadrantMapCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     /** Labels for the four ends of the two axes */
     xAxisLeft: z.string(),
     xAxisRight: z.string(),

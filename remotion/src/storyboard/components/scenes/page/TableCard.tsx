@@ -8,7 +8,7 @@ import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 export const TableCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     columns: z.array(z.string()).min(1),
     rows: z.array(z.array(z.string())),
   })

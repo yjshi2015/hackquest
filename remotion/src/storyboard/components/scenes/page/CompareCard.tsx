@@ -9,7 +9,7 @@ import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 export const CompareCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     left: z.object({label: z.string(), bullets: z.array(z.string()).default([]), appearAt: z.number().nonnegative().optional()}).strict(),
     right: z.object({label: z.string(), bullets: z.array(z.string()).default([]), appearAt: z.number().nonnegative().optional()}).strict(),
     verdict: z.string().optional(),

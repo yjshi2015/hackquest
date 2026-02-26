@@ -10,7 +10,7 @@ import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 export const StepsCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     subtitle: z.string().optional(),
     steps: z
       .array(
