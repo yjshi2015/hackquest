@@ -255,10 +255,11 @@ const ImagePlaceholder: React.FC<{label?: string}> = ({label}) => (
 const IMAGE_STAGGER_FRAMES = 8;
 
 /** Single image tile with optional label badge, caption overlay, and appear/exit animation. */
-const MediaTile: React.FC<{item: ResolvedImage; radius?: number; index?: number}> = ({
+const MediaTile: React.FC<{item: ResolvedImage; radius?: number; index?: number; frameless?: boolean}> = ({
   item,
   radius = tokens.radii.md,
   index = 0,
+  frameless = false,
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -293,10 +294,10 @@ const MediaTile: React.FC<{item: ResolvedImage; radius?: number; index?: number}
   return (
     <div
       style={{
-        borderRadius: radius,
+        borderRadius: frameless ? 0 : radius,
         overflow: 'hidden',
-        border: `${tokens.stroke.hairline}px solid ${tokens.colors.borderSoft}`,
-        backgroundColor: tokens.colors.panelSoft,
+        border: frameless ? 'none' : `${tokens.stroke.hairline}px solid ${tokens.colors.borderSoft}`,
+        backgroundColor: frameless ? 'transparent' : tokens.colors.panelSoft,
         position: 'relative',
         width: '100%',
         height: '100%',
@@ -312,7 +313,7 @@ const MediaTile: React.FC<{item: ResolvedImage; radius?: number; index?: number}
           width: '100%',
           height: '100%',
           objectFit: item.fit,
-          backgroundColor: tokens.colors.bg,
+          backgroundColor: frameless ? 'transparent' : tokens.colors.bg,
         }}
       />
       {item.label ? (
@@ -363,18 +364,19 @@ const MediaTile: React.FC<{item: ResolvedImage; radius?: number; index?: number}
  * a Fireship-style rapid switching effect.  Falls back to a single MediaTile
  * when only one image is provided, and to a placeholder when empty.
  */
-const ImageStack: React.FC<{items: ResolvedImage[]; radius?: number}> = ({
+const ImageStack: React.FC<{items: ResolvedImage[]; radius?: number; frameless?: boolean}> = ({
   items,
   radius = tokens.radii.lg,
+  frameless = false,
 }) => {
   if (items.length === 0) return <ImagePlaceholder />;
-  if (items.length === 1) return <MediaTile item={items[0]} radius={radius} index={0} />;
+  if (items.length === 1) return <MediaTile item={items[0]} radius={radius} index={0} frameless={frameless} />;
 
   return (
     <div style={{position: 'relative', width: '100%', height: '100%'}}>
       {items.map((item, idx) => (
         <div key={item.key} style={{position: 'absolute', inset: 0}}>
-          <MediaTile item={item} radius={radius} index={idx} />
+          <MediaTile item={item} radius={radius} index={idx} frameless={frameless} />
         </div>
       ))}
     </div>
@@ -673,7 +675,7 @@ export const SplitImageCard: React.FC<
   const renderHero = () => {
     const imageBlock = (
       <div style={{width: '100%', height: '100%', minHeight: 0}}>
-        <ImageStack items={media} radius={tokens.radii.lg} />
+        <ImageStack items={media} radius={tokens.radii.lg} frameless />
       </div>
     );
 
