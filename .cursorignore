@@ -1,0 +1,11 @@
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+*.secret
+
+# Common secret dirs
+secrets/
+.private/
+keys/
