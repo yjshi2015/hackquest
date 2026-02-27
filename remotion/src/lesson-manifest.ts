@@ -17,7 +17,23 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 17047
+    "durationInFrames": 181
+  },
+  {
+    "id": "what-is-prediction-market",
+    "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/1-whta-is-prediction-market/source/lesson.meta.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 5283
+  },
+  {
+    "id": "prediction-market-curriculum-overview",
+    "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/curriculum-overview/source/lesson.meta.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 6613
   },
   {
     "id": "l1-protocol-revenue-token-demand-decoupling",
@@ -25,7 +41,7 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 9463
+    "durationInFrames": 181
   },
   {
     "id": "demo-lesson-visual",
@@ -33,7 +49,7 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 5992
+    "durationInFrames": 181
   },
   {
     "id": "demo-lesson-all-formats",
@@ -41,7 +57,7 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 8172
+    "durationInFrames": 181
   },
   {
     "id": "demo-lesson-all-formats-zh",
@@ -49,6 +65,6 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 3025
+    "durationInFrames": 181
   }
 ];

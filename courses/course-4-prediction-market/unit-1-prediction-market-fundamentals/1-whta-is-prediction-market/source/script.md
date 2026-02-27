@@ -117,12 +117,10 @@ Component: SplitImage
     "bullets": [
       {
         "text": "Not three opinions, but thousands of traders.",
-        "tone": "accent",
-        "appearAt": 3.0
+        "tone": "accent"
       },
       {
-        "text": "Each trade adjusts the market's belief.",
-        "appearAt": 6.0
+        "text": "Each trade adjusts the market's belief."
       }
     ]
   }
@@ -165,16 +163,21 @@ Component: Bullet
 Voiceover:
 Formally, a prediction market is a place where people trade claims on future outcomes. You are not buying weather or clouds or opinions. You are buying a contract that pays one dollar if an event happens, and zero if it does not.
 
-Component: Definition
+Component: Bullet
 
 ```json
 {
   "props": {
-    "term": "Prediction Market",
-    "definition": "A market where people trade contracts whose payoff depends on future events.",
-    "notes": [
-      "Each contract pays $1 if the event happens, $0 if it does not.",
-      "You trade probabilities of outcomes, not the underlying world directly."
+    "title": "Prediction Market",
+    "subtitle": "A market for trading contracts on future events.",
+    "bullets": [
+      {
+        "text": "Each contract pays $1 if the event happens, $0 if it does not.",
+        "tone": "accent"
+      },
+      {
+        "text": "You trade probabilities of outcomes, not clouds, weather, or opinions."
+      }
     ]
   }
 }
