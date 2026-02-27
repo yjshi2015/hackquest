@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "id": "what-is-prediction-market",
+  "courseId": "course-4-prediction-market",
+  "unitId": "unit-1",
+  "lessonId": "lesson-2-what-is-prediction-market",
+  "title": "What Is a Prediction Market?",
+  "unitLabel": "Unit 1 · Prediction Market Fundamentals",
+  "courseLabel": "Prediction Market Course",
+  "fps": 30,
+  "accentColor": "#FFE866",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cover": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Lesson 2",
+    "lessonTitle": "What Is a Prediction Market?"
+  },
+  "outro": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Lesson 2",
+    "lessonTitle": "What Is a Prediction Market?",
+    "titleLines": ["Lesson Complete", "What Is a Prediction Market?"]
+  },
+  "sections": [],
+  "assets": {
+    "audioMerged": "generated/audio/voiceover.mp3",
+    "segmentTimings": "generated/voiceover-en-segment-timings.json",
+    "captionsLines": "generated/captions/lines.json",
+    "audioSegmentsDir": "generated/audio/segments"
+  },
+  "scriptFile": "source/script.md"
+}
