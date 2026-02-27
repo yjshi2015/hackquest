@@ -99,21 +99,13 @@ Component: Bullet
 Voiceover:
 Now scale this story up. Not three people, but three thousand, thirty thousand, three hundred thousand. All of them can buy or sell a claim on whether it will rain tomorrow.
 
-Component: SplitImage
+Component: Bullet
 
 ```json
 {
   "props": {
     "title": "From Café to Market",
     "subtitle": "Thousands of people trading the same question.",
-    "layout": "image-text",
-    "images": [
-      {
-        "src": "assets/rain-market.png",
-        "fit": "contain",
-        "appearAt": 1.5
-      }
-    ],
     "bullets": [
       {
         "text": "Not three opinions, but thousands of traders.",
