@@ -20,6 +20,14 @@ export const lessonManifest: LessonManifestEntry[] = [
     "durationInFrames": 181
   },
   {
+    "id": "what-is-prediction-market-v2",
+    "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/1-whta-is-prediction-market-v2/source/lesson.meta.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 5860
+  },
+  {
     "id": "what-is-prediction-market",
     "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/1-whta-is-prediction-market/source/lesson.meta.json",
     "fps": 30,
