@@ -1,8 +1,8 @@
-# What Is a Prediction Market – Visual Story (EN)
+# What Is a Prediction Market – Visual Story (ZH)
 
 ## Segment 01
 Voiceover:
-There is a type of market that turns the question “will this happen” into a price you can trade. That is a prediction market. In this lesson, we use a simple rain story to take this market apart and see how it works.
+有一种市场，把「会不会发生」变成可以交易的价格。这就是预测市场。本节，我们用一个下雨的故事，把这个市场拆开给你看。
 
 Component: FireText
 ```json
@@ -12,17 +12,17 @@ Component: FireText
     "eyebrow": "Prediction Markets",
     "lines": [
       {
-        "text": "PREDICTION MARKETS",
+        "text": "预测市场",
         "entrance": "slam",
         "size": "hero",
         "weight": "black",
         "appearAt": 0.0,
-        "highlights": [{"word": "PREDICTION", "tone": "accent"}],
+        "highlights": [{"word": "预测市场", "tone": "accent"}],
         "exit": "shrink",
         "exitAt": 2.5
       },
       {
-        "text": "Turning “will it happen” into a tradable price",
+        "text": "把「会不会发生」变成可以交易的价格",
         "entrance": "typewriter",
         "size": "title",
         "weight": "bold",
@@ -36,7 +36,7 @@ Component: FireText
 
 ## Segment 02
 Voiceover:
-It is Friday night and you are at a café with two friends. Outside, storm clouds are building. Friend A says, “It will definitely rain tomorrow.” Friend B points at the forecast and says, “Only thirty percent.” Friend C says, “I think it is seventy percent.” The same storm, three very different beliefs.
+周五晚上，你和两个朋友在咖啡馆聊天。外面乌云压城。朋友 A 说明天肯定下雨，朋友 B 指着天气预报说只有 30%，朋友 C 觉得有 70%。同一场雨，三种完全不同的判断。
 
 Prompt: An intimate night-time café scene seen from above. At the center, a round table with three people around it. Above each person floats a speech bubble: left reads "100%", center reads "30%", right reads "70%". Outside the large window, heavy storm clouds press down on the city. A small caption at the bottom reads "Same rain, different beliefs." Minimal, editorial layout.
 
@@ -54,7 +54,7 @@ Component: SplitImage
 
 ## Segment 03
 Voiceover:
-At first it is just talk and everyone is relaxed. Then someone says, “Let us each put one hundred on the table.” The air goes quiet for a second. What used to be loose opinions suddenly turns into real money at risk.
+一开始，这只是聊天，大家都很放松。直到有人说：「我们每人拿一百块出来赌一下。」空气突然安静了一秒。刚才是观点，现在变成了真金白银的风险。
 
 Prompt: Close-up shot of the café table. Three neatly stacked cash piles labeled "¥100" sit in the center. Around them, three coffee cups and scattered weather notes. Above the cash, bold text reads "Put ¥100 on the table". The background is slightly blurred to emphasize the money. A small note at the bottom reads "Opinions turn into risk."
 
@@ -72,7 +72,7 @@ Component: SplitImage
 
 ## Segment 04
 Voiceover:
-Once the cash is on the table, people change. One person starts scrolling the weather radar, one rechecks pressure charts and historical data, and one sits back in silence to think. The money forces everyone to tighten and recalibrate their beliefs.
+钱一旦摆上桌，人就会变得不一样。一个人开始刷天气雷达，一个人重新看气压图和历史数据，还有一个人安静下来认真想。现金在桌上，迫使每个人收紧、校准自己的信念。
 
 Prompt: Three small panels arranged left to right. Left panel: a person intensely scrolling a weather radar app, with colorful storm patterns on screen. Middle panel: charts and pressure curves pinned on a board, with someone tracing lines with a pen. Right panel: a person leaning back with eyes closed, thinking deeply. A headline at top reads "When money enters the room". A subtle label beneath all three panels reads "Beliefs get recalibrated."
 
@@ -90,7 +90,7 @@ Component: SplitImage
 
 ## Segment 05
 Voiceover:
-Now scale this story up. Not three people, but three thousand, thirty thousand, three hundred thousand. Each of them can buy or sell a contract on whether it will rain tomorrow. The small café bet turns into a full market.
+现在，把这个故事放大。不是三个人，而是三千人、三万人、三十万人。每个人都可以买入或卖出一张「明天会不会下雨」的合约，从咖啡馆的打赌，升级成一个完整的市场。
 
 Prompt: A zoomed-out view that starts from a single café table in the bottom-left, then expands into a large grid of tiny desks and screens representing thousands of participants. At the center top, a large screen reads "Will it rain tomorrow?" with a live updating price ticker below. Thin lines connect many of the desks to the central price display. A caption at the bottom reads "From a café bet to a full market."
 
@@ -108,7 +108,7 @@ Component: SplitImage
 
 ## Segment 06
 Voiceover:
-On a trading screen you see a contract called “Rain” with a current price of 0.62 dollars. If it rains tomorrow, this contract settles at 1 dollar; if it does not, it settles at 0. That price is the market’s current expression of the probability.
+屏幕上出现一张名为「Rain」的合约，当前价格是 0.62 美元。如果明天下雨，这张合约结算为 1 美元；如果不下雨，就结算为 0。这个价格，本质上是市场当前给出的概率表达。
 
 Prompt: A clean trading interface mockup. Center: a large card labeled "Rain" with a pill-shaped badge showing "Price: $0.62". Below the card, two simple payoff boxes: left reads "If rain: pay $1", right reads "If no rain: pay $0". A small label at the bottom of the card reads "Implied probability ≈ 62%". Minimal clutter, strong focus on the single contract.
 
@@ -126,7 +126,7 @@ Component: SplitImage
 
 ## Segment 07
 Voiceover:
-More formally, a prediction market is a place where people trade contracts on future outcomes. You are not buying the weather, or the clouds, or people’s moods. You are buying a contract that pays one dollar if an event happens, and zero if it does not.
+形式化一点说，预测市场是一个让人们买卖「未来结果」合约的市场。你买的不是天气本身，不是乌云，也不是情绪，而是一张「如果事件发生就支付 1 美元，否则支付 0」的合约。
 
 Prompt: A minimal diagram on dark background. At the top, bold text reads "Prediction Market". In the center, a large contract card with title "Rain Outcome". Below it, a simple two-column payoff layout: left column "Event happens → $1", right column "Event does not happen → $0". Above the card, three faded icons (cloud, chat bubble, mood emoji) crossed out with a thin line, labeled "Not what you trade". A caption under the card reads "You trade contracts on outcomes."
 
@@ -144,7 +144,7 @@ Component: SplitImage
 
 ## Segment 08
 Voiceover:
-At a price of 0.62, if you buy and it does rain, you make 0.38 dollars. If you buy and it does not rain, you lose 0.62 dollars. In this very simple model, the price is probability written in dollars.
+在 0.62 这个价格下，如果你买入且最终下雨，你赚 0.38 美元；如果你买入且最终没下雨，你亏 0.62 美元。在这个极简模型里，价格就是用美元表示的概率。
 
 Prompt: A simple payoff diagram. At the left, a starting point labeled "Buy at $0.62". Two arrows branch to the right. Top branch ends at a box labeled "Rain" with bold text "$1" and a small note "Profit = 1 − 0.62 = 0.38". Bottom branch ends at a box labeled "No rain" with bold text "$0" and a small note "Loss = 0.62". A subtle headline at the top reads "Price as probability in dollars".
 
@@ -162,32 +162,32 @@ Component: SplitImage
 
 ## Segment 09
 Voiceover:
-This is not gambling. In a casino bet, you are playing against a house that sets the odds. In a prediction market, you trade with other participants, and the price emerges from everyone’s orders.
+它不是赌博。博彩是和庄家赌，由庄家设定赔率；预测市场则是和其他参与者交易，价格由市场所有订单共同形成。
 
 Component: Compare
 ```json
 {
   "props": {
-    "title": "Why it is not gambling",
+    "title": "为什么它不是赌博",
     "left": {
-      "label": "Gambling (casino)",
+      "label": "博彩（赌场）",
       "bullets": [
-        "Your counterparty is the house.",
-        "Odds are set unilaterally by the house.",
-        "There is no explicit mechanism to aggregate probabilities."
+        "你的对手是庄家。",
+        "赔率由庄家单方面设定。",
+        "没有显式的「概率聚合」机制。"
       ],
       "appearAt": 1.5
     },
     "right": {
-      "label": "Prediction market",
+      "label": "预测市场",
       "bullets": [
-        "Your counterparties are other participants.",
-        "Prices are formed by supply and demand.",
-        "Prices continually aggregate everyone’s probability estimates."
+        "你的对手是其他参与者。",
+        "价格由买卖双方供需共同决定。",
+        "价格在不断聚合所有人的概率判断。"
       ],
       "appearAt": 5.0
     },
-    "verdict": "Prediction markets are markets for beliefs, not games designed by a house.",
+    "verdict": "预测市场是汇聚信念的市场，而不是庄家设计的游戏。",
     "verdictAppearAt": 9.0
   }
 }
@@ -195,7 +195,7 @@ Component: Compare
 
 ## Segment 10
 Voiceover:
-It is also not a stock. A stock has no fixed end date; its price can drift for years. A prediction market has a clear resolution time. At that moment, each contract becomes either one dollar or zero, with nothing in between.
+它也不同于股票。股票没有明确终点，价格可以一直漂移；预测市场有明确的结算时刻，到了那一刻，每张合约只会是 1 美元或者 0，没有中间值。
 
 Prompt: A split layout with a thin vertical divider. Left side shows a wavy endless price line labeled "Stock" with a time axis that fades into the distance, annotated "No fixed end". Right side shows a short timeline labeled "Prediction Market" that ends at a bold resolution point. At that point, two boxes appear: one labeled "$1", one labeled "$0", with a caption "Binary outcome at resolution". A small note at the top reads "Not a stock either".
 
@@ -213,7 +213,7 @@ Component: SplitImage
 
 ## Segment 11
 Voiceover:
-Return to the café. The next morning, it rains and the bet settles. But the important question is not simply “did it rain.” The real question is: if you believed the true probability was eighty percent while the market only implied sixty two, what should you have done?
+回到咖啡馆。第二天早上，下雨了，赌注结算。但真正重要的问题不是「下没下雨」，而是：如果你认为真实概率是 80%，而市场价格只隐含 62%，你应该怎么做？
 
 Prompt: Return to the café table from earlier, now seen in morning light with raindrops on the window. A small badge on the table reads "Rain happened". Above the table, a large question floats: "Belief 80% vs Market 62% — what should you do?". The cash piles are now replaced by a simple contract card labeled "Rain".
 
@@ -231,14 +231,14 @@ Component: SplitImage
 
 ## Segment 12
 Voiceover:
-In the next lesson, we answer that question with math. You will learn how to connect probability, edge, and expected value in a prediction market.
+下一节，我们会用数学来回答这个问题。你会学到如何在预测市场里，把概率、优势和期望收益真正连在一起。
 
 Component: CalloutScene
 ```json
 {
   "props": {
-    "title": "Next: Turning story into math",
-    "body": "We will link probability, edge, and expected value so you can truly understand the value of a single prediction trade."
+    "title": "下一步：把故事变成数学",
+    "body": "我们会把概率、优势（edge）和期望收益连接起来，真正看懂一笔预测交易的价值。"
   }
 }
 ```

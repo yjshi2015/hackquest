@@ -25,7 +25,7 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 5860
+    "durationInFrames": 5909
   },
   {
     "id": "what-is-prediction-market",
