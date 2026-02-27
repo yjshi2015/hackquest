@@ -1,0 +1,24 @@
+{
+  "languageCode": "zh-CN",
+  "provider": "minimax",
+  "voiceName": "zh-CN",
+  "speakingRate": 1,
+  "pitch": 0,
+  "volumeGainDb": 0,
+  "audioEncoding": "MP3",
+  "useSsml": true,
+  "breaksMs": {
+    "comma": 120,
+    "dash": 160,
+    "sentence": 260,
+    "semicolon": 180
+  },
+  "emphasisLevel": "moderate",
+  "emphasisMode": "tag",
+  "emphasisPitch": "+1st",
+  "emphasisRate": "medium",
+  "emphasisWords": [],
+  "pronunciations": {},
+  "prosodyRules": [],
+  "outputDir": "generated/audio/segments-zh"
+}

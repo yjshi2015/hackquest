@@ -36,6 +36,14 @@ export const lessonManifest: LessonManifestEntry[] = [
     "durationInFrames": 5283
   },
   {
+    "id": "math-behind-price-probability",
+    "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/2-the-math-behind-price-probability/source/lesson.meta.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 5727
+  },
+  {
     "id": "prediction-market-curriculum-overview",
     "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/curriculum-overview/source/lesson.meta.json",
     "fps": 30,
