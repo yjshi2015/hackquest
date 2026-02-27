@@ -10,7 +10,7 @@ import {secondsToFrames} from '../../shared/timing';
 export const GlossaryCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     items: z
       .array(
         z.object({

@@ -111,6 +111,10 @@
 1. `SplitImage` 属于高频组件，适合网页截图、控制台截图、图表截图、双图对比和图文解释。
 2. 同一组件内优先通过 `layout` 属性实现形态变化（`text-image`、`image-text`、`hero`、`compare`、`gallery`），不要为布局差异新增组件。旧 `variant` 字段已废弃，仍可解析但建议迁移到 `layout`。
 3. 图片必须服务解释，不用作纯装饰背景。
+4. 图片来源使用 `images[]` prop 数组（支持 `appearAt`/`exitAt` 时序控制）。
+5. 快速切换蒙太奇（hero/text-image/image-text）：多张图堆叠，前一张 `exitAt` = 下一张 `appearAt`，最后一张不设 `exitAt`。
+6. 逐格出现（gallery）：每张图设 `appearAt`，不设 `exitAt`，画面逐步填充。
+7. gallery 布局自适应列数：1 张 → 1 列，2 张 → 2 列，3 张 → 3 列（无文字时），4 张 → 2×2，5-6 张 → 3 列。
 
 ## `Steps` 使用红线
 

@@ -86,27 +86,20 @@ const timingsById = new Map(
   (Array.isArray(timings) ? timings : []).map((t) => [Number(t.id), t]),
 );
 
-const isVideoRef = (assetRef) =>
-  Boolean(assetRef && /\.(mp4|mov|webm|mkv)(\?.*)?$/i.test(assetRef));
-
-const isImageRef = (assetRef) =>
-  Boolean(assetRef && /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(assetRef));
-
 /**
- * Try to resolve an asset ref to an absolute path and check it exists on disk.
+ * Try to resolve a relative asset path to an absolute location and check it exists on disk.
  * Returns null if the file exists (or we can't determine the path), or an error
  * string if the file is clearly missing.
  */
-const checkAssetExists = async (assetRef, metaAbsPath) => {
-  if (!assetRef) return null;
-  if (/^https?:\/\//i.test(assetRef)) return null; // remote URL, skip
-  // Try lesson-local first, then repo-level public
+const checkAssetExists = async (assetPath, metaAbsPath) => {
+  if (!assetPath) return null;
+  if (/^https?:\/\//i.test(assetPath)) return null; // remote URL, skip
   const lessonSourceDir = path.dirname(metaAbsPath);
   const lessonRoot2 = path.dirname(lessonSourceDir);
   const candidates = [
-    path.resolve(lessonRoot2, assetRef),
-    path.resolve(lessonSourceDir, assetRef),
-    path.resolve(repoRoot, 'remotion', '.hq-public', assetRef),
+    path.resolve(lessonRoot2, assetPath),
+    path.resolve(lessonSourceDir, assetPath),
+    path.resolve(repoRoot, 'remotion', '.hq-public', assetPath),
   ];
   for (const c of candidates) {
     try {
@@ -114,7 +107,7 @@ const checkAssetExists = async (assetRef, metaAbsPath) => {
       return null; // found
     } catch { /* next */ }
   }
-  return `Asset file not found: "${assetRef}" (checked ${candidates.length} locations)`;
+  return `Asset file not found: "${assetPath}" (checked ${candidates.length} locations)`;
 };
 
 const ChartSchema = z
@@ -236,14 +229,58 @@ const scriptSegments = script.segments ?? [];
 const errors = [];
 const warnings = [];
 
+// ── Prompt: style‐conflict linting ──────────────────────────
+// The generate-segment-images script injects HQ_STYLE_SYSTEM automatically.
+// Prompts in script.md should describe CONTENT only, not visual style.
+// We warn on keywords that duplicate or conflict with the system prompt.
+const PROMPT_BANNED_PATTERNS = [
+  // Aesthetic keywords that violate HQ style — only match if NOT preceded by "no " / "no, " / "without "
+  {re: /(?<!\bno\s)(?<!\bno,\s)(?<!\bwithout\s)\b(neon|cyberpunk|sci-fi|glitch)\b/i, msg: 'banned aesthetic keyword'},
+  {re: /(?<!\bno\s)(?<!\bno,\s)(?<!\bwithout\s)\b(drop.?shadow|box.?shadow)\b/i, msg: 'banned shadow keyword'},
+  {re: /(?<!\bno\s)(?<!\bno,\s)(?<!\bwithout\s)\b(photorealistic|realistic photo)\b/i, msg: 'banned photorealistic keyword'},
+  // Non-HQ hex colors (allow #FFFFFF #FFF #000 #0B0B0B #1A1A1A #6B6B6B #FFE866)
+  {re: /#(?!FFFFFF|FFF|000|0B0B0B|1A1A1A|6B6B6B|FFE866)[0-9A-Fa-f]{3,6}\b/, msg: 'non-HQ hex color (only #FFFFFF/#0B0B0B/#1A1A1A/#6B6B6B/#FFE866 allowed)'},
+  // Explicit color requests as fill/accent (not in a negation)
+  {re: /(?<!\bno\s)\b(blue|red|green|purple|orange|pink|teal|cyan)\s+(background|fill|color|accent|highlight)\b/i, msg: 'non-HQ color reference'},
+];
+const PROMPT_REDUNDANT_PATTERNS = [
+  // Style instructions that are already in HQ_STYLE_SYSTEM — redundant in the prompt
+  {re: /\beditorial (sketch|infographic)\b/i, msg: '"editorial sketch/infographic" — already in system prompt'},
+  {re: /\bhand-?drawn\b/i, msg: '"hand-drawn" — style handled by system prompt'},
+  {re: /\bpure white background\b/i, msg: '"pure white background" — already in system prompt'},
+  {re: /\bNo shadows\b/i, msg: '"No shadows" — already in system prompt'},
+  {re: /\bNo gradients\b/i, msg: '"No gradients" — already in system prompt'},
+  {re: /\bsentence case\b/i, msg: '"sentence case" — already in system prompt'},
+  {re: /\byellow.*highlight(er)?\s+marker\b/i, msg: '"yellow highlight marker" — already in system prompt'},
+  {re: /\b1920\s*[x×]\s*1080\b/, msg: '"1920x1080" — resolution handled by imageConfig'},
+];
+
 for (const seg of scriptSegments) {
   const id = Number(seg.id);
   const visual = seg.visual ?? {};
   const sceneType = String(visual.sceneType ?? '').toLowerCase();
   const componentName = visual.component ? String(visual.component).trim() : '';
-  const assetRef = visual.assetRef ?? null;
-  const assetRef2 = visual.assetRef2 ?? null;
   const json = visual.json;
+
+  // ── Lint image generation prompts ──
+  const prompt = visual.prompt;
+  if (typeof prompt === 'string' && prompt.trim()) {
+    for (const {re, msg} of PROMPT_BANNED_PATTERNS) {
+      const m = prompt.match(re);
+      if (m) {
+        errors.push(`Segment ${id}: Prompt contains ${msg}: "${m[0]}". Remove style directives — HQ_STYLE_SYSTEM is auto-injected.`);
+      }
+    }
+    for (const {re, msg} of PROMPT_REDUNDANT_PATTERNS) {
+      const m = prompt.match(re);
+      if (m) {
+        warnings.push(`Segment ${id}: Prompt has redundant style: ${msg}. Focus on CONTENT, style is auto-injected.`);
+      }
+    }
+    if (prompt.length > 800) {
+      warnings.push(`Segment ${id}: Prompt is ${prompt.length} chars (recommended ≤ 500). Shorter content-focused prompts work better with HQ_STYLE_SYSTEM.`);
+    }
+  }
 
   if (componentName) {
     const migratedName = legacyCardNameMap[componentName];
@@ -333,33 +370,23 @@ for (const seg of scriptSegments) {
       }
     }
 
-    // ── Asset existence checks ──
-    if (def.assetKind === 'video') {
-      if (!assetRef || !isVideoRef(assetRef)) {
-        errors.push(
-          `Segment ${id}: Component "${componentName}" requires Asset Ref to be a video file (mp4/mov/webm/mkv). Got: ${String(assetRef)}`,
-        );
-      } else {
-        const missing = await checkAssetExists(assetRef, metaPath);
-        if (missing) warnings.push(`Segment ${id}: ${missing}`);
-      }
+    // ── Asset existence checks: inspect known props for file references ──
+    const propsData = parsed.data;
+    if (propsData.videoSrc && typeof propsData.videoSrc === 'string') {
+      const missing = await checkAssetExists(propsData.videoSrc, metaPath);
+      if (missing) warnings.push(`Segment ${id}: ${missing}`);
     }
-    if (def.assetKind === 'image') {
-      if (!assetRef || !isImageRef(assetRef)) {
-        errors.push(
-          `Segment ${id}: Component "${componentName}" requires Asset Ref to be an image file (png/jpg/webp/gif/svg). Got: ${String(assetRef)}`,
-        );
-      } else {
-        const missing = await checkAssetExists(assetRef, metaPath);
-        if (missing) warnings.push(`Segment ${id}: ${missing}`);
-      }
-      if (assetRef2 && !isImageRef(assetRef2)) {
-        errors.push(
-          `Segment ${id}: Asset Ref 2 must be an image file (png/jpg/webp/gif/svg). Got: ${String(assetRef2)}`,
-        );
-      } else if (assetRef2) {
-        const missing2 = await checkAssetExists(assetRef2, metaPath);
-        if (missing2) warnings.push(`Segment ${id}: ${missing2}`);
+    if (propsData.sidecarFile && typeof propsData.sidecarFile === 'string') {
+      const missing = await checkAssetExists(propsData.sidecarFile, metaPath);
+      if (missing) warnings.push(`Segment ${id}: ${missing}`);
+    }
+    if (Array.isArray(propsData.images)) {
+      for (const img of propsData.images) {
+        const src = typeof img === 'string' ? img : img?.src;
+        if (src) {
+          const missing = await checkAssetExists(src, metaPath);
+          if (missing) warnings.push(`Segment ${id}: ${missing}`);
+        }
       }
     }
     continue;
@@ -377,14 +404,9 @@ for (const seg of scriptSegments) {
   }
 
   if (/video/.test(sceneType)) {
-    if (!assetRef || !isVideoRef(assetRef)) {
-      errors.push(
-        `Segment ${id}: Scene Type Video requires Asset Ref to be a video file. Got: ${String(assetRef)}`,
-      );
-    } else {
-      const missing = await checkAssetExists(assetRef, metaPath);
-      if (missing) warnings.push(`Segment ${id}: ${missing}`);
-    }
+    errors.push(
+      `Segment ${id}: Bare "Scene Type: Video" is deprecated. Use "Component: DemoOverlay" with {"props": {"videoSrc": "..."}}.`,
+    );
     continue;
   }
 

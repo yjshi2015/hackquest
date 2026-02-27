@@ -9,7 +9,7 @@ import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 export const CodeExplainCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     language: z.string().optional(),
     code: z.string(),
     highlights: z

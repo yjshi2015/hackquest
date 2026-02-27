@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Git pre-commit hook — runs all scripts in .githooks/
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+
+for hook in "$ROOT"/.githooks/*.sh; do
+  [ -x "$hook" ] && "$hook"
+done

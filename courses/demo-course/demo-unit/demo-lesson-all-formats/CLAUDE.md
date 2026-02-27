@@ -1,7 +1,0 @@
-script.md应该同一个component经历只展示一个segment,除非这个component有不同的类型，并且每个类型要占用一整个segment
-
-script.md的voiceover的台词要和component严密搭配，并且props里面展示的内容要和voiceover匹配，不能出现新的难以理解的词汇
-
-script.md的component里面的props的appearAt或者 accentAt等相关字段要和voiceover的台词的caption出现的时间要一一对应，严丝合缝，这样才能更好的认知卸载
-
-demo course 里面的 script.md 的 component 的 title 得要是该组件的名字，subtitle说明该组件的用途，props内容要充分演示组件的功能特色同时其文字含义要解释该组件的具体用法

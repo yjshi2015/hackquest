@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "id": "demo-lesson-visual",
+  "courseId": "demo-course-visual",
+  "unitId": "demo-unit",
+  "lessonId": "demo-lesson-visual",
+  "title": "Stablecoin Visual Explainer",
+  "unitLabel": "Demo Unit · AI-Illustrated",
+  "courseLabel": "Demo Course Visual · Nano-Banana Illustrations",
+  "fps": 30,
+  "accentColor": "#7CFF7A",
+  "hideScaffoldHeader": false,
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cover": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Visual Explainer",
+    "lessonTitle": "Stablecoin",
+    "heroFile": "cover/hero.svg"
+  },
+  "outro": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Visual Explainer",
+    "lessonTitle": "Stablecoin",
+    "titleLines": [
+      "Lesson Complete",
+      "Stablecoin Visual Explainer"
+    ],
+    "nextLessonLabel": "Next",
+    "nextLessonTitle": "CDP Engine Deep Dive",
+    "heroFile": "cover/hero.svg"
+  },
+  "sections": [],
+  "overlays": {
+    "captions": {
+      "enabled": false
+    },
+    "header": {
+      "enabled": false
+    }
+  },
+  "assets": {
+    "audioMerged": "generated/audio/voiceover.mp3",
+    "segmentTimings": "generated/voiceover-en-segment-timings.json",
+    "captionsLines": "generated/captions/lines.json",
+    "audioSegmentsDir": "generated/audio/segments"
+  },
+  "transitions": {
+    "enabled": true,
+    "style": "snap",
+    "durationFrames": 6
+  },
+  "scriptFile": "source/script.md"
+}

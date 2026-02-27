@@ -117,7 +117,6 @@ const rows = Object.entries(registry).map(([name, def]) => {
   const props = describeProps(def.propsSchema);
   return {
     name,
-    assetKind: def.assetKind ?? '',
     props,
   };
 });
@@ -138,16 +137,14 @@ process.stdout.write(
 );
 
 process.stdout.write(`## Index\n\n`);
-process.stdout.write(`| Component | Asset Kind |\n|---|---|\n`);
+process.stdout.write(`| Component |\n|---|\n`);
 for (const c of rows) {
-  const kind = c.assetKind ? `\`${c.assetKind}\`` : '';
-  process.stdout.write(`| [\`${c.name}\`](#${c.name.toLowerCase()}) | ${kind} |\n`);
+  process.stdout.write(`| [\`${c.name}\`](#${c.name.toLowerCase()}) |\n`);
 }
 process.stdout.write('\n');
 
 for (const c of rows) {
   process.stdout.write(`## ${c.name}\n`);
-  if (c.assetKind) process.stdout.write(`Asset Kind: \`${c.assetKind}\`\n\n`);
   if (!c.props) {
     process.stdout.write(`Props: (non-object schema, inspect source)\n\n`);
     continue;

@@ -41,3 +41,4 @@ remotion/public/**/captions/**
 
 # Large or local-only work (do not push)
 projects/
+nanobanana-output/

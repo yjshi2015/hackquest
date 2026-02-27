@@ -97,8 +97,17 @@ Voiceover:
 Let me show you what the finished codebase looks like, because the structure tells you a lot about how seriously we take this. Four contracts at the core: the stablecoin token itself, the CDP engine that manages all the debt logic, an oracle wrapper that refuses to trust stale data, and a stability pool for when individual liquidations are not enough. Each contract has its own library for price math, because getting decimals wrong in a protocol that handles real money is the kind of bug that ends careers. Now look at the test directory. It mirrors the source exactly, but that is not the interesting part. We run two completely separate fuzz strategies: fail-on-revert, which treats any unexpected revert as a test failure, and continue-on-revert, which powers through and checks if the system invariants still hold after chaos. Both use stateful handlers, not stateless one-shot calls. Deployment scripts target multiple networks. You will not finish this course with code that only works on a local fork.
 
 Scene Type: Video
-Asset Ref: assets/diagrams/code-structure.mp4
-Playback Rate: 1.1743
+Component: DemoOverlay
+```json
+{
+  "props": {
+    "videoSrc": "assets/diagrams/code-structure.mp4",
+    "playbackRate": 1.1743,
+    "title": "",
+    "callouts": []
+  }
+}
+```
 
 ## Segment 06
 Voiceover:

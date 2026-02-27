@@ -11,7 +11,7 @@ export const BulletToneSchema = z.enum(['accent', 'default', 'muted']);
 export const BulletCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     subtitle: z.string().optional(),
     badge: z.string().optional(),
     bullets: z

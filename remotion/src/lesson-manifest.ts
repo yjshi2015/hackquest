@@ -28,12 +28,12 @@ export const lessonManifest: LessonManifestEntry[] = [
     "durationInFrames": 9463
   },
   {
-    "id": "prediction-market-curriculum-overview",
-    "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/curriculum-overview/source/lesson.meta.json",
+    "id": "demo-lesson-visual",
+    "metaFile": "demo-course-visual/demo-unit/demo-lesson-visual/source/lesson.meta.json",
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 6613
+    "durationInFrames": 5992
   },
   {
     "id": "demo-lesson-all-formats",
@@ -41,7 +41,7 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 9211
+    "durationInFrames": 8172
   },
   {
     "id": "demo-lesson-all-formats-zh",

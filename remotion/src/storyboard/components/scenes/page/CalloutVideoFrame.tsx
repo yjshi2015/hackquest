@@ -3,6 +3,7 @@ import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../../../lesson-config';
 import {colors, fonts, tokens} from '../../../../theme';
+import {resolveLessonPublicPath} from '../../../../lib/lesson-paths';
 import type {StoryboardInjected} from '../../../types';
 import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 
@@ -32,6 +33,8 @@ export const CalloutVideoFramePropsSchema = z
     title: z.string().optional(),
     subtitle: z.string().optional(),
     badge: z.string().optional(),
+    videoSrc: z.string(),
+    playbackRate: z.number().positive().optional(),
     callouts: z.array(z.union([CalloutRectSchema, CalloutBlurSchema])).default([]),
   })
   .strict();
@@ -40,10 +43,13 @@ export type CalloutVideoFrameProps = z.infer<typeof CalloutVideoFramePropsSchema
 
 export const CalloutVideoFrame: React.FC<
   CalloutVideoFrameProps & {context: LessonBlockContext; hq?: StoryboardInjected}
-> = ({title, subtitle, badge, callouts, hq}) => {
-  const assetRef = hq?.assetRef ?? null;
+> = ({title, subtitle, badge, videoSrc, playbackRate, callouts, hq}) => {
+  const metaFile = hq?.metaFile ?? '';
+  const resolved = videoSrc
+    ? (resolveLessonPublicPath(metaFile, videoSrc) ?? videoSrc)
+    : null;
   const src =
-    assetRef && /^https?:\/\//i.test(assetRef) ? assetRef : assetRef ? staticFile(assetRef) : null;
+    resolved && /^https?:\/\//i.test(resolved) ? resolved : resolved ? staticFile(resolved) : null;
 
   return (
     <SceneScaffold
@@ -65,7 +71,7 @@ export const CalloutVideoFrame: React.FC<
         }}
       >
         {src ? (
-          <Video src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+          <Video src={src} playbackRate={playbackRate} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         ) : (
           <AbsoluteFill
             style={{

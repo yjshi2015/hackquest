@@ -7,7 +7,7 @@ import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 export const CalloutScenePropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     body: z.string(),
   })
   .strict();

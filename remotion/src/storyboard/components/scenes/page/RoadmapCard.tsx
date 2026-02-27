@@ -9,7 +9,7 @@ import {SceneScaffold} from '../../shared/scaffolds/SceneScaffold';
 export const RoadmapCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     subtitle: z.string().optional(),
     phases: z
       .array(
