@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "id": "oracle-and-resolution",
+  "courseId": "course-4-prediction-market",
+  "unitId": "unit-1",
+  "lessonId": "lesson-5-oracle-and-resolution",
+  "title": "Oracle & Resolution",
+  "unitLabel": "Unit 1 · Prediction Market Fundamentals",
+  "courseLabel": "Prediction Market Course",
+  "fps": 30,
+  "accentColor": "#FFE866",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cover": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Lesson 5",
+    "lessonTitle": "Oracle & Resolution"
+  },
+  "outro": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Lesson 5",
+    "lessonTitle": "Oracle & Resolution",
+    "titleLines": ["Lesson Complete", "Oracle & Resolution"]
+  },
+  "sections": [],
+  "assets": {
+    "audioMerged": "generated/audio/voiceover.mp3",
+    "segmentTimings": "generated/voiceover-en-segment-timings.json",
+    "captionsLines": "generated/captions/lines.json",
+    "audioSegmentsDir": "generated/audio/segments"
+  },
+  "scriptFile": "source/script.md"
+}

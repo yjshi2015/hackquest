@@ -52,6 +52,30 @@ export const lessonManifest: LessonManifestEntry[] = [
     "durationInFrames": 7353
   },
   {
+    "id": "trading-roles-and-profit-sources",
+    "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/3-trading-roles-and-profit-sources/source/lesson.meta.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 7360
+  },
+  {
+    "id": "efficient-market-hypothesis",
+    "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/4-efficient-market-hypothesis/source/lesson.meta.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 7966
+  },
+  {
+    "id": "oracle-and-resolution",
+    "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/5-oracle/source/lesson.meta.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 181
+  },
+  {
     "id": "prediction-market-curriculum-overview",
     "metaFile": "course-4-prediction-market/unit-1-prediction-market-fundamentals/curriculum-overview/source/lesson.meta.json",
     "fps": 30,

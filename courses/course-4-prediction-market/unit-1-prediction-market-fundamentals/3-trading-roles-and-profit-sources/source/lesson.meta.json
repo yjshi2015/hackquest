@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "id": "trading-roles-and-profit-sources",
+  "courseId": "course-4-prediction-market",
+  "unitId": "unit-1",
+  "lessonId": "lesson-4-trading-roles-and-profit-sources",
+  "title": "Trading Roles & Profit Sources",
+  "unitLabel": "Unit 1 · Prediction Market Fundamentals",
+  "courseLabel": "Prediction Market Course",
+  "fps": 30,
+  "accentColor": "#FFE866",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cover": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Lesson 4",
+    "lessonTitle": "Trading Roles & Profit Sources"
+  },
+  "outro": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Lesson 4",
+    "lessonTitle": "Trading Roles & Profit Sources",
+    "titleLines": ["Lesson Complete", "Trading Roles & Profit Sources"]
+  },
+  "sections": [],
+  "assets": {
+    "audioMerged": "generated/audio/voiceover.mp3",
+    "segmentTimings": "generated/voiceover-en-segment-timings.json",
+    "captionsLines": "generated/captions/lines.json",
+    "audioSegmentsDir": "generated/audio/segments"
+  },
+  "scriptFile": "source/script.md"
+}

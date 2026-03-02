@@ -1,0 +1,40 @@
+{
+  "languageCode": "en-US",
+  "provider": "minimax",
+  "voiceName": "en-US-Chirp3-HD-Umbriel",
+  "speakingRate": 1.06,
+  "pitch": 0,
+  "volumeGainDb": 0,
+  "audioEncoding": "MP3",
+  "useSsml": true,
+  "breaksMs": {
+    "comma": 120,
+    "dash": 160,
+    "sentence": 260,
+    "semicolon": 180
+  },
+  "emphasisLevel": "moderate",
+  "emphasisMode": "tag",
+  "emphasisPitch": "+1st",
+  "emphasisRate": "medium",
+  "emphasisWords": [],
+  "pronunciations": {
+    "DeFi": "dee-fye",
+    "Prediction": "prih-dik-shun",
+    "Polymarket": "poly-market",
+    "Kalshi": "kal-shee"
+  },
+  "prosodyRules": [
+    {
+      "pattern": "^(Now|But|So|Alright|Here)\\b",
+      "pitch": "+1st",
+      "rate": "medium"
+    },
+    {
+      "pattern": "\\?$",
+      "pitch": "+1st",
+      "rate": "medium"
+    }
+  ],
+  "outputDir": "generated/audio/segments"
+}
