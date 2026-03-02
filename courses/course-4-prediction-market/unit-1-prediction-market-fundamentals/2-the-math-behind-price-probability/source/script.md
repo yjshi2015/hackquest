@@ -2,32 +2,42 @@
 
 ## Segment 01
 Voiceover:
-Last lesson we saw that when the rain contract trades at sixty two cents, the market seems to say the probability of rain is about sixty two percent. That is not a metaphor. Behind it is a simple, rigorous mathematical structure.
+If the true probability is eighty percent but the market price is sixty-two cents — should you buy? To answer that, you need a computable framework. This is the math behind Price equals Probability.
 
 Component: FireText
 ```json
 {
   "props": {
     "variant": "light",
-    "eyebrow": "Unit 1.2",
+    "eyebrow": "Lesson 3",
     "lines": [
       {
-        "text": "PRICE = PROBABILITY",
+        "text": "PRICE",
         "entrance": "slam",
         "size": "hero",
         "weight": "black",
         "appearAt": 0.0,
-        "highlights": [{"word": "PROBABILITY", "tone": "accent"}],
+        "highlights": [{"word": "PRICE", "tone": "accent"}],
         "exit": "shrink",
-        "exitAt": 2.5
+        "exitAt": 2.0
       },
       {
-        "text": "The math behind prediction market prices",
+        "text": "= PROBABILITY",
+        "entrance": "slam",
+        "size": "hero",
+        "weight": "black",
+        "appearAt": 2.5,
+        "highlights": [{"word": "PROBABILITY", "tone": "accent"}],
+        "exit": "shrink",
+        "exitAt": 5.0
+      },
+      {
+        "text": "The Math Behind It",
         "entrance": "typewriter",
         "size": "title",
         "weight": "bold",
-        "appearAt": 3.0,
-        "wordInterval": 0.12
+        "appearAt": 5.5,
+        "wordInterval": 0.15
       }
     ]
   }
@@ -36,9 +46,9 @@ Component: FireText
 
 ## Segment 02
 Voiceover:
-The basic asset in a prediction market is a binary payoff contract. If the event happens, it pays one dollar. If it does not happen, it pays zero. So the contract has only two possible terminal values: one or zero. It is discrete, not continuous like a stock or a commodity.
+A prediction market contract is a binary payoff. If the event happens, the contract pays one dollar. If the event does not happen, the contract pays zero. At expiry, it can only take one of these two values. So the entire value of this asset is determined by the probability of the event occurring.
 
-Prompt: A large contract card in the center labeled "Binary contract". Two branches below: left branch "Event happens" with a dollar icon and "$1"; right branch "Event does not" with a zero and "$0". A small label at the top reads "Only two outcomes". Below the card, a short timeline ends at a resolution point with two boxes "$1" and "$0". Caption: "Discrete endpoint, not a drifting price."
+Prompt: A headline at top reading "Binary payoff: 1 or 0" with the number "1" highlighted in yellow marker. Below: a single 3D block in the center representing a contract. Two arrows branch from it — one arrow pointing up-right to a block labeled "$1" with a checkmark icon, and one arrow pointing down-right to a block labeled "$0" with an X icon. The upward arrow is the focal element. Below the fork, a small label reads "At expiry".
 
 Component: SplitImage
 ```json
@@ -46,7 +56,7 @@ Component: SplitImage
   "props": {
     "layout": "hero",
     "images": [
-      { "src": "assets/generated/segment-02.png", "fit": "cover", "appearAt": 0.5 }
+      {"src": "assets/generated/segment-02.png", "fit": "cover", "appearAt": 0.5}
     ]
   }
 }
@@ -54,9 +64,9 @@ Component: SplitImage
 
 ## Segment 03
 Voiceover:
-Suppose the true probability of the event is p. What is the expected value of this binary contract? By definition: EV equals p times one plus one minus p times zero. So EV equals p. If the true probability is eighty percent, the contract's theoretical value is eighty cents.
+Let the true probability of the event be P. The expected value of the contract equals P times one plus one minus P times zero. That simplifies to expected value equals P. If the true probability is zero point eight zero, the contract is worth eighty cents. When the market prices it at sixty-two cents, the expected profit is eighteen cents per contract. That gap is your edge.
 
-Prompt: A simple formula layout. Top line: "EV = p × 1 + (1 − p) × 0". Below it an arrow pointing to "EV = p". To the right, a small example: "If p = 0.80 → contract value = $0.80". The equality "EV = p" is the focal element with a subtle highlight. Minimal labels only.
+Prompt: A headline at top reading "EV = P" with "EV" highlighted in yellow marker. Below: two rows. Top row shows the formula "EV = P × 1 + (1 − P) × 0 = P" laid out as connected blocks with operators between them. Bottom row: left side a block labeled "True P = 0.80", right side a block labeled "Market Price = 0.62", and between them an arrow pointing to a third block labeled "Edge = 0.18" — this block is the focal element.
 
 Component: SplitImage
 ```json
@@ -64,7 +74,7 @@ Component: SplitImage
   "props": {
     "layout": "hero",
     "images": [
-      { "src": "assets/generated/segment-03.png", "fit": "cover", "appearAt": 0.5 }
+      {"src": "assets/generated/segment-03.png", "fit": "cover", "appearAt": 0.5}
     ]
   }
 }
@@ -72,31 +82,56 @@ Component: SplitImage
 
 ## Segment 04
 Voiceover:
-So when the market price is sixty two cents, it is implicitly saying the probability is sixty two percent. Price is the market's estimate of probability. That is the core idea.
+But here is the critical question: if two options have the same expected value, will everyone choose the same one? Consider Option A — a guaranteed payout of eighty cents. And Option B — an eighty-percent chance of one dollar, twenty-percent chance of zero. Both have an expected value of eighty cents. A risk-averse trader prefers the certainty of Option A — avoiding volatility matters more. A risk-seeking trader prefers Option B — the thrill of the upside is worth the gamble. Same math, opposite decisions.
 
-Component: CalloutScene
+Component: Compare
 ```json
 {
   "props": {
-    "title": "Price expresses probability",
-    "body": "Market price 0.62 → implied probability 62%. No metaphor — just expected value."
+    "eyebrow": "Same EV, Different Choices",
+    "title": "Risk Averse vs Risk Seeking",
+    "left": {
+      "label": "Risk Averse",
+      "bullets": [
+        "Prefers certainty over variance",
+        "Chooses Option A: guaranteed $0.80",
+        "Volatility itself has negative value",
+        "Under-bets relative to expected value"
+      ],
+      "appearAt": 4.0
+    },
+    "right": {
+      "label": "Risk Seeking",
+      "bullets": [
+        "Prefers variance and upside potential",
+        "Chooses Option B: 80% chance of $1",
+        "Volatility itself has positive value",
+        "Over-bets relative to expected value"
+      ],
+      "appearAt": 10.0
+    },
+    "verdict": "Same expected value of $0.80 — opposite decisions driven by risk preference.",
+    "verdictAppearAt": 16.0
   }
 }
 ```
 
 ## Segment 05
 Voiceover:
-Now suppose the true probability is eighty percent but the market price is sixty two cents. The contract is undervalued. If you believe the true probability is eighty percent and you buy at sixty two cents, your expected gain per unit is zero point eight minus zero point sixty two, or eighteen cents. That is positive expected value. Under a risk-neutral view, you would keep buying.
+Then there is the risk-neutral agent. A risk-neutral agent only cares about expected value. If EV of A equals EV of B, the two options are identical. Volatility carries no weight. No premium for certainty, no excitement from variance. In this framework, the only thing that matters is the number.
 
-Prompt: A small diagram. Left: "True prob = 0.80", "Market price = 0.62". Center: an arrow labeled "Undervalued". Right: "Expected gain = 0.80 − 0.62 = 0.18". Below, a demand arrow pointing up and a price arrow going from 0.62 toward 0.80. Caption: "Buy pressure pushes price up."
-
-Component: SplitImage
+Component: Bullet
 ```json
 {
   "props": {
-    "layout": "hero",
-    "images": [
-      { "src": "assets/generated/segment-05.png", "fit": "cover", "appearAt": 0.5 }
+    "eyebrow": "The Third Type",
+    "title": "Risk Neutral",
+    "subtitle": "When EV is all that matters.",
+    "bullets": [
+      {"text": "If EV_A = EV_B → the two options are equivalent", "tone": "accent", "icon": "1", "appearAt": 2.0},
+      {"text": "Volatility carries zero weight in the decision", "icon": "2", "appearAt": 5.0},
+      {"text": "No premium for certainty, no thrill from variance", "icon": "3", "appearAt": 7.5},
+      {"text": "Only the expected payoff drives the choice", "tone": "accent", "icon": "4", "appearAt": 10.0}
     ]
   }
 }
@@ -104,102 +139,99 @@ Component: SplitImage
 
 ## Segment 06
 Voiceover:
-As more buyers step in, demand rises and the price climbs: sixty two, seventy, seventy five, toward eighty. Price converges to the true probability. That is the core mechanism. When price is too high, arbitrageurs sell and push it back down. In liquid, informed markets, price usually stays close to true probability.
+Now change the setup. Option A pays fifty cents for certain. Option B still gives an eighty-percent chance of one dollar. Now expected value of A is fifty cents and expected value of B is eighty cents. For a risk-neutral agent, B dominates — zero point eight zero is greater than zero point five zero. A risk-averse agent might still hesitate. A risk-seeking agent doubles down on B. But the theoretical pricing framework assumes the marginal trader is approximately risk-neutral.
 
-Component: Bullet
+Prompt: A headline at top reading "When EV differs, risk-neutral picks the higher number" with "higher number" highlighted in yellow marker. Below: two columns. Left column: a block labeled "Option A" with sub-label "100% → $0.50", and below it "EV = 0.50". Right column: a block labeled "Option B" with sub-label "80% → $1 / 20% → $0", and below it "EV = 0.80" — this block is the focal element. Between the two columns, a large "greater than" symbol (>) pointing from right to left. Below: a small label reading "Risk-neutral verdict: choose B".
+
+Component: SplitImage
 ```json
 {
   "props": {
-    "eyebrow": "Convergence",
-    "title": "Why price moves toward probability",
-    "subtitle": "Arbitrage corrects deviation.",
-    "bullets": [
-      { "text": "Price too low → buy → demand up → price rises", "tone": "accent", "icon": "1", "appearAt": 1.5 },
-      { "text": "Price too high → sell → supply up → price falls", "icon": "2", "appearAt": 4.0 },
-      { "text": "In liquid markets, price stays near true probability", "icon": "3", "appearAt": 6.5 }
-    ],
-    "note": "Deviation is corrected by arbitrage.",
-    "noteAppearAt": 9.0
+    "layout": "hero",
+    "images": [
+      {"src": "assets/generated/segment-06.png", "fit": "cover", "appearAt": 0.5}
+    ]
   }
 }
 ```
 
 ## Segment 07
 Voiceover:
-We have been assuming risk neutrality: participants only care about expected payoff. In reality, people are not fully risk-neutral. Some are risk-averse, some risk-seeking, some driven by emotion. So price will not always match true probability exactly. But in competitive, well-funded markets, arbitrageurs compress that gap.
+Why does the market approximate risk neutrality? Not because traders are inherently rational. First, capital can be diversified across many positions. Second, trades can be repeated over large sample sizes. Third, when the bankroll is large enough, variance gets averaged out. Rational capital converges on expected value as the core decision metric.
 
-Component: Compare
+Component: Bullet
 ```json
 {
   "props": {
-    "title": "Risk-neutral assumption vs reality",
-    "left": {
-      "label": "Model (risk-neutral)",
-      "bullets": [
-        "Participants maximize expected value only.",
-        "Price tends to equal true probability."
-      ],
-      "appearAt": 1.5
-    },
-    "right": {
-      "label": "Reality",
-      "bullets": [
-        "Risk aversion, preference, and emotion exist.",
-        "Arbitrageurs compress the gap in liquid markets."
-      ],
-      "appearAt": 5.0
-    },
-    "verdict": "Price approximates probability when arbitrage is strong.",
-    "verdictAppearAt": 8.0
+    "eyebrow": "Market Structure",
+    "title": "Why markets approximate risk neutrality",
+    "subtitle": "It is not about human rationality — it is about capital structure.",
+    "bullets": [
+      {"text": "Capital diversifies across many independent positions", "tone": "accent", "icon": "1", "appearAt": 2.5},
+      {"text": "Trades repeat over large sample sizes — law of large numbers", "icon": "2", "appearAt": 5.5},
+      {"text": "Large bankrolls average out variance over time", "icon": "3", "appearAt": 8.5}
+    ],
+    "note": "Rational capital converges on EV as the core decision metric.",
+    "noteAppearAt": 11.5
   }
 }
 ```
 
 ## Segment 08
 Voiceover:
-So we can define a prediction market more precisely. It is a system that turns subjective probability into a market price through trading. The probability is not announced by an expert. It is traded into existence. Price is the aggregate of information, beliefs, and capital.
+This creates a convergence mechanism. When the true probability is above the market price, informed buyers step in and push the price up. When the true probability is below the market price, sellers step in and push the price down. Trading activity drives the price toward the probability. Under sufficient information flow and liquidity, the price becomes the probability.
 
-Component: Bullet
+Prompt: A headline at top reading "Trading drives price toward probability" with "toward" highlighted in yellow marker. Below: a horizontal number line from 0 to 1. A block labeled "Market Price" sits at 0.62 on the line. A block labeled "True P" sits at 0.80. Between them, arrows pointing rightward labeled "Buy pressure". To the right of True P, arrows pointing leftward labeled "Sell pressure". The convergence zone where the arrows meet is the focal element. Below the line, a label reads "Price → Probability".
+
+Component: SplitImage
 ```json
 {
   "props": {
-    "eyebrow": "Definition",
-    "title": "Prediction market",
-    "subtitle": "Subjective probability → price via trading.",
-    "bullets": [
-      { "text": "Probability is not declared; it is traded out", "tone": "accent", "icon": "1", "appearAt": 1.5 },
-      { "text": "Price = information + beliefs + capital", "icon": "2", "appearAt": 4.0 }
-    ],
-    "note": "A system that turns beliefs into a price.",
-    "noteAppearAt": 6.5
+    "layout": "hero",
+    "images": [
+      {"src": "assets/generated/segment-08.png", "fit": "cover", "appearAt": 0.5}
+    ]
   }
 }
 ```
 
 ## Segment 09
 Voiceover:
-Once we understand this, a deeper question appears. Who pushes price toward probability? Who creates deviation? Who profits from it? That leads us to the different types of participants in a prediction market.
+And that is the core equation. In a prediction market with sufficient liquidity and information, Price approximates Probability. The market price is not a guess. It is a risk-neutral probability aggregated from every participant with skin in the game.
 
-Component: CalloutScene
+Prompt: A headline at top reading "Price ≈ Probability" with the entire equation highlighted in yellow marker. Below: center is a large equal sign made of two thick horizontal blocks. Left side of the equal sign: a 3D block labeled "Market Price" with a dollar icon. Right side: a 3D block labeled "Risk-Neutral Probability" with a percentage icon — this is the focal element. Below: a small annotation reading "Under sufficient liquidity and information flow".
+
+Component: SplitImage
 ```json
 {
   "props": {
-    "title": "Who moves the price?",
-    "body": "Who converges price to probability? Who creates deviation? Who profits? Next: participant types and their incentives."
+    "layout": "hero",
+    "images": [
+      {"src": "assets/generated/segment-09.png", "fit": "cover", "appearAt": 0.5}
+    ]
   }
 }
 ```
 
 ## Segment 10
 Voiceover:
-In the next lesson we look at participant types and where their profits come from.
+Let us recap. We moved from intuition to mathematical structure. Binary payoff — the contract pays one or zero. Expected value equals probability. Risk preferences split traders into three camps. And the market, through the structure of capital, approximates risk-neutral pricing. Next lesson, we will explore how different types of traders extract profit from this system.
 
-Component: CalloutScene
+Component: Bullet
 ```json
 {
   "props": {
-    "title": "Next: Participants and incentives",
-    "body": "Market makers, informed traders, and noise — and how they shape the price."
+    "eyebrow": "Recap",
+    "title": "From intuition to math",
+    "subtitle": "The building blocks of prediction market pricing.",
+    "bullets": [
+      {"text": "Binary payoff — contract pays $1 or $0 at expiry", "icon": "1", "appearAt": 2.0},
+      {"text": "Expected value = true probability (EV = P)", "tone": "accent", "icon": "2", "appearAt": 4.5},
+      {"text": "Risk averse, risk seeking, risk neutral — three camps", "icon": "3", "appearAt": 7.0},
+      {"text": "Market structure converges price toward probability", "tone": "accent", "icon": "4", "appearAt": 9.5}
+    ],
+    "note": "Next: how different trader types extract profit from this system.",
+    "noteAppearAt": 12.0
   }
 }
 ```

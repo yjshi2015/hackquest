@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "id": "math-behind-price-probability",
+  "courseId": "course-4-prediction-market",
+  "unitId": "unit-1",
+  "lessonId": "lesson-3-math-behind-price-probability",
+  "title": "The Math Behind Price = Probability",
+  "unitLabel": "Unit 1 · Prediction Market Fundamentals",
+  "courseLabel": "Prediction Market Course",
+  "fps": 30,
+  "accentColor": "#FFE866",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cover": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Lesson 3",
+    "lessonTitle": "The Math Behind Price = Probability"
+  },
+  "outro": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Lesson 3",
+    "lessonTitle": "The Math Behind Price = Probability",
+    "titleLines": ["Lesson Complete", "The Math Behind Price = Probability"]
+  },
+  "sections": [],
+  "assets": {
+    "audioMerged": "generated/audio/voiceover.mp3",
+    "segmentTimings": "generated/voiceover-en-segment-timings.json",
+    "captionsLines": "generated/captions/lines.json",
+    "audioSegmentsDir": "generated/audio/segments"
+  },
+  "scriptFile": "source/script.md"
+}
