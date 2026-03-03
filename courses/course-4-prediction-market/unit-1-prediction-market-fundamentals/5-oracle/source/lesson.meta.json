@@ -3,7 +3,7 @@
   "id": "oracle-and-resolution",
   "courseId": "course-4-prediction-market",
   "unitId": "unit-1",
-  "lessonId": "lesson-5-oracle-and-resolution",
+  "lessonId": "lesson-6-oracle-and-resolution",
   "title": "Oracle & Resolution",
   "unitLabel": "Unit 1 · Prediction Market Fundamentals",
   "courseLabel": "Prediction Market Course",
@@ -16,13 +16,13 @@
   "cover": {
     "enabled": true,
     "durationFrames": 90,
-    "lessonLabel": "Lesson 5",
+    "lessonLabel": "Lesson 6",
     "lessonTitle": "Oracle & Resolution"
   },
   "outro": {
     "enabled": true,
     "durationFrames": 90,
-    "lessonLabel": "Lesson 5",
+    "lessonLabel": "Lesson 6",
     "lessonTitle": "Oracle & Resolution",
     "titleLines": ["Lesson Complete", "Oracle & Resolution"]
   },

@@ -9,7 +9,7 @@ Component: FireText
 {
   "props": {
     "variant": "light",
-    "eyebrow": "Lesson 5",
+    "eyebrow": "Lesson 6",
     "lines": [
       {
         "text": "ORACLE",

@@ -73,7 +73,7 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 181
+    "durationInFrames": 5020
   },
   {
     "id": "prediction-market-curriculum-overview",

@@ -22,7 +22,12 @@
     "DeFi": "dee-fye",
     "Prediction": "prih-dik-shun",
     "Polymarket": "poly-market",
-    "Kalshi": "kal-shee"
+    "Kalshi": "kal-shee",
+    "UMA": "oo-mah",
+    "USDC": "U-S-D-C",
+    "NWS": "N-W-S",
+    "EMH": "E-M-H",
+    "Oracle": "or-uh-kul"
   },
   "prosodyRules": [
     {
